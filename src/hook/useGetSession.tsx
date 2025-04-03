@@ -8,7 +8,7 @@ const useGetSession = () => {
   useEffect(() => {
     dispatch(getUserSession()).unwrap();
   }, []);
-  return { user: data.user, loading: data.loading };
+  return { user: data.user, loading: data.loading, error: data.error };
 };
 
 export default useGetSession;

@@ -1,6 +1,6 @@
 import { LoadingSpinner } from "@/components";
 import useGetSession from "@/hook/useGetSession";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 export const ProtectedRoute = () => {
   const { user, loading } = useGetSession();
@@ -14,8 +14,9 @@ export const ProtectedRoute = () => {
 };
 
 export const AuthRoute = () => {
+  const location = useLocation();
   const { user, loading } = useGetSession();
-  if (loading)
+  if (loading && location.pathname !== "/login")
     return (
       <div className="w-ful h-[100vh] flex justify-center items-center">
         <LoadingSpinner className="" />

@@ -16,7 +16,6 @@ import { z } from "zod";
 import { LoadingSpinner } from "@/components";
 import { supabase } from "@/utils";
 import { useNavigate } from "react-router-dom";
-import { LoginSchema } from "../login-form/schema";
 
 const ForgotPasswordFormSchema = z.object({
   email: z.string().min(1, { message: "Email is required" }).email(),

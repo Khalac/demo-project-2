@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LoginSchema } from "./schema";
 import { z } from "zod";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Input,
@@ -15,9 +16,15 @@ import {
 
 import { logIn } from "./slice";
 import { useAppDispatch } from "@/hook/reduxHook";
+import { useState } from "react";
+import { LoadingSpinner } from "@/components";
+
 type LoginFormType = z.infer<typeof LoginSchema>;
 
 const LoginForm = () => {
+  const [error, setError] = useState<any>();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const form = useForm({
     resolver: zodResolver(LoginSchema),
@@ -28,11 +35,14 @@ const LoginForm = () => {
   });
 
   async function onSubmit(values: LoginFormType) {
+    setLoading(true);
     try {
       const data = await dispatch(logIn(values)).unwrap();
-      console.log("hi", data);
-    } catch (err) {
-      console.log(err);
+      if (data.success) navigate("/");
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
     }
   }
   return (
@@ -70,8 +80,13 @@ const LoginForm = () => {
               </FormItem>
             )}
           />
+          {error && <div className="text-red-600">{error}</div>}
           <div className="w-full flex justify-center">
-            <Button type="submit">Submit</Button>
+            {loading ? (
+              <LoadingSpinner className="" />
+            ) : (
+              <Button type="submit">Submit</Button>
+            )}
           </div>
         </form>
       </Form>

@@ -2,14 +2,14 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { supabase } from "@/utils";
 
 // create async thunk to handle when user log in
-type dataLogInType = {
+type DataLogIn = {
   email: string;
   password: string;
 };
 
 export const logIn = createAsyncThunk(
   "user/logIn",
-  async (value: dataLogInType, thunkAPI) => {
+  async (value: DataLogIn, thunkAPI) => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: value.email,

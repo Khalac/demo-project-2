@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { ResetPasswordFormSchema } from "./schema";
 import { z } from "zod";
 
-type ResetPassWordFormType = z.infer<typeof ResetPasswordFormSchema>;
+type ResetPassword = z.infer<typeof ResetPasswordFormSchema>;
 
 const ResetPasswordForm = () => {
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const ResetPasswordForm = () => {
       repassword: "",
     },
   });
-  async function onSubmit(values: ResetPassWordFormType) {
+  async function onSubmit(values: ResetPassword) {
     setLoading(true);
     try {
       const { data, error } = await supabase.auth.updateUser({

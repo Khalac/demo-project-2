@@ -21,7 +21,7 @@ const ForgotPasswordFormSchema = z.object({
   email: z.string().min(1, { message: "Email is required" }).email(),
 });
 
-type ForgotPasswordFormType = z.infer<typeof ForgotPasswordFormSchema>;
+type ForgotPasswordType = z.infer<typeof ForgotPasswordFormSchema>;
 
 const ForgotPasswordForm = () => {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const ForgotPasswordForm = () => {
       email: "",
     },
   });
-  async function onSubmit(values: ForgotPasswordFormType) {
+  async function onSubmit(values: ForgotPasswordType) {
     setLoading(true);
     try {
       const { data, error } = await supabase.auth.resetPasswordForEmail(

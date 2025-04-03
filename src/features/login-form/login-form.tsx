@@ -21,7 +21,7 @@ import { useState } from "react";
 import { LoadingSpinner } from "@/components";
 import { tryCatch } from "@/utils";
 
-type LoginFormType = z.infer<typeof LoginSchema>;
+type DataLogin = z.infer<typeof LoginSchema>;
 
 const LoginForm = () => {
   const [error, setError] = useState<any>();
@@ -36,7 +36,7 @@ const LoginForm = () => {
     },
   });
 
-  async function onSubmit(values: LoginFormType) {
+  async function onSubmit(values: DataLogin) {
     setLoading(true);
 
     const { data, error } = await tryCatch(dispatch(logIn(values)).unwrap());

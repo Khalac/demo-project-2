@@ -1,5 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import { HomePage, LoginPage } from "@/pages";
+import {
+  HomePage,
+  LoginPage,
+  ForgotPassword,
+  ResetPasswordPage,
+} from "@/pages";
 import { ProtectedRoute, AuthRoute } from "./auth-guard";
 import Layout from "@/layout/Layout";
 
@@ -13,7 +18,7 @@ export const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           {
-            path: "/",
+            path: "",
             element: <HomePage />,
           },
         ],
@@ -28,6 +33,15 @@ export const router = createBrowserRouter([
         path: "",
         element: <LoginPage />,
       },
+      {
+        path: "forgot-password",
+        element: <ForgotPassword />,
+      },
     ],
+  },
+
+  {
+    path: "/reset-password",
+    element: <ResetPasswordPage />,
   },
 ]);

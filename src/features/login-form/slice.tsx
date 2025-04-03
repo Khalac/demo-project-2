@@ -19,7 +19,7 @@ export const logIn = createAsyncThunk(
       if (error) {
         return thunkAPI.rejectWithValue(error.message);
       }
-      localStorage.setItem("id", data.user.id);
+
       return {
         success: true,
         data: { email: data.user?.email, userId: data.user?.id },

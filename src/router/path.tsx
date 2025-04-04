@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import {
   AllRequestPage,
   LoginPage,
-  ForgotPassword,
   ResetPasswordPage,
   CreateRequestPage,
 } from "@/pages";
@@ -38,13 +37,8 @@ export const router = createBrowserRouter([
         path: "",
         element: <LoginPage />,
       },
-      {
-        path: "forgot-password",
-        element: <ForgotPassword />,
-      },
     ],
   },
-
   {
     path: "/reset-password",
     element: <ResetPasswordPage />,

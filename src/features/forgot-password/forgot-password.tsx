@@ -5,9 +5,14 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
-  FormDescription,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
 } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -23,7 +28,13 @@ const ForgotPasswordFormSchema = z.object({
 
 type ForgotPasswordType = z.infer<typeof ForgotPasswordFormSchema>;
 
-const ForgotPasswordForm = () => {
+const ForgotPasswordForm = ({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
@@ -47,40 +58,59 @@ const ForgotPasswordForm = () => {
     } catch (error) {
     } finally {
       setLoading(false);
+      setOpen(false);
     }
   }
   return (
-    <div className="flex flex-col justify-center items-center gap-5">
-      <div className="text-3xl font-bold">Log in</div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="Type your email" {...field} />
-                </FormControl>
-                <FormMessage />
-                <FormDescription>
-                  We will sent a link to your email to change password!!!
-                </FormDescription>
-              </FormItem>
-            )}
-          />
-          {error && <div className="text-red-600">{error}</div>}
-          <div className="w-full flex justify-center">
-            {loading ? (
-              <LoadingSpinner className="" />
-            ) : (
-              <Button type="submit">Submit</Button>
-            )}
-          </div>
-        </form>
-      </Form>
-    </div>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle className="text-[#3A5FBE]">Reset password</DialogTitle>
+          <DialogDescription>
+            Enter your account's email address, and we'll send you a link to
+            reset your password.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Type your email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {error && <div className="text-red-600">{error}</div>}
+              <DialogFooter>
+                <Button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="text-[#3A5FBE] bg-white border-none shadow-none hover:bg-white hover:text-red-500"
+                >
+                  Cancel
+                </Button>
+                {loading ? (
+                  <LoadingSpinner className="text-[#3A5FBE]" />
+                ) : (
+                  <Button
+                    type="submit"
+                    className="bg-[#3A5FBE] hover:bg-[#4e608f]"
+                  >
+                    Submit
+                  </Button>
+                )}
+              </DialogFooter>
+            </form>
+          </Form>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

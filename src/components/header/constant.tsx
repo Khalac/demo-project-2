@@ -7,6 +7,6 @@ export const HEADERNAVIGATE = [
   {
     id: "newrequest",
     path: "/create-request",
-    name: "Make new request",
+    name: "Create request",
   },
 ];

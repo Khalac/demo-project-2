@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { LoginSchema } from "./schema";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import {
   Button,
   Input,
@@ -11,7 +10,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components";
 
@@ -20,10 +18,12 @@ import { useAppDispatch } from "@/hook/redux-hook";
 import { useState } from "react";
 import { LoadingSpinner } from "@/components";
 import { tryCatch } from "@/utils";
+import { ForgotPasswordForm } from "../forgot-password";
 
 type DataLogin = z.infer<typeof LoginSchema>;
 
 const LoginForm = () => {
+  const [open, setOpen] = useState(false);
   const [error, setError] = useState<any>();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -50,8 +50,9 @@ const LoginForm = () => {
     }
   }
   return (
-    <div className="flex flex-col justify-center items-center gap-5">
-      <div className="text-3xl font-bold">Log in</div>
+    <div className="flex flex-col justify-center items-center gap-10 px-20 py-20 shadow-2xl rounded-2xl inset-shadow-sm">
+      <ForgotPasswordForm open={open} setOpen={setOpen} />
+      <div className="text-3xl font-bold text-[#3A5FBE]">Log in</div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -59,9 +60,8 @@ const LoginForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Type your email" {...field} />
+                  <Input placeholder="Email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -72,13 +72,8 @@ const LoginForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Type your password"
-                    {...field}
-                  />
+                  <Input type="password" placeholder="Password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -89,12 +84,20 @@ const LoginForm = () => {
             {loading ? (
               <LoadingSpinner className="" />
             ) : (
-              <Button type="submit">Submit</Button>
+              <Button className="bg-[#3A5FBE]" type="submit">
+                Submit
+              </Button>
             )}
           </div>
         </form>
       </Form>
-      <Link to={"/login/forgot-password"}>Forgotten password?</Link>
+
+      <div
+        className=" text-[#3A5FBE] hover:text-[#313f68] cursor-pointer"
+        onClick={() => setOpen(true)}
+      >
+        Forgotten password?
+      </div>
     </div>
   );
 };

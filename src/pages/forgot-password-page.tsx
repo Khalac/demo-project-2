@@ -1,4 +1,4 @@
-import { ForgotPasswordForm } from "@/features";
+import { ForgotPasswordForm } from "@/features/forgot-password";
 
 const ForgotPassword = () => {
   return (

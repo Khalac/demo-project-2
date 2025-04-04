@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { userReducer } from "@/features";
+import { userReducer } from "@/features/login-form";
 export const store = configureStore({
   reducer: { user: userReducer },
 });

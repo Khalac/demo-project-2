@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components";
 
-import { logIn } from "./slice";
+import { logIn } from "../slice";
 import { useAppDispatch } from "@/hook/redux-hook";
 import { useState } from "react";
 import { LoadingSpinner } from "@/components";
@@ -40,7 +40,10 @@ const LoginForm = () => {
     setLoading(true);
 
     const { data, error } = await tryCatch(dispatch(logIn(values)).unwrap());
-    if (error) setError(error);
+    if (error) {
+      setLoading(false);
+      setError(error);
+    }
     if (data?.success) {
       setLoading(false);
       navigate("/");

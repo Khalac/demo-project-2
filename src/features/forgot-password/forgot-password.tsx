@@ -1,8 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { LoginSchema } from "./schema";
-import { z } from "zod";
-import { useNavigate } from "react-router-dom";
 import {
   Button,
   Input,
@@ -12,35 +7,45 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components";
-
-import { logIn } from "./slice";
-import { useAppDispatch } from "@/hook/reduxHook";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { LoadingSpinner } from "@/components";
+import { supabase } from "@/utils";
+import { useNavigate } from "react-router-dom";
+import { LoginSchema } from "../login-form/schema";
 
-type LoginFormType = z.infer<typeof LoginSchema>;
+const ForgotPasswordFormSchema = z.object({
+  email: z.string().min(1, { message: "Email is required" }).email(),
+});
 
-const LoginForm = () => {
-  const [error, setError] = useState<any>();
-  const [loading, setLoading] = useState(false);
+type ForgotPasswordFormType = z.infer<typeof ForgotPasswordFormSchema>;
+
+const ForgotPasswordForm = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>();
   const form = useForm({
-    resolver: zodResolver(LoginSchema),
+    resolver: zodResolver(ForgotPasswordFormSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
-
-  async function onSubmit(values: LoginFormType) {
+  async function onSubmit(values: ForgotPasswordFormType) {
     setLoading(true);
     try {
-      const data = await dispatch(logIn(values)).unwrap();
-      if (data.success) navigate("/");
+      const { data, error } = await supabase.auth.resetPasswordForEmail(
+        values.email,
+        {
+          redirectTo: "http://localhost:5173/reset-password",
+        }
+      );
+      if (error) setError(error.message);
+      if (data) navigate("/login");
     } catch (error) {
-      setError(error);
     } finally {
       setLoading(false);
     }
@@ -60,23 +65,9 @@ const LoginForm = () => {
                   <Input placeholder="Type your email" {...field} />
                 </FormControl>
                 <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Type your password"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
+                <FormDescription>
+                  We will sent a link to your email to change password!!!
+                </FormDescription>
               </FormItem>
             )}
           />
@@ -94,4 +85,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default ForgotPasswordForm;

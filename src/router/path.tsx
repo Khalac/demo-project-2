@@ -1,12 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
 import {
-  HomePage,
+  AllRequestPage,
   LoginPage,
   ForgotPassword,
   ResetPasswordPage,
+  CreateRequestPage,
 } from "@/pages";
 import { ProtectedRoute, AuthRoute } from "./auth-guard";
-import Layout from "@/layout/Layout";
+import Layout from "@/layout/layout";
 
 export const router = createBrowserRouter([
   {
@@ -19,7 +20,11 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <HomePage />,
+            element: <AllRequestPage />,
+          },
+          {
+            path: "create-request",
+            element: <CreateRequestPage />,
           },
         ],
       },

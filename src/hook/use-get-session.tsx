@@ -1,4 +1,4 @@
-import { getSession } from "@/features";
+import { getSession } from "@/features/slice";
 import { useAppDispatch, useAppSelector } from "@/hook/redux-hook";
 import { useEffect } from "react";
 

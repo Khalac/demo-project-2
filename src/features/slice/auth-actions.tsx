@@ -48,3 +48,19 @@ export const getSession = createAsyncThunk(
     }
   }
 );
+
+export const logOut = createAsyncThunk("user/logOut", async (_, thunkAPI) => {
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) return thunkAPI.rejectWithValue(error.message);
+    return {
+      success: true,
+      data: {
+        email: "",
+        userId: "",
+      },
+    };
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});

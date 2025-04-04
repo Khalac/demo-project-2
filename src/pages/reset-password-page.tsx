@@ -1,4 +1,4 @@
-import { ResetPasswordForm } from "@/features";
+import { ResetPasswordForm } from "@/features/reset-password";
 
 const ResetPasswordPage = () => {
   return (

@@ -16,11 +16,12 @@ import {
 } from "@/components";
 
 import { logIn } from "./slice";
-import { useAppDispatch } from "@/hook/reduxHook";
+import { useAppDispatch } from "@/hook/redux-hook";
 import { useState } from "react";
 import { LoadingSpinner } from "@/components";
+import { tryCatch } from "@/utils";
 
-type LoginFormType = z.infer<typeof LoginSchema>;
+type DataLogin = z.infer<typeof LoginSchema>;
 
 const LoginForm = () => {
   const [error, setError] = useState<any>();
@@ -35,15 +36,14 @@ const LoginForm = () => {
     },
   });
 
-  async function onSubmit(values: LoginFormType) {
+  async function onSubmit(values: DataLogin) {
     setLoading(true);
-    try {
-      const data = await dispatch(logIn(values)).unwrap();
-      if (data.success) navigate("/");
-    } catch (error) {
-      setError(error);
-    } finally {
+
+    const { data, error } = await tryCatch(dispatch(logIn(values)).unwrap());
+    if (error) setError(error);
+    if (data?.success) {
       setLoading(false);
+      navigate("/");
     }
   }
   return (

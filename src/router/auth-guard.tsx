@@ -1,5 +1,5 @@
 import { LoadingSpinner } from "@/components";
-import useGetSession from "@/hook/useGetSession";
+import useGetSession from "@/hook/use-get-session";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 export const ProtectedRoute = () => {

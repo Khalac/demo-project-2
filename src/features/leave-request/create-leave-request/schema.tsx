@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const LeaveRequestFormSchema = z
+export const leaveRequestFormSchema = z
   .object({
     start_date: z.coerce.date({
       required_error: "Start date is require",

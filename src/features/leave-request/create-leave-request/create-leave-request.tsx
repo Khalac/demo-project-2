@@ -24,12 +24,11 @@ import { format } from "date-fns";
 import { cn } from "@/lib";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { LeaveRequestFormSchema } from "./schema";
+import { leaveRequestFormSchema } from "./schema";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { tryCatch } from "@/utils";
 
-type LeaveRequestData = z.infer<typeof LeaveRequestFormSchema>;
+type LeaveRequestData = z.infer<typeof leaveRequestFormSchema>;
 
 const CreateLeaveRequest = ({
   open,
@@ -42,12 +41,13 @@ const CreateLeaveRequest = ({
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
-    resolver: zodResolver(LeaveRequestFormSchema),
+    resolver: zodResolver(leaveRequestFormSchema),
     defaultValues: {
       total_leave_days: 0,
       total_leave_hours: 0,
       reason: "",
     },
+    mode: "onChange",
   });
   async function onSubmit(values: LeaveRequestData) {
     setLoading(true);
@@ -199,13 +199,14 @@ const CreateLeaveRequest = ({
                 )}
               />
               {error && <div className="text-red-600">{error}</div>}
-              {loading ? (
-                <LoadingSpinner className="" />
-              ) : (
-                <Button type="submit" className="">
-                  Save changes
-                </Button>
-              )}
+
+              <Button
+                disabled={!form.formState.isValid}
+                type="submit"
+                className=""
+              >
+                {loading ? <LoadingSpinner className="" /> : <>Submit</>}
+              </Button>
             </form>
           </Form>
         </div>

@@ -1,5 +1,5 @@
 import { useAppDispatch } from "@/hook/redux-hook";
-import { logOut } from "@/features/slice";
+import { logOut } from "@/features/auth/slice";
 import { useNavigate } from "react-router-dom";
 import { tryCatch } from "@/utils";
 import { useState } from "react";

@@ -1,6 +1,7 @@
 import { supabase } from "@/utils";
 import { useEffect, useState } from "react";
 import { LoadingSpinner } from "@/components";
+import { selectData } from "@/utils";
 
 type LeaveDetail = {
   total_leaves: number;
@@ -8,25 +9,27 @@ type LeaveDetail = {
   total_waiting_leaves: number;
 };
 
-const LeaveDetail = ({
+const UserLeaveDetail = ({
   setOpen,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<LeaveDetail>();
-  const fect = async () => {
-    const { data, error } = await supabase
-      .from("leave_details")
-      .select("total_leaves,total_used_leaves,total_waiting_leaves");
-    if (error) console.log(error);
-    if (data) {
-      setData(data[0]);
+  const [data, setData] = useState<any>();
+  const getUserLeaveDetail = async () => {
+    const data = await selectData(
+      "leave_details",
+      "total_leaves,total_used_leaves,total_waiting_leaves"
+    );
+
+    if (!data?.success) console.log(data?.error);
+    if (data?.success) {
+      setData(data.data![0]);
       setLoading(false);
     }
   };
   useEffect(() => {
-    fect();
+    getUserLeaveDetail();
   }, [data]);
   return (
     <div className="inline-flex flex-col gap-5 bg-white p-5">
@@ -73,4 +76,4 @@ const LeaveDetail = ({
   );
 };
 
-export default LeaveDetail;
+export default UserLeaveDetail;

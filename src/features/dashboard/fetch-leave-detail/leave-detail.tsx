@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 type LeaveDetail = {
   total_leaves: number;
   total_used_leaves: number;
+  total_waiting_leaves: number;
 };
 
 const LeaveDetail = () => {
@@ -13,7 +14,7 @@ const LeaveDetail = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("leave_details")
-      .select("total_leaves,total_used_leaves");
+      .select("total_leaves,total_used_leaves,total_waiting_leaves");
     if (error) console.log(error);
     if (data) {
       setLoading(false);
@@ -33,6 +34,10 @@ const LeaveDetail = () => {
 
         <div className="flex gap-5 bg-[#FFE3E3] text-[#B91C1C] p-5 font-bold">
           <div>Used leaves: {data?.total_used_leaves!} </div>
+        </div>
+
+        <div className="flex gap-5 bg-[#87a6f5]  p-5 font-bold text-[#113caa]">
+          <div>Used leaves: {data?.total_waiting_leaves!} </div>
         </div>
       </div>
       <button className="bg-[#3A5FBE] text-white p-2 cursor-pointer">

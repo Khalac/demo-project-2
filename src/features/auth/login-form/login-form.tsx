@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components";
 
-import { logIn } from "../slice";
+import { logIn } from "../../slice";
 import { useAppDispatch } from "@/hook/redux-hook";
 import { useState } from "react";
 import { LoadingSpinner } from "@/components";

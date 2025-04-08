@@ -37,7 +37,7 @@ const LeaveDetail = () => {
         </div>
 
         <div className="flex gap-5 bg-[#87a6f5]  p-5 font-bold text-[#113caa]">
-          <div>Used leaves: {data?.total_waiting_leaves!} </div>
+          <div>Waiting leaves: {data?.total_waiting_leaves!} </div>
         </div>
       </div>
       <button className="bg-[#3A5FBE] text-white p-2 cursor-pointer">

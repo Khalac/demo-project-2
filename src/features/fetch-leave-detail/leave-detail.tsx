@@ -1,5 +1,6 @@
 import { supabase } from "@/utils";
 import { useEffect, useState } from "react";
+import { LoadingSpinner } from "@/components";
 
 type LeaveDetail = {
   total_leaves: number;
@@ -7,18 +8,21 @@ type LeaveDetail = {
   total_waiting_leaves: number;
 };
 
-const LeaveDetail = () => {
-  const [loading, setLoading] = useState(false);
+const LeaveDetail = ({
+  setOpen,
+}: {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState<LeaveDetail>();
   const fect = async () => {
-    setLoading(true);
     const { data, error } = await supabase
       .from("leave_details")
       .select("total_leaves,total_used_leaves,total_waiting_leaves");
     if (error) console.log(error);
     if (data) {
-      setLoading(false);
       setData(data[0]);
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -29,18 +33,40 @@ const LeaveDetail = () => {
       <div className="font-bold text-2xl"> Annual leaves</div>
       <div className="flex gap-5">
         <div className="flex gap-5 bg-[#D1FAE5] p-5 text-[#064E3B] font-bold">
-          Available leaves: {data?.total_leaves! - data?.total_used_leaves!}
+          Available leaves:{" "}
+          {loading ? (
+            <LoadingSpinner className="" />
+          ) : (
+            data?.total_leaves! - data?.total_used_leaves!
+          )}
         </div>
 
         <div className="flex gap-5 bg-[#FFE3E3] text-[#B91C1C] p-5 font-bold">
-          <div>Used leaves: {data?.total_used_leaves!} </div>
+          <div>
+            Used leaves:{" "}
+            {loading ? (
+              <LoadingSpinner className="" />
+            ) : (
+              data?.total_used_leaves!
+            )}
+          </div>
         </div>
 
         <div className="flex gap-5 bg-[#87a6f5]  p-5 font-bold text-[#113caa]">
-          <div>Waiting leaves: {data?.total_waiting_leaves!} </div>
+          <div>
+            Waiting leaves:{" "}
+            {loading ? (
+              <LoadingSpinner className="" />
+            ) : (
+              data?.total_waiting_leaves!
+            )}
+          </div>
         </div>
       </div>
-      <button className="bg-[#3A5FBE] text-white p-2 cursor-pointer">
+      <button
+        className="bg-[#3A5FBE] text-white p-2 cursor-pointer"
+        onClick={() => setOpen(true)}
+      >
         Create new request
       </button>
     </div>

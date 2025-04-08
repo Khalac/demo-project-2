@@ -4,3 +4,6 @@ export * from "./input";
 export * from "./label";
 export * from "./loading";
 export * from "./dialog";
+export * from "./sheet";
+export * from "./popover";
+export * from "./calendar";

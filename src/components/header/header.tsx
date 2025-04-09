@@ -1,11 +1,10 @@
-import { HEADERNAVIGATE } from "./constant";
-import { NavLink } from "react-router-dom";
 import { useAppDispatch } from "@/hook/redux-hook";
 import { logOut } from "@/features/slice";
 import { useNavigate } from "react-router-dom";
 import { tryCatch } from "@/utils";
 import { useState } from "react";
 import { LoadingSpinner } from "../ui";
+import NavigationMenu from "./navigation-menu";
 const Header = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,18 +23,8 @@ const Header = () => {
     }
   };
   return (
-    <header className="w-full flex justify-center items-center gap-10 h-10 pt-5">
-      {HEADERNAVIGATE.map((e) => {
-        return (
-          <NavLink
-            to={e.path}
-            key={e.id}
-            className={({ isActive }) => (isActive ? "text-red-600" : "")}
-          >
-            {e.name}
-          </NavLink>
-        );
-      })}
+    <header className="flex justify-between items-center h-10 py-8 px-5 bg-white shadow-2xs">
+      <NavigationMenu />
       <button
         className="cursor-pointer bg-red-500 text-white font-bold rounded-xl p-1"
         onClick={handleLogout}

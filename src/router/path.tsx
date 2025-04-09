@@ -1,12 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import {
-  AllRequestPage,
-  LoginPage,
-  ResetPasswordPage,
-  CreateRequestPage,
-} from "@/pages";
+import { DashboardPage, LoginPage, ResetPasswordPage } from "@/pages";
 import { ProtectedRoute, AuthRoute } from "./auth-guard";
-import Layout from "@/layout/layout";
+import Layout from "@/layout/Layout";
 
 export const router = createBrowserRouter([
   {
@@ -19,11 +14,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <AllRequestPage />,
-          },
-          {
-            path: "create-request",
-            element: <CreateRequestPage />,
+            element: <DashboardPage />,
           },
         ],
       },

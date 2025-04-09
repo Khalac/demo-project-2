@@ -3,9 +3,11 @@ import { Header } from "@/components";
 
 const Layout = () => {
   return (
-    <div>
+    <div className="bg-[#edf2f7] h-[100vh] flex flex-col">
       <Header />
-      <Outlet />
+      <main className="px-5 pt-5">
+        <Outlet />
+      </main>
     </div>
   );
 };

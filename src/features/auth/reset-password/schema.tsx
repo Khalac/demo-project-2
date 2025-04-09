@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const ResetPasswordFormSchema = z
+export const resetPasswordFormSchema = z
   .object({
     password: z
       .string({ required_error: "Password is required" })

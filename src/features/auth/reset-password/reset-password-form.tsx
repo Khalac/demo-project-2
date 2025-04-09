@@ -5,26 +5,25 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { LoadingSpinner } from "@/components";
-import { supabase } from "@/utils";
 import { useNavigate } from "react-router-dom";
-import { ResetPasswordFormSchema } from "./schema";
+import { resetPasswordFormSchema } from "./schema";
 import { z } from "zod";
+import updatePassword from "./update-password";
 
-type ResetPassword = z.infer<typeof ResetPasswordFormSchema>;
+type ResetPassword = z.infer<typeof resetPasswordFormSchema>;
 
 const ResetPasswordForm = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<any>();
   const form = useForm({
-    resolver: zodResolver(ResetPasswordFormSchema),
+    resolver: zodResolver(resetPasswordFormSchema),
     defaultValues: {
       password: "",
       repassword: "",
@@ -32,19 +31,11 @@ const ResetPasswordForm = () => {
   });
   async function onSubmit(values: ResetPassword) {
     setLoading(true);
-    try {
-      const { data, error } = await supabase.auth.updateUser({
-        password: values.password,
-      });
-      console.log(data);
-      if (error) setError(error.message);
-      console.log(data);
-
-      if (data) navigate("/");
-    } catch (error) {
-      setError(error);
-    } finally {
+    const data = await updatePassword(values.password);
+    if (!data?.success) setError(data?.error);
+    if (data?.success) {
       setLoading(false);
+      navigate("/");
     }
   }
   return (

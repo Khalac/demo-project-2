@@ -20,6 +20,7 @@ import { z } from "zod";
 import { LoadingSpinner } from "@/components";
 import { supabase } from "@/utils";
 import { useNavigate } from "react-router-dom";
+import resetPassword from "./reset-password";
 
 const ForgotPasswordFormSchema = z.object({
   email: z.string().min(1, { message: "Email is required" }).email(),
@@ -45,19 +46,12 @@ const ForgotPasswordForm = ({
   });
   async function onSubmit(values: ForgotPasswordType) {
     setLoading(true);
-    try {
-      const { data, error } = await supabase.auth.resetPasswordForEmail(
-        values.email,
-        {
-          redirectTo: "http://localhost:5173/reset-password",
-        }
-      );
-      if (error) setError(error.message);
-      if (data) navigate("/login");
-    } catch (error) {
-    } finally {
+    const data = await resetPassword(values.email);
+    if (!data?.success) setError(error);
+    if (data?.success) {
       setLoading(false);
       setOpen(false);
+      navigate("/login");
     }
   }
   return (

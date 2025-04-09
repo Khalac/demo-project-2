@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { LoginSchema } from "./schema";
+import { loginSchema } from "./schema";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import {
@@ -13,14 +13,14 @@ import {
   FormMessage,
 } from "@/components";
 
-import { logIn } from "../../slice";
+import { logIn } from "../slice";
 import { useAppDispatch } from "@/hook/redux-hook";
 import { useState } from "react";
 import { LoadingSpinner } from "@/components";
 import { tryCatch } from "@/utils";
 import { ForgotPasswordForm } from "../forgot-password";
 
-type DataLogin = z.infer<typeof LoginSchema>;
+type DataLogin = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
   const [open, setOpen] = useState(false);
@@ -29,7 +29,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const form = useForm({
-    resolver: zodResolver(LoginSchema),
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",

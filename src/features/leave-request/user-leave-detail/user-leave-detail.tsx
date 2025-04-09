@@ -1,13 +1,6 @@
-import { supabase } from "@/utils";
 import { useEffect, useState } from "react";
 import { LoadingSpinner } from "@/components";
-import { selectData } from "@/utils";
-
-type LeaveDetail = {
-  total_leaves: number;
-  total_used_leaves: number;
-  total_waiting_leaves: number;
-};
+import { getLeaveDetail } from "./get-leave-detail";
 
 const UserLeaveDetail = ({
   setOpen,
@@ -17,16 +10,11 @@ const UserLeaveDetail = ({
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any>();
   const getUserLeaveDetail = async () => {
-    const data = await selectData(
-      "leave_details",
-      "total_leaves,total_used_leaves,total_waiting_leaves"
-    );
+    const data = await getLeaveDetail();
 
-    if (!data?.success) console.log(data?.error);
-    if (data?.success) {
-      setData(data.data![0]);
-      setLoading(false);
-    }
+    if (!data.success) return;
+    setData(data.data![0]);
+    setLoading(false);
   };
   useEffect(() => {
     getUserLeaveDetail();

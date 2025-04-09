@@ -1,7 +1,6 @@
 import {
   Sheet,
   SheetContent,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   Button,
@@ -18,7 +17,6 @@ import {
   PopoverTrigger,
   Calendar,
 } from "@/components/ui";
-import { supabase } from "@/utils";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib";
@@ -27,6 +25,7 @@ import { useState } from "react";
 import { leaveRequestFormSchema } from "./schema";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import createNewLeaveRequest from "./create-new-leave-request";
 
 type LeaveRequestData = z.infer<typeof leaveRequestFormSchema>;
 
@@ -51,20 +50,20 @@ const CreateLeaveRequest = ({
   });
   async function onSubmit(values: LeaveRequestData) {
     setLoading(true);
-    const { error } = await supabase.from("leave_request").insert({
-      start_date: values.start_date,
-      end_date: values.end_date,
-      total_leave_days: values.total_leave_days,
-      total_leave_hours: values.total_leave_hours,
-      reason: values.reason,
-    });
-    if (error) {
+    const data = await createNewLeaveRequest(
+      values.start_date,
+      values.end_date,
+      values.total_leave_days,
+      values.total_leave_hours,
+      values.reason
+    );
+    if (!data.success) {
       setLoading(false);
       setError(error);
-    } else {
-      setLoading(false);
-      setOpen(false);
+      return;
     }
+    setLoading(false);
+    setOpen(false);
   }
   return (
     <Sheet open={open} onOpenChange={setOpen}>

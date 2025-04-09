@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { loginSchema } from "./schema";
-import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import {
   Button,
@@ -19,8 +18,7 @@ import { useState } from "react";
 import { LoadingSpinner } from "@/components";
 import { tryCatch } from "@/utils";
 import { ForgotPasswordForm } from "../forgot-password";
-
-type DataLogin = z.infer<typeof loginSchema>;
+import { DataLogin } from "./login-form-type";
 
 const LoginForm = () => {
   const [open, setOpen] = useState(false);

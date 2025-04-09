@@ -23,11 +23,9 @@ import { cn } from "@/lib";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { leaveRequestFormSchema } from "./schema";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import createNewLeaveRequest from "./create-new-leave-request";
-
-type LeaveRequestData = z.infer<typeof leaveRequestFormSchema>;
+import type { LeaveRequestData } from "./leave-request-data-type";
 
 const CreateLeaveRequest = ({
   open,
@@ -200,7 +198,7 @@ const CreateLeaveRequest = ({
               {error && <div className="text-red-600">{error}</div>}
 
               <Button
-                disabled={!form.formState.isValid}
+                disabled={!form.formState.isDirty || !form.formState.isValid}
                 type="submit"
                 className=""
               >

@@ -7,3 +7,5 @@ export * from "./dialog";
 export * from "./sheet";
 export * from "./popover";
 export * from "./calendar";
+export * from "./table";
+export * from "./data-table";

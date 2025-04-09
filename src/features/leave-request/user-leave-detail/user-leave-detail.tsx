@@ -1,24 +1,35 @@
 import { useEffect, useState } from "react";
 import { LoadingSpinner } from "@/components";
 import { getLeaveDetail } from "./get-leave-detail";
+import { listenToLeaveDetailTable } from "./listen-leave-detail-table";
+
+type UserLeaveDetail = {
+  total_leaves: number;
+  total_used_leaves: number;
+  total_waiting_leaves: number;
+};
 
 const UserLeaveDetail = ({
   setOpen,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<any>();
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<UserLeaveDetail>();
   const getUserLeaveDetail = async () => {
+    setLoading(true);
     const data = await getLeaveDetail();
-
     if (!data.success) return;
     setData(data.data![0]);
     setLoading(false);
   };
   useEffect(() => {
     getUserLeaveDetail();
-  }, [data]);
+    const unsubscribe = listenToLeaveDetailTable(getUserLeaveDetail);
+    return () => {
+      unsubscribe();
+    };
+  }, []);
   return (
     <div className="inline-flex flex-col gap-5 bg-white p-5">
       <div className="font-bold text-2xl"> Annual leaves</div>

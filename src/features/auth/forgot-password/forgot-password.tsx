@@ -18,15 +18,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { LoadingSpinner } from "@/components";
-import { supabase } from "@/utils";
+
 import { useNavigate } from "react-router-dom";
 import resetPassword from "./reset-password";
 
-const ForgotPasswordFormSchema = z.object({
-  email: z.string().min(1, { message: "Email is required" }).email(),
-});
-
-type ForgotPasswordType = z.infer<typeof ForgotPasswordFormSchema>;
+import type { ForgotPasswordType } from "./forgot-password-form-type";
+import { ForgotPasswordFormSchema } from "./forgot-password-form-type";
 
 const ForgotPasswordForm = ({
   open,

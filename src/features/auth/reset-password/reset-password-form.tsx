@@ -13,10 +13,8 @@ import { useForm } from "react-hook-form";
 import { LoadingSpinner } from "@/components";
 import { useNavigate } from "react-router-dom";
 import { resetPasswordFormSchema } from "./schema";
-import { z } from "zod";
 import updatePassword from "./update-password";
-
-type ResetPassword = z.infer<typeof resetPasswordFormSchema>;
+import type { ResetPassword } from "./reset-password-form-type";
 
 const ResetPasswordForm = () => {
   const navigate = useNavigate();

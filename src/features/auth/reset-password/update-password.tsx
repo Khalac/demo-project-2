@@ -6,7 +6,7 @@ const updatePassword = async (password: string) => {
       password: password,
     });
 
-    if (error) return { success: false, error: error };
+    if (error) return { success: false, error: error.message };
 
     if (data) return { success: true, data: data };
   } catch (error) {

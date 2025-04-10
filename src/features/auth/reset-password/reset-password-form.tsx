@@ -31,7 +31,10 @@ const ResetPasswordForm = () => {
   async function onSubmit(values: ResetPassword) {
     setLoading(true);
     const data = await updatePassword(values.password);
-    if (!data?.success) setError(data?.error);
+    if (!data?.success) {
+      setError(data?.error);
+      setLoading(false);
+    }
     if (data?.success) {
       setLoading(false);
       navigate("/");

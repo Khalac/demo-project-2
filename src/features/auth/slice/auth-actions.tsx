@@ -20,9 +20,11 @@ export const logIn = createAsyncThunk(
         return thunkAPI.rejectWithValue(error.message);
       }
 
+      const userData = await getUserInformation(data.session?.user.id!);
+      if (!userData.success) return thunkAPI.rejectWithValue(userData.error);
       return {
         success: true,
-        data: { email: data.user?.email, userId: data.user?.id },
+        data: userData.data,
       };
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -36,12 +38,11 @@ export const getSession = createAsyncThunk(
     try {
       const { data, error } = await supabase.auth.getSession();
       if (error) return thunkAPI.rejectWithValue(error.message);
+      const userData = await getUserInformation(data.session?.user.id!);
+      if (!userData.success) return thunkAPI.rejectWithValue(userData.error);
       return {
         success: true,
-        data: {
-          email: data.session?.user.email,
-          userId: data.session?.user.id,
-        },
+        data: userData.data,
       };
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -64,3 +65,13 @@ export const logOut = createAsyncThunk("user/logOut", async (_, thunkAPI) => {
     return thunkAPI.rejectWithValue(error);
   }
 });
+
+const getUserInformation = async (userId: string) => {
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("user_id", userId)
+    .single();
+  if (error) return { success: false, error: error };
+  return { success: true, data: data };
+};

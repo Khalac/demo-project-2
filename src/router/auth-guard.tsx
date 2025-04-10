@@ -10,7 +10,7 @@ export const ProtectedRoute = () => {
         <LoadingSpinner className="" />
       </div>
     );
-  return user.userId ? <Outlet /> : <Navigate to={"/login"} />;
+  return user.user_id ? <Outlet /> : <Navigate to={"/login"} />;
 };
 
 export const AuthRoute = () => {
@@ -22,5 +22,5 @@ export const AuthRoute = () => {
         <LoadingSpinner className="" />
       </div>
     );
-  return user.userId ? <Navigate to={"/"} /> : <Outlet />;
+  return user.user_id ? <Navigate to={"/"} /> : <Outlet />;
 };

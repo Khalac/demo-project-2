@@ -24,7 +24,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { leaveRequestFormSchema } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import createNewLeaveRequest from "./create-new-leave-request";
+import { createNewLeaveRequest } from "./action";
 import type { LeaveRequestData } from "./leave-request-data-type";
 import { toast } from "sonner";
 import { useAppSelector } from "@/hook/redux-hook";

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import getListLeaveRequest from "./get-list-leave-request";
-import { listenToLeaveRequestTable } from "./listen-leave-request-table";
+import { getListLeaveRequest, listenToLeaveRequestTable } from "./action";
 import { DataTable, LoadingSpinner } from "@/components";
 import type { ListleaveRequest } from "./list-leave-request-data-type";
 import { columns } from "./column-table-list-leave-request";

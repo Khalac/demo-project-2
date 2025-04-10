@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { LoadingSpinner } from "@/components";
-import { getLeaveDetail } from "./get-leave-detail";
-import { listenToLeaveDetailTable } from "./listen-leave-detail-table";
+import { getLeaveDetail, listenToLeaveDetailTable } from "./action";
 
 type UserLeaveDetail = {
   total_leaves: number;

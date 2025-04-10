@@ -38,7 +38,6 @@ const userSlice = createSlice({
       .addCase(logIn.fulfilled, (state, action) => {
         state.user = action.payload.data;
         state.loading = false;
-        console.log(action.payload.data);
       })
       .addCase(logIn.rejected, (state, action) => {
         state.error = action.payload!;
@@ -59,14 +58,8 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(logOut.fulfilled, (state, action) => {
-        state.user = {
-          user_id: "",
-          manager_id: null,
-          email: "",
-          full_name: "",
-          onboard_date: "",
-          role: "",
-        };
+        state.user = action.payload.data;
+
         state.loading = false;
       })
       .addCase(logOut.rejected, (state, action) => {

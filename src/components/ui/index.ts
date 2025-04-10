@@ -9,3 +9,4 @@ export * from "./popover";
 export * from "./calendar";
 export * from "./table";
 export * from "./data-table";
+export * from "./sonner";

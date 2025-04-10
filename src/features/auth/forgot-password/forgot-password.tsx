@@ -24,6 +24,7 @@ import resetPassword from "./reset-password";
 
 import type { ForgotPasswordType } from "./forgot-password-form-type";
 import { ForgotPasswordFormSchema } from "./forgot-password-form-type";
+import { toast } from "sonner";
 
 const ForgotPasswordForm = ({
   open,
@@ -46,6 +47,7 @@ const ForgotPasswordForm = ({
     const data = await resetPassword(values.email);
     if (!data?.success) setError(error);
     if (data?.success) {
+      toast.success("Please check your email to reset password");
       setLoading(false);
       setOpen(false);
       navigate("/login");

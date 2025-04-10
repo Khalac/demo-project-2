@@ -26,6 +26,8 @@ import { leaveRequestFormSchema } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import createNewLeaveRequest from "./create-new-leave-request";
 import type { LeaveRequestData } from "./leave-request-data-type";
+import { toast } from "sonner";
+import { useAppSelector } from "@/hook/redux-hook";
 
 const CreateLeaveRequest = ({
   open,
@@ -34,12 +36,19 @@ const CreateLeaveRequest = ({
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const leaveRequest = useAppSelector(
+    (state) => state.listLeaveRequest.listLeaveRequest
+  );
   const [error, setError] = useState<any>();
   const [loading, setLoading] = useState(false);
-
+  const convertLocalDateToUTC = (date: Date) => {
+    return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  };
   const form = useForm({
-    resolver: zodResolver(leaveRequestFormSchema),
+    resolver: zodResolver(leaveRequestFormSchema(leaveRequest)),
     defaultValues: {
+      start_date: undefined,
+      end_date: undefined,
       total_leave_days: 0,
       total_leave_hours: 0,
       reason: "",
@@ -48,9 +57,12 @@ const CreateLeaveRequest = ({
   });
   async function onSubmit(values: LeaveRequestData) {
     setLoading(true);
+    const utcStartDate = convertLocalDateToUTC(values.start_date);
+    const utcEndDate = convertLocalDateToUTC(values.end_date);
+
     const data = await createNewLeaveRequest(
-      values.start_date,
-      values.end_date,
+      utcStartDate,
+      utcEndDate,
       values.total_leave_days,
       values.total_leave_hours,
       values.reason
@@ -60,8 +72,10 @@ const CreateLeaveRequest = ({
       setError(error);
       return;
     }
+    form.reset();
     setLoading(false);
     setOpen(false);
+    toast.success("Create new request successfully");
   }
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -89,7 +103,7 @@ const CreateLeaveRequest = ({
                             )}
                           >
                             {field.value ? (
-                              format(field.value, "P")
+                              format(field.value, "PPPP")
                             ) : (
                               <span>Pick a date</span>
                             )}
@@ -127,7 +141,7 @@ const CreateLeaveRequest = ({
                             )}
                           >
                             {field.value ? (
-                              format(field.value, "P")
+                              format(field.value, "PPPP")
                             ) : (
                               <span>Pick a date</span>
                             )}

@@ -57,8 +57,12 @@ export const logOut = createAsyncThunk("user/logOut", async (_, thunkAPI) => {
     return {
       success: true,
       data: {
+        user_id: "",
+        manager_id: null,
         email: "",
-        userId: "",
+        full_name: "",
+        onboard_date: "",
+        role: "",
       },
     };
   } catch (error) {
@@ -72,6 +76,7 @@ const getUserInformation = async (userId: string) => {
     .select("*")
     .eq("user_id", userId)
     .single();
+
   if (error) return { success: false, error: error };
   return { success: true, data: data };
 };

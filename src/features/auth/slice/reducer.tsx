@@ -38,7 +38,6 @@ const userSlice = createSlice({
       .addCase(logIn.fulfilled, (state, action) => {
         state.user = action.payload.data;
         state.loading = false;
-        console.log(action.payload.data);
       })
       .addCase(logIn.rejected, (state, action) => {
         state.error = action.payload!;
@@ -64,7 +63,6 @@ const userSlice = createSlice({
         state.loading = false;
       })
       .addCase(logOut.rejected, (state, action) => {
-        console.log(action.payload);
         state.error = action.payload!;
         state.loading = false;
       });

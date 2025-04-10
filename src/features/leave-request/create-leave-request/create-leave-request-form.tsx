@@ -27,6 +27,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import createNewLeaveRequest from "./create-new-leave-request";
 import type { LeaveRequestData } from "./leave-request-data-type";
 import { toast } from "sonner";
+import { useAppSelector } from "@/hook/redux-hook";
 
 const CreateLeaveRequest = ({
   open,
@@ -35,11 +36,14 @@ const CreateLeaveRequest = ({
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const leaveRequest = useAppSelector(
+    (state) => state.listLeaveRequest.listLeaveRequest
+  );
   const [error, setError] = useState<any>();
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
-    resolver: zodResolver(leaveRequestFormSchema),
+    resolver: zodResolver(leaveRequestFormSchema(leaveRequest)),
     defaultValues: {
       start_date: undefined,
       end_date: undefined,
@@ -63,6 +67,7 @@ const CreateLeaveRequest = ({
       setError(error);
       return;
     }
+    form.reset();
     setLoading(false);
     setOpen(false);
     toast.success("Create new request successfully");
@@ -93,7 +98,7 @@ const CreateLeaveRequest = ({
                             )}
                           >
                             {field.value ? (
-                              format(field.value, "P")
+                              format(field.value, "PPPP")
                             ) : (
                               <span>Pick a date</span>
                             )}
@@ -131,7 +136,7 @@ const CreateLeaveRequest = ({
                             )}
                           >
                             {field.value ? (
-                              format(field.value, "P")
+                              format(field.value, "PPPP")
                             ) : (
                               <span>Pick a date</span>
                             )}

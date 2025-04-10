@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { userReducer } from "@/features/auth/login-form";
+import { listLeaveRequestReducer } from "@/features/leave-request";
 export const store = configureStore({
-  reducer: { user: userReducer },
+  reducer: { user: userReducer, listLeaveRequest: listLeaveRequestReducer },
 });
 // Get the type of store variable
 export type AppStore = typeof store;

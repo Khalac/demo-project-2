@@ -1,3 +1,5 @@
 import { z } from "zod";
 import { leaveRequestFormSchema } from "./schema";
-export type LeaveRequestData = z.infer<typeof leaveRequestFormSchema>;
+export type LeaveRequestData = z.infer<
+  ReturnType<typeof leaveRequestFormSchema>
+>;

@@ -59,17 +59,12 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(logOut.fulfilled, (state, action) => {
-        state.user = {
-          user_id: "",
-          manager_id: null,
-          email: "",
-          full_name: "",
-          onboard_date: "",
-          role: "",
-        };
+        state.user = action.payload.data;
+
         state.loading = false;
       })
       .addCase(logOut.rejected, (state, action) => {
+        console.log(action.payload);
         state.error = action.payload!;
         state.loading = false;
       });

@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { resetPasswordFormSchema } from "./schema";
 import updatePassword from "./update-password";
 import type { ResetPassword } from "./reset-password-form-type";
+import { toast } from "sonner";
 
 const ResetPasswordForm = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const ResetPasswordForm = () => {
     if (data?.success) {
       setLoading(false);
       navigate("/");
+      toast.success("Reset password successfully");
     }
   }
   return (

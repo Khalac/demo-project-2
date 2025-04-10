@@ -11,7 +11,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components";
-
+import { toast } from "sonner";
 import { logIn } from "../slice";
 import { useAppDispatch } from "@/hook/redux-hook";
 import { useState } from "react";
@@ -41,11 +41,12 @@ const LoginForm = () => {
     if (error) {
       setLoading(false);
       setError(error);
+      return;
     }
-    if (data?.success) {
-      setLoading(false);
-      navigate("/");
-    }
+
+    setLoading(false);
+    navigate("/");
+    toast.success("Login successfully");
   }
   return (
     <div className="flex flex-col justify-center items-center gap-10 px-20 py-20 shadow-2xl rounded-2xl inset-shadow-sm">

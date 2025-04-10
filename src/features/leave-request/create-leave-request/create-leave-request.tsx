@@ -26,6 +26,7 @@ import { leaveRequestFormSchema } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import createNewLeaveRequest from "./create-new-leave-request";
 import type { LeaveRequestData } from "./leave-request-data-type";
+import { toast } from "sonner";
 
 const CreateLeaveRequest = ({
   open,
@@ -40,6 +41,8 @@ const CreateLeaveRequest = ({
   const form = useForm({
     resolver: zodResolver(leaveRequestFormSchema),
     defaultValues: {
+      start_date: undefined,
+      end_date: undefined,
       total_leave_days: 0,
       total_leave_hours: 0,
       reason: "",
@@ -62,6 +65,7 @@ const CreateLeaveRequest = ({
     }
     setLoading(false);
     setOpen(false);
+    toast.success("Create new request successfully");
   }
   return (
     <Sheet open={open} onOpenChange={setOpen}>

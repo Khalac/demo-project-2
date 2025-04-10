@@ -41,7 +41,9 @@ const CreateLeaveRequest = ({
   );
   const [error, setError] = useState<any>();
   const [loading, setLoading] = useState(false);
-
+  const convertLocalDateToUTC = (date: Date) => {
+    return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  };
   const form = useForm({
     resolver: zodResolver(leaveRequestFormSchema(leaveRequest)),
     defaultValues: {
@@ -55,9 +57,12 @@ const CreateLeaveRequest = ({
   });
   async function onSubmit(values: LeaveRequestData) {
     setLoading(true);
+    const utcStartDate = convertLocalDateToUTC(values.start_date);
+    const utcEndDate = convertLocalDateToUTC(values.end_date);
+
     const data = await createNewLeaveRequest(
-      values.start_date,
-      values.end_date,
+      utcStartDate,
+      utcEndDate,
       values.total_leave_days,
       values.total_leave_hours,
       values.reason

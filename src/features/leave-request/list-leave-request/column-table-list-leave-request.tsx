@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import type { ListleaveRequest } from "./list-leave-request-data-type";
+
 export const columns: ColumnDef<ListleaveRequest>[] = [
   {
     accessorKey: "users.email",

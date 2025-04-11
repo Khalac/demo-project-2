@@ -19,24 +19,32 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  setOpenUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  setRowValue: React.Dispatch<React.SetStateAction<TData>>;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  setOpenUpdate,
+  setRowValue,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+
     initialState: {
       pagination: {
         pageSize: 5,
       },
     },
   });
-
+  const getValueData = (data: TData) => {
+    setRowValue(data);
+    setOpenUpdate(true);
+  };
   return (
     <div>
       <div className="rounded-md border bg-white min-h-20">
@@ -65,6 +73,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() => getValueData(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

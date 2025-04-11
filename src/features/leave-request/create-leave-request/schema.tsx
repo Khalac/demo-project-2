@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { ListleaveRequest } from "../list-leave-request";
+import { status } from "../list-leave-request";
 
 export const leaveRequestFormSchema = (listLeaveRequest: ListleaveRequest[]) =>
   z
@@ -16,7 +17,14 @@ export const leaveRequestFormSchema = (listLeaveRequest: ListleaveRequest[]) =>
       total_leave_hours: z.coerce.number({
         required_error: "Total leave hours is require",
       }),
-      reason: z.string({ required_error: "Reason is require" }),
+      reason: z.string().min(1, { message: "Reason is require" }),
+      created_at: z.coerce.date().optional(),
+      status: z.nativeEnum(status).optional(),
+      rejected_reason: z
+        .string()
+        .nullable()
+        .optional()
+        .transform((val) => val ?? ""),
     })
     .superRefine(
       (
@@ -62,12 +70,19 @@ export const leaveRequestFormSchema = (listLeaveRequest: ListleaveRequest[]) =>
           });
         }
         listLeaveRequest.forEach((lr) => {
-          const existingStart = new Date(lr.start_date);
-          const existingEnd = new Date(lr.end_date);
+          const existingStart = new Date(lr.start_date).getTime() - 25200000;
+          const existingEnd = new Date(lr.end_date).getTime() - 25200000;
 
-          const isOverlap = start <= existingEnd && end >= existingStart;
-
-          if (isOverlap && lr.status === "Pending") {
+          const isOverlap =
+            start.getTime() <= existingEnd && end.getTime() >= existingStart;
+          console.log(
+            isOverlap,
+            new Date(existingStart),
+            new Date(existingEnd),
+            start,
+            end
+          );
+          if (isOverlap && lr.status !== status.rejected) {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
               message:

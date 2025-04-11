@@ -6,7 +6,13 @@ import { columns } from "./column-table-list-leave-request";
 import { useAppDispatch } from "@/hook/redux-hook";
 import { saveListLeaveRequest } from "./slice";
 
-const ListLeaveRequest = () => {
+const ListLeaveRequest = ({
+  setOpenUpdate,
+  setRowValue,
+}: {
+  setOpenUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  setRowValue: React.Dispatch<React.SetStateAction<ListleaveRequest>>;
+}) => {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<ListleaveRequest[]>();
@@ -28,7 +34,12 @@ const ListLeaveRequest = () => {
   return (
     <div className="py-5">
       {!loading && data ? (
-        <DataTable columns={columns} data={data} />
+        <DataTable
+          columns={columns}
+          data={data}
+          setOpenUpdate={setOpenUpdate}
+          setRowValue={setRowValue}
+        />
       ) : (
         <LoadingSpinner className="" />
       )}

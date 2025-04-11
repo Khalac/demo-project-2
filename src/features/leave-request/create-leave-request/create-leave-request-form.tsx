@@ -28,6 +28,7 @@ import { createNewLeaveRequest } from "./action";
 import type { LeaveRequestData } from "./leave-request-data-type";
 import { toast } from "sonner";
 import { useAppSelector } from "@/hook/redux-hook";
+import { convertLocalDateToUTC } from "@/utils";
 
 const CreateLeaveRequest = ({
   open,
@@ -41,9 +42,7 @@ const CreateLeaveRequest = ({
   );
   const [error, setError] = useState<any>();
   const [loading, setLoading] = useState(false);
-  const convertLocalDateToUTC = (date: Date) => {
-    return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-  };
+
   const form = useForm({
     resolver: zodResolver(leaveRequestFormSchema(leaveRequest)),
     defaultValues: {
@@ -103,7 +102,7 @@ const CreateLeaveRequest = ({
                             )}
                           >
                             {field.value ? (
-                              format(field.value, "PPPP")
+                              format(field.value, "P")
                             ) : (
                               <span>Pick a date</span>
                             )}
@@ -141,7 +140,7 @@ const CreateLeaveRequest = ({
                             )}
                           >
                             {field.value ? (
-                              format(field.value, "PPPP")
+                              format(field.value, "P")
                             ) : (
                               <span>Pick a date</span>
                             )}

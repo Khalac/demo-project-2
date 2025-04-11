@@ -28,13 +28,10 @@ import { updateLeaveRequest } from "./action/update-leave-request";
 import { convertLocalDateToUTC } from "@/utils";
 import { status } from "../../list-leave-request";
 
-const EmployeeForm = ({
-  setOpen,
-  rowValue,
-}: {
+const EmployeeForm: React.FC<{
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   rowValue: ListleaveRequest;
-}) => {
+}> = ({ setOpen, rowValue }) => {
   const leaveRequestList = useAppSelector(
     (state) => state.listLeaveRequest.listLeaveRequest
   );
@@ -73,7 +70,7 @@ const EmployeeForm = ({
     toast.success("Update request successfully");
   }
   useEffect(() => {
-    if (selectRow && selectRow!.status !== "Pending") {
+    if (selectRow && selectRow!.status !== "PENDING") {
       toast.error("Your leave request have been approve or rejected");
     }
     const selectedRow = leaveRequestList.find(
@@ -239,7 +236,7 @@ const EmployeeForm = ({
           />
         )}
         {error && <div className="text-red-600">{error}</div>}
-        {selectRow?.status !== "Pending" && (
+        {selectRow?.status !== "PENDING" && (
           <div className="text-red-600">
             Your request has been {selectRow?.status} so you can not update
           </div>
@@ -250,7 +247,7 @@ const EmployeeForm = ({
             disabled={
               !form.formState.isValid ||
               !form.formState.isDirty ||
-              selectRow!.status !== "Pending"
+              selectRow!.status !== "PENDING"
             }
             type="submit"
             className=""

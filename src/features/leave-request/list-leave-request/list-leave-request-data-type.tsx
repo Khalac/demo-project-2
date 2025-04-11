@@ -1,7 +1,7 @@
 export enum status {
-  pending = "Pending",
-  approved = "Approved",
-  rejected = "Rejected",
+  pending = "PENDING",
+  approved = "APPROVED",
+  rejected = "REJECTED",
 }
 export type ListleaveRequest = {
   request_id?: string;

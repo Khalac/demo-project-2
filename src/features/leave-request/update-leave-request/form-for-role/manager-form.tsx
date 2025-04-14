@@ -41,7 +41,6 @@ const ManagerForm = ({
   const filteredLeaveRequestList = leaveRequestList.filter(
     (req) => req.request_id !== rowValue?.request_id
   );
-
   const [error, setError] = useState<any>();
   const [loadingApprove, setLoadingApprove] = useState(false);
   const [loadingReject, setLoadingReject] = useState(false);
@@ -69,13 +68,13 @@ const ManagerForm = ({
       updated_at
     );
     if (!data.success) {
-      if (values.status === "APPROVED") setLoadingApprove(true);
-      else setLoadingReject(true);
+      if (values.status === "APPROVED") setLoadingApprove(false);
+      else setLoadingReject(false);
       setError(error);
       return;
     }
-    if (values.status === "APPROVED") setLoadingApprove(true);
-    else setLoadingReject(true);
+    if (values.status === "APPROVED") setLoadingApprove(false);
+    else setLoadingReject(false);
     setOpen(false);
     toast.success("Update request successfully");
   }

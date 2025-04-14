@@ -40,7 +40,8 @@ const EmployeeForm: React.FC<{
   );
 
   const [error, setError] = useState<any>();
-  const [loading, setLoading] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
+  const [cancleLoading, setCancleLoading] = useState(false);
   const [selectRow, setSelectRow] = useState<ListleaveRequest>();
 
   const form = useForm({
@@ -48,24 +49,30 @@ const EmployeeForm: React.FC<{
     mode: "onChange",
   });
   async function onSubmit(values: LeaveRequestData) {
-    setLoading(true);
+    if (values.status === "PENDING") setUpdateLoading(true);
+    else setCancleLoading(true);
     const utcStartDate = convertLocalDateToUTC(values.start_date);
     const utcEndDate = convertLocalDateToUTC(values.end_date);
+    const updated_at = new Date();
     const data = await updateLeaveRequest(
       {
         ...values,
-        status: status.pending,
         start_date: utcStartDate,
         end_date: utcEndDate,
+        rejected_reason: values.rejected_reason,
+        status: values.status,
       },
-      selectRow?.request_id!
+      selectRow?.request_id!,
+      updated_at
     );
     if (!data.success) {
-      setLoading(false);
+      if (values.status === "PENDING") setUpdateLoading(false);
+      else setCancleLoading(false);
       setError(error);
       return;
     }
-    setLoading(false);
+    if (values.status === "PENDING") setUpdateLoading(false);
+    else setCancleLoading(false);
     setOpen(false);
     toast.success("Update request successfully");
   }
@@ -249,18 +256,27 @@ const EmployeeForm: React.FC<{
               !form.formState.isDirty ||
               selectRow!.status !== "PENDING"
             }
-            type="submit"
-            className=""
-          >
-            {loading ? <LoadingSpinner className="" /> : <>Update</>}
-          </Button>
-          <Button
-            variant="secondary"
             type="button"
             className=""
-            onClick={() => setOpen(false)}
+            onClick={() =>
+              form.handleSubmit((values) =>
+                onSubmit({ ...values, status: status.pending })
+              )()
+            }
           >
-            Cancel
+            {updateLoading ? <LoadingSpinner className="" /> : <>Update</>}
+          </Button>
+          <Button
+            variant="destructive"
+            type="button"
+            className=""
+            onClick={() =>
+              form.handleSubmit((values) =>
+                onSubmit({ ...values, status: status.cancel })
+              )()
+            }
+          >
+            {cancleLoading ? <LoadingSpinner className="" /> : <>Cancle</>}
           </Button>
         </div>
       </form>

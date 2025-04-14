@@ -74,7 +74,11 @@ export const leaveRequestFormSchema = (listLeaveRequest: ListleaveRequest[]) =>
 
           const isOverlap =
             start.getTime() <= existingEnd && end.getTime() >= existingStart;
-          if (isOverlap && lr.status !== status.rejected) {
+          if (
+            isOverlap &&
+            lr.status !== status.rejected &&
+            lr.status !== status.cancel
+          ) {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
               message:

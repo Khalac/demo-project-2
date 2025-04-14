@@ -5,6 +5,7 @@ import type { ListleaveRequest } from "./list-leave-request-data-type";
 import { columns } from "./column-table-list-leave-request";
 import { useAppDispatch } from "@/hook/redux-hook";
 import { saveListLeaveRequest } from "./slice";
+import { memo } from "react";
 
 const ListLeaveRequest = ({
   setOpenUpdate,
@@ -47,4 +48,4 @@ const ListLeaveRequest = ({
   );
 };
 
-export default ListLeaveRequest;
+export default memo(ListLeaveRequest);

@@ -12,6 +12,7 @@ const Dashboard = () => {
   const [rowValue, setRowValue] = useState<ListleaveRequest>(
     {} as ListleaveRequest
   );
+
   return (
     <div>
       {user.role === "EMPLOYEE" && <UserLeaveDetail setOpen={setOpen} />}

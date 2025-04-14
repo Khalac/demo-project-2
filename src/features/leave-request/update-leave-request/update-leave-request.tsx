@@ -2,6 +2,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui";
 import type { ListleaveRequest } from "../list-leave-request";
 import { EmployeeForm, HRForm, ManagerForm } from "./form-for-role";
 import { useAppSelector } from "@/hook/redux-hook";
+import { memo } from "react";
 
 const roles = ["EMPLOYEE", "HR", "MANAGER"] as const;
 
@@ -45,4 +46,4 @@ const UpdateLeaveRequest = ({
   );
 };
 
-export default UpdateLeaveRequest;
+export default memo(UpdateLeaveRequest);

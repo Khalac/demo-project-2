@@ -29,6 +29,7 @@ import type { LeaveRequestData } from "./leave-request-data-type";
 import { toast } from "sonner";
 import { useAppSelector } from "@/hook/redux-hook";
 import { convertLocalDateToUTC } from "@/utils";
+import { memo } from "react";
 
 const CreateLeaveRequest = ({
   open,
@@ -224,4 +225,4 @@ const CreateLeaveRequest = ({
     </Sheet>
   );
 };
-export default CreateLeaveRequest;
+export default memo(CreateLeaveRequest);

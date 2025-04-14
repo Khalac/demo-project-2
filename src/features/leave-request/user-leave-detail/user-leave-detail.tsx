@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, LoadingSpinner } from "@/components";
 import { getLeaveDetail, listenToLeaveDetailTable } from "./action";
+import { memo } from "react";
 
 type UserLeaveDetail = {
   total_leaves: number;
@@ -78,4 +79,4 @@ const UserLeaveDetail = ({
   );
 };
 
-export default UserLeaveDetail;
+export default memo(UserLeaveDetail);

@@ -43,7 +43,8 @@ const ManagerForm = ({
   );
 
   const [error, setError] = useState<any>();
-  const [loading, setLoading] = useState(false);
+  const [loadingApprove, setLoadingApprove] = useState(false);
+  const [loadingReject, setLoadingReject] = useState(false);
   const [selectRow, setSelectRow] = useState<ListleaveRequest>();
 
   const form = useForm({
@@ -51,11 +52,8 @@ const ManagerForm = ({
     mode: "onChange",
   });
   async function onSubmit(values: LeaveRequestData) {
-    if (values.status === status.rejected && values.rejected_reason === "") {
-      toast.error("Please input your reason if you reject request");
-      return;
-    }
-    setLoading(true);
+    if (values.status === "APPROVED") setLoadingApprove(true);
+    else setLoadingReject(true);
     const utcStartDate = convertLocalDateToUTC(values.start_date);
     const utcEndDate = convertLocalDateToUTC(values.end_date);
     const updated_at = new Date();
@@ -71,12 +69,13 @@ const ManagerForm = ({
       updated_at
     );
     if (!data.success) {
-      console.log(data.error);
-      setLoading(false);
+      if (values.status === "APPROVED") setLoadingApprove(true);
+      else setLoadingReject(true);
       setError(error);
       return;
     }
-    setLoading(false);
+    if (values.status === "APPROVED") setLoadingApprove(true);
+    else setLoadingReject(true);
     setOpen(false);
     toast.success("Update request successfully");
   }
@@ -258,7 +257,7 @@ const ManagerForm = ({
                 )()
               }
             >
-              {loading ? <LoadingSpinner className="" /> : <>Approve</>}
+              {loadingApprove ? <LoadingSpinner className="" /> : <>Approve</>}
             </Button>
             <Button
               variant="destructive"
@@ -269,7 +268,7 @@ const ManagerForm = ({
                 )()
               }
             >
-              {loading ? <LoadingSpinner className="" /> : <>Reject</>}
+              {loadingReject ? <LoadingSpinner className="" /> : <>Reject</>}
             </Button>{" "}
           </div>
         ) : (

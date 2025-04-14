@@ -1,15 +1,8 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui";
 import type { ListleaveRequest } from "../list-leave-request";
-import EmployeeForm from "./form-for-role/employee-form";
+import { EmployeeForm, HRForm, ManagerForm } from "./form-for-role";
 import { useAppSelector } from "@/hook/redux-hook";
-import HRForm from "./form-for-role/hr-form";
-import ManagerForm from "./form-for-role/manager-form";
-// import { JSX, ReactElement } from "react";
-// const roles = ["EMPLOYLEE", "HR", "MANAGER"] as const;
-// type Role = (typeof roles)[number];
-// const formCpn: Record<Role, any> = {
-//   EMPLOYLEE: EmployeeForm,
-// };
+
 const UpdateLeaveRequest = ({
   open,
   setOpen,
@@ -20,15 +13,22 @@ const UpdateLeaveRequest = ({
   rowValue: ListleaveRequest;
 }) => {
   const user = useAppSelector((state) => state.user.user);
+  const roles = ["EMPLOYEE", "HR", "MANAGER"] as const;
+  type Role = (typeof roles)[number];
 
-  //   function FormCpn({ setOpen, rowValue }: { setOpen: any; rowValue: any }) {
-  //     const Form = FormCpn[user.role];
-  //     return (
-  //       <div>
-  //         <Form rowValue={rowValue} setOpen={setOpen} />
-  //       </div>
-  //     );
-  //   }
+  type FormComponentProps = {
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    rowValue: ListleaveRequest;
+  };
+
+  type FormComponentMap = Record<Role, React.ComponentType<FormComponentProps>>;
+
+  const formComponents: FormComponentMap = {
+    EMPLOYEE: EmployeeForm,
+    HR: HRForm,
+    MANAGER: ManagerForm,
+  };
+  const FormComponent = formComponents[user.role as Role];
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent>
@@ -36,13 +36,7 @@ const UpdateLeaveRequest = ({
           <SheetTitle>Leave request</SheetTitle>
         </SheetHeader>
         <div className="p-5 flex flex-col gap-5">
-          {user.role === "EMPLOYEE" ? (
-            <EmployeeForm setOpen={setOpen} rowValue={rowValue} />
-          ) : user.role === "HR" ? (
-            <HRForm setOpen={setOpen} rowValue={rowValue} />
-          ) : (
-            <ManagerForm setOpen={setOpen} rowValue={rowValue} />
-          )}
+          <FormComponent rowValue={rowValue} setOpen={setOpen} />
         </div>
       </SheetContent>
     </Sheet>

@@ -18,7 +18,6 @@ export const leaveRequestFormSchema = (listLeaveRequest: ListleaveRequest[]) =>
         required_error: "Total leave hours is require",
       }),
       reason: z.string().min(1, { message: "Reason is require" }),
-      created_at: z.coerce.date().optional(),
       status: z.nativeEnum(status).optional(),
       rejected_reason: z
         .string()
@@ -75,13 +74,6 @@ export const leaveRequestFormSchema = (listLeaveRequest: ListleaveRequest[]) =>
 
           const isOverlap =
             start.getTime() <= existingEnd && end.getTime() >= existingStart;
-          console.log(
-            isOverlap,
-            new Date(existingStart),
-            new Date(existingEnd),
-            start,
-            end
-          );
           if (isOverlap && lr.status !== status.rejected) {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,

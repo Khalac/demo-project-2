@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LoadingSpinner } from "@/components";
+import { Button, LoadingSpinner } from "@/components";
 import { getLeaveDetail, listenToLeaveDetailTable } from "./action";
 
 type UserLeaveDetail = {
@@ -64,12 +64,16 @@ const UserLeaveDetail = ({
           </div>
         </div>
       </div>
-      <button
+      {data?.total_used_leaves === data?.total_leaves && (
+        <div className="text-red-600">You are out of leaves request</div>
+      )}
+      <Button
+        disabled={data?.total_used_leaves === data?.total_leaves}
         className="bg-[#3A5FBE] text-white p-2 cursor-pointer"
         onClick={() => setOpen(true)}
       >
         Create new request
-      </button>
+      </Button>
     </div>
   );
 };

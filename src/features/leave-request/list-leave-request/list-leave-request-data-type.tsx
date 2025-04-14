@@ -12,7 +12,6 @@ export type ListleaveRequest = {
   total_leave_hours: number;
   reason: string;
   status?: status;
-  created_at?: Date;
   rejected_reason?: string;
   users?: {
     full_name: string;

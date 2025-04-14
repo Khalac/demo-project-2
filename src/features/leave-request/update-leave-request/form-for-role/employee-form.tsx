@@ -248,37 +248,39 @@ const EmployeeForm: React.FC<{
             Your request has been {selectRow?.status}
           </div>
         )}
-        <div className="flex gap-5">
-          {" "}
-          <Button
-            disabled={
-              !form.formState.isValid ||
-              !form.formState.isDirty ||
-              selectRow!.status !== "PENDING"
-            }
-            type="button"
-            className=""
-            onClick={() =>
-              form.handleSubmit((values) =>
-                onSubmit({ ...values, status: status.pending })
-              )()
-            }
-          >
-            {updateLoading ? <LoadingSpinner className="" /> : <>Update</>}
+        {selectRow?.status === "PENDING" ? (
+          <div className="flex gap-5">
+            {" "}
+            <Button
+              disabled={!form.formState.isValid || !form.formState.isDirty}
+              type="button"
+              className=""
+              onClick={() =>
+                form.handleSubmit((values) =>
+                  onSubmit({ ...values, status: status.pending })
+                )()
+              }
+            >
+              {updateLoading ? <LoadingSpinner className="" /> : <>Update</>}
+            </Button>
+            <Button
+              variant="destructive"
+              type="button"
+              className=""
+              onClick={() =>
+                form.handleSubmit((values) =>
+                  onSubmit({ ...values, status: status.cancel })
+                )()
+              }
+            >
+              {cancleLoading ? <LoadingSpinner className="" /> : <>Cancel</>}
+            </Button>
+          </div>
+        ) : (
+          <Button type="button" className="" onClick={() => setOpen(false)}>
+            {cancleLoading ? <LoadingSpinner className="" /> : <>Done</>}
           </Button>
-          <Button
-            variant="destructive"
-            type="button"
-            className=""
-            onClick={() =>
-              form.handleSubmit((values) =>
-                onSubmit({ ...values, status: status.cancel })
-              )()
-            }
-          >
-            {cancleLoading ? <LoadingSpinner className="" /> : <>Cancle</>}
-          </Button>
-        </div>
+        )}
       </form>
     </Form>
   );

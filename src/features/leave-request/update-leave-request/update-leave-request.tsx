@@ -3,6 +3,17 @@ import type { ListleaveRequest } from "../list-leave-request";
 import { EmployeeForm, HRForm, ManagerForm } from "./form-for-role";
 import { useAppSelector } from "@/hook/redux-hook";
 
+const roles = ["EMPLOYEE", "HR", "MANAGER"] as const;
+
+type Role = (typeof roles)[number];
+
+type FormComponentProps = {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  rowValue: ListleaveRequest;
+};
+
+type FormComponentMap = Record<Role, React.ComponentType<FormComponentProps>>;
+
 const UpdateLeaveRequest = ({
   open,
   setOpen,
@@ -13,15 +24,6 @@ const UpdateLeaveRequest = ({
   rowValue: ListleaveRequest;
 }) => {
   const user = useAppSelector((state) => state.user.user);
-  const roles = ["EMPLOYEE", "HR", "MANAGER"] as const;
-  type Role = (typeof roles)[number];
-
-  type FormComponentProps = {
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    rowValue: ListleaveRequest;
-  };
-
-  type FormComponentMap = Record<Role, React.ComponentType<FormComponentProps>>;
 
   const formComponents: FormComponentMap = {
     EMPLOYEE: EmployeeForm,

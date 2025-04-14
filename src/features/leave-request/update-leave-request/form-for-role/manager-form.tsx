@@ -108,7 +108,7 @@ const ManagerForm = ({
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
-                      disabled
+                      disabled={selectRow?.status !== status.pending}
                       variant={"outline"}
                       className={cn(
                         "w-[240px] pl-3 text-left font-normal",
@@ -147,7 +147,7 @@ const ManagerForm = ({
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
-                      disabled
+                      disabled={selectRow?.status !== status.pending}
                       variant={"outline"}
                       className={cn(
                         "w-[240px] pl-3 text-left font-normal",
@@ -177,7 +177,7 @@ const ManagerForm = ({
           )}
         />
         <FormField
-          disabled
+          disabled={selectRow?.status !== status.pending}
           control={form.control}
           name="total_leave_days"
           render={({ field }) => (
@@ -195,7 +195,7 @@ const ManagerForm = ({
           )}
         />
         <FormField
-          disabled
+          disabled={selectRow?.status !== status.pending}
           control={form.control}
           name="total_leave_hours"
           render={({ field }) => (
@@ -213,7 +213,7 @@ const ManagerForm = ({
           )}
         />
         <FormField
-          disabled
+          disabled={selectRow?.status !== status.pending}
           control={form.control}
           name="reason"
           render={({ field }) => (
@@ -256,7 +256,13 @@ const ManagerForm = ({
                 )()
               }
             >
-              {loadingApprove ? <LoadingSpinner className="" /> : <>Approve</>}
+              {loadingApprove ? (
+                <LoadingSpinner className="" />
+              ) : form.formState.isDirty ? (
+                <>Save and Approve</>
+              ) : (
+                <>Approve</>
+              )}
             </Button>
             <Button
               variant="destructive"
@@ -267,7 +273,13 @@ const ManagerForm = ({
                 )()
               }
             >
-              {loadingReject ? <LoadingSpinner className="" /> : <>Reject</>}
+              {loadingReject ? (
+                <LoadingSpinner className="" />
+              ) : form.formState.isDirty ? (
+                <>Save and Reject</>
+              ) : (
+                <>Reject</>
+              )}
             </Button>{" "}
           </div>
         ) : (

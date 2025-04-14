@@ -200,7 +200,7 @@ const CreateLeaveRequest = ({
                 name="reason"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Total leave hours</FormLabel>
+                    <FormLabel>Reason</FormLabel>
                     <FormControl>
                       <Input placeholder="Reason" {...field} />
                     </FormControl>

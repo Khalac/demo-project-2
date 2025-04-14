@@ -91,7 +91,7 @@ const CreateLeaveRequest = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Start date</FormLabel>
-                    <Popover>
+                    <Popover modal={true}>
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
@@ -129,7 +129,7 @@ const CreateLeaveRequest = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>End date</FormLabel>
-                    <Popover>
+                    <Popover modal={true}>
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button

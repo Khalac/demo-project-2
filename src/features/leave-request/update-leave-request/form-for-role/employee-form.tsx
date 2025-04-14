@@ -12,6 +12,14 @@ import {
   PopoverContent,
   PopoverTrigger,
   Calendar,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
@@ -39,8 +47,10 @@ const EmployeeForm: React.FC<{
     (req) => req.request_id !== rowValue?.request_id
   );
 
+  const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState<any>();
-  const [loading, setLoading] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
+  const [cancleLoading, setCancleLoading] = useState(false);
   const [selectRow, setSelectRow] = useState<ListleaveRequest>();
 
   const form = useForm({
@@ -48,24 +58,30 @@ const EmployeeForm: React.FC<{
     mode: "onChange",
   });
   async function onSubmit(values: LeaveRequestData) {
-    setLoading(true);
+    if (values.status === "PENDING") setUpdateLoading(true);
+    else setCancleLoading(true);
     const utcStartDate = convertLocalDateToUTC(values.start_date);
     const utcEndDate = convertLocalDateToUTC(values.end_date);
+    const updated_at = new Date();
     const data = await updateLeaveRequest(
       {
         ...values,
-        status: status.pending,
         start_date: utcStartDate,
         end_date: utcEndDate,
+        rejected_reason: values.rejected_reason,
+        status: values.status,
       },
-      selectRow?.request_id!
+      selectRow?.request_id!,
+      updated_at
     );
     if (!data.success) {
-      setLoading(false);
+      if (values.status === "PENDING") setUpdateLoading(false);
+      else setCancleLoading(false);
       setError(error);
       return;
     }
-    setLoading(false);
+    if (values.status === "PENDING") setUpdateLoading(false);
+    else setCancleLoading(false);
     setOpen(false);
     toast.success("Update request successfully");
   }
@@ -98,7 +114,7 @@ const EmployeeForm: React.FC<{
           render={({ field }) => (
             <FormItem>
               <FormLabel>Start date</FormLabel>
-              <Popover>
+              <Popover modal={true}>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
@@ -137,7 +153,7 @@ const EmployeeForm: React.FC<{
           render={({ field }) => (
             <FormItem>
               <FormLabel>End date</FormLabel>
-              <Popover>
+              <Popover modal={true}>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
@@ -241,29 +257,58 @@ const EmployeeForm: React.FC<{
             Your request has been {selectRow?.status}
           </div>
         )}
-        <div className="flex gap-5">
-          {" "}
-          <Button
-            disabled={
-              !form.formState.isValid ||
-              !form.formState.isDirty ||
-              selectRow!.status !== "PENDING"
-            }
-            type="submit"
-            className=""
-          >
-            {loading ? <LoadingSpinner className="" /> : <>Update</>}
+        {selectRow?.status === "PENDING" ? (
+          <div className="flex gap-5">
+            {" "}
+            <Button
+              disabled={!form.formState.isValid || !form.formState.isDirty}
+              type="button"
+              className=""
+              onClick={() =>
+                form.handleSubmit((values) =>
+                  onSubmit({ ...values, status: status.pending })
+                )()
+              }
+            >
+              {updateLoading ? <LoadingSpinner className="" /> : <>Update</>}
+            </Button>
+            <Button
+              variant="destructive"
+              type="button"
+              className=""
+              onClick={() => setOpenDialog(true)}
+            >
+              {cancleLoading ? <LoadingSpinner className="" /> : <>Cancel</>}
+            </Button>
+          </div>
+        ) : (
+          <Button type="button" className="" onClick={() => setOpen(false)}>
+            {cancleLoading ? <LoadingSpinner className="" /> : <>Done</>}
           </Button>
-          <Button
-            variant="secondary"
-            type="button"
-            className=""
-            onClick={() => setOpen(false)}
-          >
-            Cancel
-          </Button>
-        </div>
+        )}
       </form>
+      <AlertDialog open={openDialog} onOpenChange={setOpenDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action will cancel your leave request. You cannot undo this.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction
+              onClick={() =>
+                form.handleSubmit((values) =>
+                  onSubmit({ ...values, status: status.cancel })
+                )()
+              }
+            >
+              Continue
+            </AlertDialogAction>
+            <AlertDialogCancel>Close</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Form>
   );
 };

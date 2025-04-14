@@ -12,6 +12,14 @@ import {
   PopoverContent,
   PopoverTrigger,
   Calendar,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
@@ -39,6 +47,7 @@ const EmployeeForm: React.FC<{
     (req) => req.request_id !== rowValue?.request_id
   );
 
+  const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState<any>();
   const [updateLoading, setUpdateLoading] = useState(false);
   const [cancleLoading, setCancleLoading] = useState(false);
@@ -105,7 +114,7 @@ const EmployeeForm: React.FC<{
           render={({ field }) => (
             <FormItem>
               <FormLabel>Start date</FormLabel>
-              <Popover>
+              <Popover modal={true}>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
@@ -144,7 +153,7 @@ const EmployeeForm: React.FC<{
           render={({ field }) => (
             <FormItem>
               <FormLabel>End date</FormLabel>
-              <Popover>
+              <Popover modal={true}>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
@@ -267,11 +276,7 @@ const EmployeeForm: React.FC<{
               variant="destructive"
               type="button"
               className=""
-              onClick={() =>
-                form.handleSubmit((values) =>
-                  onSubmit({ ...values, status: status.cancel })
-                )()
-              }
+              onClick={() => setOpenDialog(true)}
             >
               {cancleLoading ? <LoadingSpinner className="" /> : <>Cancel</>}
             </Button>
@@ -282,6 +287,28 @@ const EmployeeForm: React.FC<{
           </Button>
         )}
       </form>
+      <AlertDialog open={openDialog} onOpenChange={setOpenDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action will cancel your leave request. You cannot undo this.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction
+              onClick={() =>
+                form.handleSubmit((values) =>
+                  onSubmit({ ...values, status: status.cancel })
+                )()
+              }
+            >
+              Continue
+            </AlertDialogAction>
+            <AlertDialogCancel>Close</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Form>
   );
 };

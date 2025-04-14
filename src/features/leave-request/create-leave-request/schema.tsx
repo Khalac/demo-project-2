@@ -18,7 +18,6 @@ export const leaveRequestFormSchema = (listLeaveRequest: ListleaveRequest[]) =>
         required_error: "Total leave hours is require",
       }),
       reason: z.string().min(1, { message: "Reason is require" }),
-      created_at: z.coerce.date().optional(),
       status: z.nativeEnum(status).optional(),
       rejected_reason: z
         .string()

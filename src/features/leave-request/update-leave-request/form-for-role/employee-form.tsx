@@ -238,7 +238,7 @@ const EmployeeForm: React.FC<{
         {error && <div className="text-red-600">{error}</div>}
         {selectRow?.status !== "PENDING" && (
           <div className="text-red-600">
-            Your request has been {selectRow?.status} so you can not update
+            Your request has been {selectRow?.status}
           </div>
         )}
         <div className="flex gap-5">

@@ -71,7 +71,6 @@ const ManagerForm = ({
       updated_at
     );
     if (!data.success) {
-      console.log(data.error);
       setLoading(false);
       setError(error);
       return;

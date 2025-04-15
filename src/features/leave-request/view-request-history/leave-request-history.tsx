@@ -13,6 +13,7 @@ enum field {
   total_leave_hours = "Total Leave Hours",
   reason = "Reason",
   rejected_reason = "Rejected Reason",
+  status = "Status",
 }
 const LeaveRequestHistory = ({ rowValue }: { rowValue: ListleaveRequest }) => {
   const user = useAppSelector((state) => state.user.user);
@@ -41,7 +42,7 @@ const LeaveRequestHistory = ({ rowValue }: { rowValue: ListleaveRequest }) => {
   return (
     <div>
       {loading ? (
-        <LoadingSpinner className="m-atuo" />
+        <LoadingSpinner className="m-auto" />
       ) : data.length === 0 ? (
         <div>No data found</div>
       ) : (

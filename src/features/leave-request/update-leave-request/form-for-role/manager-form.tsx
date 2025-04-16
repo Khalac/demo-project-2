@@ -104,7 +104,7 @@ const ManagerForm = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Start date</FormLabel>
-              <Popover>
+              <Popover modal>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
@@ -143,7 +143,7 @@ const ManagerForm = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel>End date</FormLabel>
-              <Popover>
+              <Popover modal>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button

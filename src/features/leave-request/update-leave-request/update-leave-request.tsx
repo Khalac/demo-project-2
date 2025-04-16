@@ -1,8 +1,18 @@
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui";
 import type { ListleaveRequest } from "../list-leave-request";
 import { EmployeeForm, HRForm, ManagerForm } from "./form-for-role";
 import { useAppSelector } from "@/hook/redux-hook";
 import { memo } from "react";
+import LeaveRequestHistory from "../view-request-history/leave-request-history";
 
 const roles = ["EMPLOYEE", "HR", "MANAGER"] as const;
 
@@ -38,9 +48,22 @@ const UpdateLeaveRequest = ({
         <SheetHeader>
           <SheetTitle>Leave request</SheetTitle>
         </SheetHeader>
-        <div className="p-5 flex flex-col gap-5">
-          <FormComponent rowValue={rowValue} setOpen={setOpen} />
-        </div>
+        <Tabs defaultValue="information">
+          <TabsList className="mx-auto">
+            <TabsTrigger value="information">Information</TabsTrigger>
+            <TabsTrigger value="history">History</TabsTrigger>
+          </TabsList>
+          <TabsContent value="information">
+            <div className="p-5 flex flex-col gap-5">
+              <FormComponent rowValue={rowValue} setOpen={setOpen} />
+            </div>
+          </TabsContent>
+          <TabsContent value="history">
+            <div className="p-5 flex flex-col gap-5">
+              <LeaveRequestHistory rowValue={rowValue} />
+            </div>
+          </TabsContent>
+        </Tabs>
       </SheetContent>
     </Sheet>
   );

@@ -78,6 +78,7 @@ const EmployeeForm: React.FC<{
       if (values.status === "PENDING") setUpdateLoading(false);
       else setCancleLoading(false);
       setError(error);
+      console.log(data.error);
       return;
     }
     if (values.status === "PENDING") setUpdateLoading(false);
@@ -263,7 +264,6 @@ const EmployeeForm: React.FC<{
             <Button
               disabled={!form.formState.isValid || !form.formState.isDirty}
               type="button"
-              className=""
               onClick={() =>
                 form.handleSubmit((values) =>
                   onSubmit({ ...values, status: status.pending })

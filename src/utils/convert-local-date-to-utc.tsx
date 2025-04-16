@@ -1,3 +1,4 @@
 export const convertLocalDateToUTC = (date: Date) => {
-  return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  const d = new Date(date);
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60000);
 };

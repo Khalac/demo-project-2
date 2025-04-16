@@ -1,11 +1,14 @@
 import type { ListleaveRequest } from "../list-leave-request";
 import { useEffect, useState } from "react";
-import { getRequestHistory, listenRequestHistoryTable } from "./action";
-import type { LeaveRequestHistory } from "./leave-request-history-data-type";
+import {
+  getRequestHistory,
+  listenRequestHistoryTable,
+  groupHistoryByDate,
+} from "./action";
 import { LoadingSpinner } from "@/components";
-import groupHistoryByDate from "./action/group-history-by-date";
 import type { HistoryGroup } from "./action/group-history-by-date";
 import { useAppSelector } from "@/hook/redux-hook";
+
 enum field {
   start_date = "Start Date",
   end_date = "End Date",
@@ -27,7 +30,6 @@ const LeaveRequestHistory = ({ rowValue }: { rowValue: ListleaveRequest }) => {
       setError(res.error);
       setLoading(false);
     }
-    console.log(res.data);
     setLoading(false);
     setData(groupHistoryByDate(res.data!));
   };
@@ -66,8 +68,14 @@ const LeaveRequestHistory = ({ rowValue }: { rowValue: ListleaveRequest }) => {
                         change.userChange.full_name
                       )}{" "}
                     </span>
-                    changed {field[change.key as keyof typeof field]} from{" "}
-                    {change.oldValue} to {change.newValue}
+                    {change.key === "create" ? (
+                      <span>have create a new leave request</span>
+                    ) : (
+                      <span>
+                        changed {field[change.key as keyof typeof field]} from{" "}
+                        {change.oldValue} to {change.newValue}
+                      </span>
+                    )}
                   </div>
                 );
               })}

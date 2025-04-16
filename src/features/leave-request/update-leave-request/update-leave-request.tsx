@@ -42,6 +42,7 @@ const UpdateLeaveRequest = ({
     MANAGER: ManagerForm,
   };
   const FormComponent = formComponents[user.role as Role];
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent>

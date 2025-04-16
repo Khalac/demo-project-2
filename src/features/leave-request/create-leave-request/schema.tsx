@@ -49,11 +49,12 @@ export const leaveRequestFormSchema = (listLeaveRequest: ListleaveRequest[]) =>
           });
         }
 
-        const start = new Date(start_date);
-        const end = new Date(end_date);
+        const start = start_date;
+        const end = end_date;
 
-        const getTotalDays =
-          (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24) + 1;
+        const getTotalDays = Math.ceil(
+          (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24) + 1
+        );
 
         if (end < start) {
           ctx.addIssue({

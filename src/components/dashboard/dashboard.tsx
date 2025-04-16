@@ -4,6 +4,7 @@ import UpdateLeaveRequest from "@/features/leave-request/update-leave-request/up
 import { useState } from "react";
 import type { ListleaveRequest } from "@/features/leave-request/list-leave-request";
 import { useAppSelector } from "@/hook/redux-hook";
+import { notification } from "@/features/leave-request/notification-when-update";
 
 const Dashboard = () => {
   const user = useAppSelector((state) => state.user.user);
@@ -12,7 +13,7 @@ const Dashboard = () => {
   const [rowValue, setRowValue] = useState<ListleaveRequest>(
     {} as ListleaveRequest
   );
-
+  notification(setOpenUpdate, setRowValue);
   return (
     <div>
       {user.role === "EMPLOYEE" && <UserLeaveDetail setOpen={setOpen} />}

@@ -6,6 +6,8 @@ export type HistoryGroup = {
   date: string;
   records: {
     key: string;
+    historyId: string;
+    requestId: string;
     userChange: {
       user_id: string;
       full_name: string;
@@ -16,16 +18,36 @@ export type HistoryGroup = {
   }[];
 };
 
-const groupHistoryByDate = (data: LeaveRequestHistory[]): HistoryGroup[] => {
+export const groupHistoryByDate = (
+  data: LeaveRequestHistory[]
+): HistoryGroup[] => {
   const groups: Record<string, HistoryGroup["records"]> = {};
 
   data.forEach((item) => {
     const date = format(new Date(item.changed_at), "PPPP");
-    const historyDifferent = compareUpdateRequest(item);
 
     if (!groups[date]) groups[date] = [];
-
-    groups[date].push(...historyDifferent);
+    if (item.change_type === "CREATE") {
+      groups[date].push({
+        key: "create",
+        historyId: item.history_id,
+        requestId: item.request_id,
+        userChange: {
+          user_id: item.users.user_id,
+          full_name: item.users.full_name,
+        },
+        oldValue: null,
+        newValue: null,
+        atTime: format(new Date(item.changed_at), "hh:mm a"),
+      });
+    } else {
+      const historyDifferent = compareUpdateRequest(item).map((change) => ({
+        ...change,
+        historyId: item.history_id,
+        requestId: item.request_id,
+      }));
+      groups[date].push(...historyDifferent);
+    }
   });
 
   return Object.entries(groups).map(([date, records]) => ({
@@ -33,5 +55,3 @@ const groupHistoryByDate = (data: LeaveRequestHistory[]): HistoryGroup[] => {
     records,
   }));
 };
-
-export default groupHistoryByDate;

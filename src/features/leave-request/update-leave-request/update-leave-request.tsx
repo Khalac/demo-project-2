@@ -13,6 +13,8 @@ import { EmployeeForm, HRForm, ManagerForm } from "./form-for-role";
 import { useAppSelector } from "@/hook/redux-hook";
 import { memo } from "react";
 import LeaveRequestHistory from "../view-request-history/leave-request-history";
+import { useContext } from "react";
+import { UpdateLeaveRequestContext } from "@/context";
 
 const roles = ["EMPLOYEE", "HR", "MANAGER"] as const;
 
@@ -25,15 +27,10 @@ type FormComponentProps = {
 
 type FormComponentMap = Record<Role, React.ComponentType<FormComponentProps>>;
 
-const UpdateLeaveRequest = ({
-  open,
-  setOpen,
-  rowValue,
-}: {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  rowValue: ListleaveRequest;
-}) => {
+const UpdateLeaveRequest = () => {
+  const { openUpdate, setOpenUpdate, rowValue } = useContext(
+    UpdateLeaveRequestContext
+  );
   const user = useAppSelector((state) => state.user.user);
 
   const formComponents: FormComponentMap = {
@@ -42,9 +39,10 @@ const UpdateLeaveRequest = ({
     MANAGER: ManagerForm,
   };
   const FormComponent = formComponents[user.role as Role];
+
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent>
+    <Sheet open={openUpdate} onOpenChange={setOpenUpdate}>
+      <SheetContent className="min-w-[50vw]">
         <SheetHeader>
           <SheetTitle>Leave request</SheetTitle>
         </SheetHeader>
@@ -55,7 +53,7 @@ const UpdateLeaveRequest = ({
           </TabsList>
           <TabsContent value="information">
             <div className="p-5 flex flex-col gap-5">
-              <FormComponent rowValue={rowValue} setOpen={setOpen} />
+              <FormComponent rowValue={rowValue} setOpen={setOpenUpdate} />
             </div>
           </TabsContent>
           <TabsContent value="history">

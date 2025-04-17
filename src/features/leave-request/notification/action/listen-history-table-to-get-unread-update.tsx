@@ -1,7 +1,9 @@
 import { supabase } from "@/utils";
 
-export const listenRequestHistoryTable = (leaveRequestHistory: () => void) => {
-  const channel = supabase.channel("user-leave-request-history");
+export const listenHistoryTableToGetUnreadUpdate = (
+  leaveRequestHistory: () => void
+) => {
+  const channel = supabase.channel("unread-update");
 
   channel
     .on(

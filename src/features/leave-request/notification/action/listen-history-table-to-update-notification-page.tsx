@@ -1,7 +1,7 @@
 import { supabase } from "@/utils";
 
-export const listenRequestHistoryTable = (leaveRequestHistory: () => void) => {
-  const channel = supabase.channel("user-leave-request-history");
+export const listenHistoryTableToUpdateNotificationPage = (leaveRequestHistory: () => void) => {
+  const channel = supabase.channel("notification");
 
   channel
     .on(

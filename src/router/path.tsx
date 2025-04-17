@@ -1,5 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import { DashboardPage, LoginPage, ResetPasswordPage } from "@/pages";
+import {
+  DashboardPage,
+  LoginPage,
+  NotificationPage,
+  ResetPasswordPage,
+} from "@/pages";
 import { ProtectedRoute, AuthRoute } from "./auth-guard";
 import Layout from "@/layout/Layout";
 
@@ -15,6 +20,10 @@ export const router = createBrowserRouter([
           {
             path: "",
             element: <DashboardPage />,
+          },
+          {
+            path: "notification",
+            element: <NotificationPage />,
           },
         ],
       },

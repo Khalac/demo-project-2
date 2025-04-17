@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Button, LoadingSpinner } from "@/components";
 import { getLeaveDetail, listenToLeaveDetailTable } from "./action";
 import { memo } from "react";
+import { useContext } from "react";
+import { CreateLeaveRequestContext } from "@/context";
 
 type UserLeaveDetail = {
   total_leaves: number;
@@ -9,11 +11,8 @@ type UserLeaveDetail = {
   total_waiting_leaves: number;
 };
 
-const UserLeaveDetail = ({
-  setOpen,
-}: {
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+const UserLeaveDetail = () => {
+  const { setOpen } = useContext(CreateLeaveRequestContext);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<UserLeaveDetail>();
   const getUserLeaveDetail = async () => {

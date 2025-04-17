@@ -78,7 +78,7 @@ const EmployeeForm: React.FC<{
       if (values.status === "PENDING") setUpdateLoading(false);
       else setCancleLoading(false);
       setError(error);
-      console.log(data.error);
+    
       return;
     }
     if (values.status === "PENDING") setUpdateLoading(false);

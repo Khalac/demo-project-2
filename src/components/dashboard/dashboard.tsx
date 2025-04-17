@@ -9,7 +9,7 @@ const Dashboard = () => {
   useNotification();
   return (
     <div>
-      {user.role === "EMPLOYEE" && <UserLeaveDetail />}
+      <UserLeaveDetail />
       <CreateLeaveRequest />
       <ListLeaveRequest />
       <UpdateLeaveRequest />

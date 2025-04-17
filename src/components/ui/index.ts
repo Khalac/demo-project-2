@@ -13,3 +13,4 @@ export * from "./sonner";
 export * from "./checkbox";
 export * from "./alert-dialog";
 export * from "./tabs";
+export * from "./select";

@@ -18,7 +18,9 @@ const UserLeaveDetail = () => {
   const getUserLeaveDetail = async () => {
     setLoading(true);
     const data = await getLeaveDetail();
-    if (!data.success) return;
+    if (!data.success) {
+      setLoading(false);
+    }
     setData(data.data![0]);
     setLoading(false);
   };
@@ -29,6 +31,7 @@ const UserLeaveDetail = () => {
       unsubscribe();
     };
   }, []);
+
   return (
     <div className="inline-flex flex-col gap-5 bg-white p-5">
       <div className="font-bold text-2xl"> Annual leaves</div>

@@ -42,9 +42,9 @@ export const notification = (
       toast.error("Please try again later");
       return;
     }
+    setLoading(false);
     setRowValue(data.data!);
     setOpen(true);
-    setLoading(false);
   };
   const triggerToast = (data: HistoryGroup[]) => {
     data.forEach((e) => {

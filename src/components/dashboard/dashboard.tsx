@@ -1,32 +1,18 @@
 import { CreateLeaveRequest, UserLeaveDetail } from "@/features/leave-request";
 import { ListLeaveRequest } from "@/features/leave-request/list-leave-request";
 import UpdateLeaveRequest from "@/features/leave-request/update-leave-request/update-leave-request";
-import { useState } from "react";
-import type { ListleaveRequest } from "@/features/leave-request/list-leave-request";
 import { useAppSelector } from "@/hook/redux-hook";
-import { notification } from "@/features/leave-request/notification-when-update";
+import { useNotification } from "@/features/leave-request/notification";
 
 const Dashboard = () => {
   const user = useAppSelector((state) => state.user.user);
-  const [open, setOpen] = useState(false);
-  const [openUpdate, setOpenUpdate] = useState(false);
-  const [rowValue, setRowValue] = useState<ListleaveRequest>(
-    {} as ListleaveRequest
-  );
-  notification(setOpenUpdate, setRowValue);
+  useNotification();
   return (
     <div>
-      {user.role === "EMPLOYEE" && <UserLeaveDetail setOpen={setOpen} />}
-      <CreateLeaveRequest open={open} setOpen={setOpen} />
-      <ListLeaveRequest
-        setOpenUpdate={setOpenUpdate}
-        setRowValue={setRowValue}
-      />
-      <UpdateLeaveRequest
-        open={openUpdate}
-        setOpen={setOpenUpdate}
-        rowValue={rowValue}
-      />
+      {user.role === "EMPLOYEE" && <UserLeaveDetail />}
+      <CreateLeaveRequest />
+      <ListLeaveRequest />
+      <UpdateLeaveRequest />
     </div>
   );
 };

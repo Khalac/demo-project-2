@@ -5,6 +5,7 @@ import { status } from "../list-leave-request";
 export const leaveRequestFormSchema = (listLeaveRequest: ListleaveRequest[]) =>
   z
     .object({
+      user_id: z.string().optional(),
       start_date: z.coerce.date({
         required_error: "Start date is require",
       }),

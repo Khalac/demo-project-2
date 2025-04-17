@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { getUpdateUnread, setUpdateRead } from "./action";
-import { listenRequestHistoryTable } from "../view-request-history/action";
+import { getUpdateUnnoti, setUpdateNoti, setUpdateRead } from "./action";
+import { listenHistoryTableToNoti, getLeaveRequestInformation } from "./action";
 import {
   groupHistoryByDate,
   HistoryGroup,
 } from "../view-request-history/action";
 import { useAppSelector } from "@/hook/redux-hook";
 import { toast } from "sonner";
-import type { ListleaveRequest } from "../list-leave-request";
-import getLeaveRequestInformation from "./action/get-leave-request-information";
 import { LoadingSpinner } from "@/components";
+import { useContext } from "react";
+import { UpdateLeaveRequestContext } from "@/context";
 
 enum field {
   start_date = "Start Date",
@@ -21,30 +21,34 @@ enum field {
   status = "Status",
 }
 
-export const notification = (
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  setRowValue: React.Dispatch<React.SetStateAction<ListleaveRequest>>
-) => {
+export const useNotification = () => {
+  const { setOpenUpdate, setRowValue } = useContext(UpdateLeaveRequestContext);
   const user = useAppSelector((state) => state.user.user);
   const [loading, setLoading] = useState(false);
 
-  const leaveRequestHistory = async () => {
-    const res = await getUpdateUnread(user.user_id);
+  const getUpdateToTrigger = async () => {
+    const res = await getUpdateUnnoti(user.user_id);
     if (!res.success) {
       return;
     }
     triggerToast(groupHistoryByDate(res.data!));
   };
-  const openLeaveRequest = async (request_id: string) => {
+  const openLeaveRequest = async (request_id: string, history_id: string) => {
     setLoading(true);
+    const res = await setUpdateRead(history_id);
+    if (!res.success) {
+      toast.error("Please try again later");
+      return;
+    }
     const data = await getLeaveRequestInformation(request_id);
     if (!data.success) {
       toast.error("Please try again later");
       return;
     }
+
     setLoading(false);
     setRowValue(data.data!);
-    setOpen(true);
+    setOpenUpdate(true);
   };
   const triggerToast = (data: HistoryGroup[]) => {
     data.forEach((e) => {
@@ -64,18 +68,18 @@ export const notification = (
             ) : (
               "Open leave request"
             ),
-            onClick: () => openLeaveRequest(r.requestId),
+            onClick: () => openLeaveRequest(r.requestId, r.historyId),
           },
         });
 
-        setUpdateRead(r.historyId);
+        setUpdateNoti(r.historyId);
       });
     });
   };
 
   useEffect(() => {
-    leaveRequestHistory();
-    const unsubscribe = listenRequestHistoryTable(leaveRequestHistory);
+    getUpdateToTrigger();
+    const unsubscribe = listenHistoryTableToNoti(getUpdateToTrigger);
     return () => {
       unsubscribe();
     };

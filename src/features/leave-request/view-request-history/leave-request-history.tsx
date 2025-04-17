@@ -26,6 +26,7 @@ const LeaveRequestHistory = ({ rowValue }: { rowValue: ListleaveRequest }) => {
   const leaveRequestHistory = async () => {
     setLoading(true);
     const res = await getRequestHistory(rowValue.request_id!);
+
     if (!res.success) {
       setError(res.error);
       setLoading(false);
@@ -60,22 +61,27 @@ const LeaveRequestHistory = ({ rowValue }: { rowValue: ListleaveRequest }) => {
               </div>
               {res.records.map((change) => {
                 return (
-                  <div>
-                    <span className="font-bold">
-                      {user.user_id === change.userChange.user_id ? (
-                        <>You</>
-                      ) : (
-                        change.userChange.full_name
-                      )}{" "}
-                    </span>
-                    {change.key === "create" ? (
-                      <span>have create a new leave request</span>
-                    ) : (
-                      <span>
-                        changed {field[change.key as keyof typeof field]} from{" "}
-                        {change.oldValue} to {change.newValue}
+                  <div className="flex items-center justify-between my-4">
+                    <div>
+                      <span className="font-bold">
+                        {user.user_id === change.userChange.user_id ? (
+                          <>You</>
+                        ) : (
+                          change.userChange.full_name
+                        )}{" "}
                       </span>
-                    )}
+                      {change.key === "create" ? (
+                        <span className="text-gray-600">
+                          have create a new leave request
+                        </span>
+                      ) : (
+                        <span className="text-gray-600">
+                          changed {field[change.key as keyof typeof field]} from{" "}
+                          {change.oldValue} to {change.newValue}
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-gray-600">{change.atTime}</div>
                   </div>
                 );
               })}

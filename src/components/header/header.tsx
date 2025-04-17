@@ -5,6 +5,7 @@ import { tryCatch } from "@/utils";
 import { useState } from "react";
 import { LoadingSpinner } from "../ui";
 import NavigationMenu from "./navigation-menu";
+import { NumberNotificationUnread } from "@/features/leave-request/notification";
 const Header = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,12 +26,15 @@ const Header = () => {
   return (
     <header className="flex justify-between items-center h-10 py-8 px-5 bg-white shadow-2xs">
       <NavigationMenu />
-      <button
-        className="cursor-pointer bg-red-500 text-white font-bold rounded-xl p-1"
-        onClick={handleLogout}
-      >
-        {loading ? <LoadingSpinner className="" /> : <div>Log Out</div>}
-      </button>
+      <div className="gap-5 flex">
+        <NumberNotificationUnread />
+        <button
+          className="cursor-pointer bg-red-500 text-white font-bold rounded-xl p-1"
+          onClick={handleLogout}
+        >
+          {loading ? <LoadingSpinner className="" /> : <div>Log Out</div>}
+        </button>
+      </div>
       {error && <div className="text-red-600 font-bold">{error}</div>}
     </header>
   );

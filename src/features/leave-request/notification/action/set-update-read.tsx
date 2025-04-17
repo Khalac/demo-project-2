@@ -9,6 +9,5 @@ export const setUpdateRead = async (history_id: string) => {
   if (error) {
     return { success: false, error };
   }
-
   return { success: true, data: null };
 };

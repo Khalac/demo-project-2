@@ -3,13 +3,14 @@ export enum changeType {
   approved = "APPROVED",
   rejected = "REJECTED",
   cancelled = "CANCELLED",
-  create = 'CREATE'
+  create = "CREATE",
 }
 export type LeaveRequestHistory = {
   history_id: string;
   request_id: string;
   notification_to?: string;
   is_read?: boolean;
+  is_noti?: boolean;
   users: {
     user_id: string;
     full_name: string;

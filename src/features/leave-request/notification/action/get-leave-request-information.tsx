@@ -1,6 +1,6 @@
 import { supabase } from "@/utils";
 
-const getLeaveRequestInformation = async (request_id: string) => {
+export const getLeaveRequestInformation = async (request_id: string) => {
   const { data, error } = await supabase
     .from("leave_request")
     .select(
@@ -12,5 +12,3 @@ const getLeaveRequestInformation = async (request_id: string) => {
   if (error) return { success: false, error: error };
   return { success: true, data: data };
 };
-
-export default getLeaveRequestInformation;

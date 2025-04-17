@@ -30,14 +30,11 @@ import { toast } from "sonner";
 import { useAppSelector } from "@/hook/redux-hook";
 import { convertLocalDateToUTC } from "@/utils";
 import { memo } from "react";
+import { useContext } from "react";
+import { CreateLeaveRequestContext } from "@/context";
 
-const CreateLeaveRequest = ({
-  open,
-  setOpen,
-}: {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+const CreateLeaveRequest = () => {
+  const { open, setOpen } = useContext(CreateLeaveRequestContext);
   const leaveRequest = useAppSelector(
     (state) => state.listLeaveRequest.listLeaveRequest
   );

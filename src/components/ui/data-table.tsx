@@ -15,20 +15,19 @@ import {
   TableRow,
   Button,
 } from "@/components/ui";
+import { useContext } from "react";
+import { UpdateLeaveRequestContext } from "@/context";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  setOpenUpdate: React.Dispatch<React.SetStateAction<boolean>>;
-  setRowValue: React.Dispatch<React.SetStateAction<TData>>;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  setOpenUpdate,
-  setRowValue,
 }: DataTableProps<TData, TValue>) {
+  const { setOpenUpdate, setRowValue } = useContext(UpdateLeaveRequestContext);
   const table = useReactTable({
     data,
     columns,
@@ -41,7 +40,7 @@ export function DataTable<TData, TValue>({
       },
     },
   });
-  const getValueData = (data: TData) => {
+  const getValueData = (data: any) => {
     setRowValue(data);
     setOpenUpdate(true);
   };

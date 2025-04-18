@@ -36,7 +36,9 @@ const HRForm = ({
   const [selectRow, setSelectRow] = useState<ListleaveRequest>();
 
   const form = useForm({
-    resolver: zodResolver(leaveRequestFormSchema(leaveRequestList)),
+    resolver: zodResolver(
+      leaveRequestFormSchema(leaveRequestList, rowValue.user_id!)
+    ),
   });
   useEffect(() => {
     const selectedRow = leaveRequestList.find(

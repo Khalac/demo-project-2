@@ -18,4 +18,8 @@ export type ListleaveRequest = {
     full_name: string;
     email: string;
   }[];
+  manager?: {
+    full_name: string;
+    email: string;
+  }[];
 };

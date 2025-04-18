@@ -2,7 +2,10 @@ import { z } from "zod";
 import type { ListleaveRequest } from "../list-leave-request";
 import { status } from "../list-leave-request";
 
-export const leaveRequestFormSchema = (listLeaveRequest: ListleaveRequest[]) =>
+export const leaveRequestFormSchema = (
+  listLeaveRequest: ListleaveRequest[],
+  user_id: string
+) =>
   z
     .object({
       user_id: z.string().optional(),
@@ -71,22 +74,24 @@ export const leaveRequestFormSchema = (listLeaveRequest: ListleaveRequest[]) =>
           });
         }
         listLeaveRequest.forEach((lr) => {
-          const existingStart = new Date(lr.start_date).getTime() - 25200000;
-          const existingEnd = new Date(lr.end_date).getTime() - 25200000;
+          if (user_id === lr.user_id) {
+            const existingStart = new Date(lr.start_date).getTime() - 25200000;
+            const existingEnd = new Date(lr.end_date).getTime() - 25200000;
 
-          const isOverlap =
-            start.getTime() <= existingEnd && end.getTime() >= existingStart;
-          if (
-            isOverlap &&
-            lr.status !== status.rejected &&
-            lr.status !== status.cancel
-          ) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message:
-                "You are requesting days that overlap with another leave request",
-              path: ["end_date"],
-            });
+            const isOverlap =
+              start.getTime() <= existingEnd && end.getTime() >= existingStart;
+            if (
+              isOverlap &&
+              lr.status !== status.rejected &&
+              lr.status !== status.cancel
+            ) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message:
+                  "You are requesting days that overlap with another leave request",
+                path: ["end_date"],
+              });
+            }
           }
         });
       }

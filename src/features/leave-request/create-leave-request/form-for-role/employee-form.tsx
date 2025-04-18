@@ -25,6 +25,7 @@ import type { LeaveRequestData } from "../leave-request-data-type";
 import { toast } from "sonner";
 import { useAppSelector } from "@/hook/redux-hook";
 import { convertLocalDateToUTC } from "@/utils";
+
 const EmployeeForm = ({
   setOpen,
 }: {
@@ -33,11 +34,12 @@ const EmployeeForm = ({
   const leaveRequest = useAppSelector(
     (state) => state.listLeaveRequest.listLeaveRequest
   );
+  const user = useAppSelector((state) => state.user.user);
   const [error, setError] = useState<any>();
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
-    resolver: zodResolver(leaveRequestFormSchema(leaveRequest)),
+    resolver: zodResolver(leaveRequestFormSchema(leaveRequest, user.user_id)),
     defaultValues: {
       start_date: undefined,
       end_date: undefined,

@@ -47,7 +47,9 @@ const ManagerForm = ({
   const [selectRow, setSelectRow] = useState<ListleaveRequest>();
 
   const form = useForm({
-    resolver: zodResolver(leaveRequestFormSchema(filteredLeaveRequestList)),
+    resolver: zodResolver(
+      leaveRequestFormSchema(filteredLeaveRequestList, rowValue.user_id!)
+    ),
     mode: "onChange",
   });
   async function onSubmit(values: LeaveRequestData) {

@@ -30,6 +30,7 @@ import type { LeaveRequestData } from "../leave-request-data-type";
 import { toast } from "sonner";
 import { useAppSelector } from "@/hook/redux-hook";
 import { convertLocalDateToUTC } from "@/utils";
+import { useMemo } from "react";
 import {
   getManagedEmployee,
   ListEmployee,
@@ -47,9 +48,10 @@ const ManagerForm = ({
   const [loading, setLoading] = useState(false);
   const [getEmployeesLoading, setGetEmployeesLoading] = useState(false);
   const [listEmployees, setListEmployees] = useState<ListEmployee[]>();
+  const [userIdSelect, setUserIdSelect] = useState("");
 
   const form = useForm({
-    resolver: zodResolver(leaveRequestFormSchema(leaveRequest)),
+    resolver: zodResolver(leaveRequestFormSchema(leaveRequest, userIdSelect)),
     defaultValues: {
       start_date: undefined,
       end_date: undefined,
@@ -93,6 +95,7 @@ const ManagerForm = ({
   useEffect(() => {
     getAllManagedEmployee();
   }, []);
+
   return (
     <div className="p-5 flex flex-col gap-5">
       {getEmployeesLoading ? (
@@ -107,7 +110,10 @@ const ManagerForm = ({
                 <FormItem>
                   <FormLabel>Employee</FormLabel>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      setUserIdSelect(value);
+                    }}
                     defaultValue={field.value}
                   >
                     <FormControl>

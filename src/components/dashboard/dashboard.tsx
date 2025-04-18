@@ -1,5 +1,8 @@
 import { CreateLeaveRequest, UserLeaveDetail } from "@/features/leave-request";
-import { ListLeaveRequest } from "@/features/leave-request/list-leave-request";
+import {
+  ListLeaveRequest,
+  ListLeaveRequestHR,
+} from "@/features/leave-request/list-leave-request";
 import UpdateLeaveRequest from "@/features/leave-request/update-leave-request/update-leave-request";
 import { useAppSelector } from "@/hook/redux-hook";
 import { useNotification } from "@/features/leave-request/notification";
@@ -9,10 +12,15 @@ const Dashboard = () => {
   useNotification();
   return (
     <div>
-      <UserLeaveDetail />
+      {user.role !== "HR" && (
+        <>
+          <UserLeaveDetail />
+          <ListLeaveRequest />
+        </>
+      )}
       <CreateLeaveRequest />
-      <ListLeaveRequest />
       <UpdateLeaveRequest />
+      {user.role === "HR" && <ListLeaveRequestHR />}
     </div>
   );
 };

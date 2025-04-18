@@ -145,20 +145,6 @@ export function DataTable<TData, TValue>({
         {user.role === "HR" && (
           <div className="flex items-center gap-5">
             <Input
-              placeholder="Filter manager name..."
-              value={
-                (table
-                  .getColumn("manager_full_name")
-                  ?.getFilterValue() as string) ?? ""
-              }
-              onChange={(event) =>
-                table
-                  .getColumn("manager_full_name")
-                  ?.setFilterValue(event.target.value)
-              }
-              className="w-fit bg-white"
-            />
-            <Input
               placeholder="Filter employee name..."
               value={
                 (table

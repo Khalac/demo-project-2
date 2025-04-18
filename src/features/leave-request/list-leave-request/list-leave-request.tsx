@@ -2,12 +2,26 @@ import { useState, useEffect } from "react";
 import { getListLeaveRequest, listenToLeaveRequestTable } from "./action";
 import { DataTable, LoadingSpinner } from "@/components";
 import type { ListleaveRequest } from "./list-leave-request-data-type";
-import { columns } from "./column-table-list-leave-request";
+import { columnsEmployee, columnsManager, columnsHR } from "./list-for-role";
 import { useAppDispatch } from "@/hook/redux-hook";
 import { saveListLeaveRequest } from "./slice";
 import { memo } from "react";
+import { ColumnDef } from "@tanstack/react-table";
+import { useAppSelector } from "@/hook/redux-hook";
+
+const roles = ["EMPLOYEE", "HR", "MANAGER"] as const;
+type Role = (typeof roles)[number];
+
+type ColumnMap = Record<Role, ColumnDef<ListleaveRequest, any>[]>;
+
+export const columnsByRole: ColumnMap = {
+  EMPLOYEE: columnsEmployee,
+  HR: columnsHR,
+  MANAGER: columnsManager,
+};
 
 const ListLeaveRequest = () => {
+  const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<ListleaveRequest[]>();
@@ -25,7 +39,8 @@ const ListLeaveRequest = () => {
       unsubscribe();
     };
   }, []);
-
+  const role = user?.role as keyof typeof columnsByRole;
+  const columns = columnsByRole[role];
   return (
     <div className="py-5">
       {!loading && data ? (

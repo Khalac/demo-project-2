@@ -54,7 +54,9 @@ const EmployeeForm: React.FC<{
   const [selectRow, setSelectRow] = useState<ListleaveRequest>();
 
   const form = useForm({
-    resolver: zodResolver(leaveRequestFormSchema(filteredLeaveRequestList)),
+    resolver: zodResolver(
+      leaveRequestFormSchema(filteredLeaveRequestList, rowValue.user_id!)
+    ),
     mode: "onChange",
   });
   async function onSubmit(values: LeaveRequestData) {
@@ -78,7 +80,7 @@ const EmployeeForm: React.FC<{
       if (values.status === "PENDING") setUpdateLoading(false);
       else setCancleLoading(false);
       setError(error);
-    
+
       return;
     }
     if (values.status === "PENDING") setUpdateLoading(false);
@@ -87,9 +89,6 @@ const EmployeeForm: React.FC<{
     toast.success("Update request successfully");
   }
   useEffect(() => {
-    if (selectRow && selectRow!.status !== "PENDING") {
-      toast.error("Your leave request have been approve or rejected");
-    }
     const selectedRow = leaveRequestList.find(
       (lr) => lr.request_id === rowValue.request_id
     );

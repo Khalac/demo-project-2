@@ -2,21 +2,21 @@ import { useState, useEffect } from "react";
 import { getListLeaveRequest, listenToLeaveRequestTable } from "./action";
 import { DataTable, LoadingSpinner } from "@/components";
 import type { ListleaveRequest } from "./list-leave-request-data-type";
-import { columnsEmployee, columnsManager, columnsHR } from "./list-for-role";
+import { columnsEmployee, columnsManager } from "./list-for-role";
 import { useAppDispatch } from "@/hook/redux-hook";
 import { saveListLeaveRequest } from "./slice";
 import { memo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAppSelector } from "@/hook/redux-hook";
 
-const roles = ["EMPLOYEE", "HR", "MANAGER"] as const;
+const roles = ["EMPLOYEE", "MANAGER"] as const;
 type Role = (typeof roles)[number];
 
 type ColumnMap = Record<Role, ColumnDef<ListleaveRequest, any>[]>;
 
 export const columnsByRole: ColumnMap = {
   EMPLOYEE: columnsEmployee,
-  HR: columnsHR,
+
   MANAGER: columnsManager,
 };
 

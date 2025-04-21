@@ -88,7 +88,9 @@ const ListLeaveRequestHR = () => {
                   {!dataManager ? (
                     <LoadingSpinner className="" />
                   ) : (
-                    <DataTable columns={columnsHR} data={dataManager} />
+                    <div>
+                      <DataTable columns={columnsHR} data={dataManager} />
+                    </div>
                   )}
                 </TabsContent>
               );

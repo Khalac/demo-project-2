@@ -26,7 +26,7 @@ const ListLeaveRequestHR = () => {
   const [manager, setManager] = useState<manager[]>();
   const [data, setData] = useState<ListleaveRequest[]>();
   const [dataManager, setDataManager] = useState<ListleaveRequest[]>();
-  const [changeTabLoading, setChangeTabLoading] = useState(false);
+
   const userListLeaveRequest = async () => {
     setLoading(true);
     const manager = await getManager();
@@ -48,12 +48,10 @@ const ListLeaveRequestHR = () => {
   }, []);
 
   const getRequestForManager = async (id: string) => {
-    setChangeTabLoading(true);
     const requestData = await getListLeaveRequestEachManager(id);
     if (!requestData.success) return;
 
     setDataManager(requestData.data);
-    setChangeTabLoading(false);
   };
   return (
     <div className="w-full h-full flex justify-center items-center">

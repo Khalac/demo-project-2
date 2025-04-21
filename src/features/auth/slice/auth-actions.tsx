@@ -22,6 +22,8 @@ export const logIn = createAsyncThunk(
 
       const userData = await getUserInformation(data.session?.user.id!);
       if (!userData.success) return thunkAPI.rejectWithValue(userData.error);
+
+      localStorage.setItem("userId", JSON.stringify(data.session?.user.id!));
       return {
         success: true,
         data: userData.data,

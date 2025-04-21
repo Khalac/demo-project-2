@@ -56,7 +56,7 @@ const ForgotPasswordForm = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-[#3A5FBE]">Reset password</DialogTitle>
+          <DialogTitle className="">Reset password</DialogTitle>
           <DialogDescription>
             Enter your account's email address, and we'll send you a link to
             reset your password.
@@ -82,17 +82,14 @@ const ForgotPasswordForm = ({
                 <Button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="text-[#3A5FBE] bg-white border-none shadow-none hover:bg-white hover:text-red-500"
+                  className="text-black bg-white border-none shadow-none hover:bg-white hover:text-red-500"
                 >
                   Cancel
                 </Button>
                 {loading ? (
-                  <LoadingSpinner className="text-[#3A5FBE]" />
+                  <LoadingSpinner className="" />
                 ) : (
-                  <Button
-                    type="submit"
-                    className="bg-[#3A5FBE] hover:bg-[#4e608f]"
-                  >
+                  <Button type="submit" className="">
                     Submit
                   </Button>
                 )}

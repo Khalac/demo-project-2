@@ -26,7 +26,7 @@ const CreateLeaveRequest = () => {
   const FormComponent = formComponents[user.role as Role];
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent>
+      <SheetContent className="min-w-[30vw]">
         <SheetHeader>
           <SheetTitle>Create request</SheetTitle>
         </SheetHeader>

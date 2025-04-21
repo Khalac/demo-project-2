@@ -51,7 +51,7 @@ const LoginForm = () => {
   return (
     <div className="flex flex-col justify-center items-center gap-10 px-20 py-20 shadow-2xl rounded-2xl inset-shadow-sm">
       <ForgotPasswordForm open={open} setOpen={setOpen} />
-      <div className="text-3xl font-bold text-[#3A5FBE]">Log in</div>
+      <div className="text-3xl font-bold">Log in</div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -83,7 +83,7 @@ const LoginForm = () => {
             {loading ? (
               <LoadingSpinner className="" />
             ) : (
-              <Button className="bg-[#3A5FBE]" type="submit">
+              <Button className="" type="submit">
                 Submit
               </Button>
             )}
@@ -92,7 +92,7 @@ const LoginForm = () => {
       </Form>
 
       <div
-        className=" text-[#3A5FBE] hover:text-[#313f68] cursor-pointer"
+        className=" hover:text-[#313f68] cursor-pointer"
         onClick={() => setOpen(true)}
       >
         Forgotten password?

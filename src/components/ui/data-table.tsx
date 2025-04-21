@@ -28,7 +28,7 @@ import {
   SelectValue,
   Input,
 } from "@/components/ui";
-import { CalendarIcon, Download } from "lucide-react";
+import { CalendarIcon, Download, Plus } from "lucide-react";
 import { cn } from "@/lib";
 import { format } from "date-fns";
 import { useContext } from "react";
@@ -37,6 +37,7 @@ import { DataTablePagination } from "./pagination";
 import { useState } from "react";
 import { useAppSelector } from "@/hook/redux-hook";
 import * as XLSX from "xlsx";
+import { CreateLeaveRequestContext } from "@/context";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -47,6 +48,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const { setOpen } = useContext(CreateLeaveRequestContext);
   const user = useAppSelector((state) => state.user.user);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const { setOpenUpdate, setRowValue } = useContext(UpdateLeaveRequestContext);
@@ -118,9 +120,8 @@ export function DataTable<TData, TValue>({
   };
 
   return (
-    <div className="flex flex-col gap-5 rounded-md border bg-white p-5">
-      <div className="flex justify-between items-center">
-        {" "}
+    <div className="flex flex-col gap-5 rounded-md border bg-white p-5 h-fit">
+      <div className="flex justify-between items-center top-0">
         <div className="flex items-center gap-5">
           <Popover modal={true}>
             <PopoverTrigger asChild>
@@ -171,7 +172,7 @@ export function DataTable<TData, TValue>({
               <SelectItem value="Cancelled">Cancelled</SelectItem>
             </SelectContent>
           </Select>
-          {user.role === "HR" && (
+          {user.role !== "EMPLOYEE" && (
             <div className="flex items-center gap-5">
               <Input
                 placeholder="Filter employee name..."
@@ -190,17 +191,27 @@ export function DataTable<TData, TValue>({
             </div>
           )}
         </div>
-        <div>
-          <Button
-            className="flex cursor-pointer gap-2"
-            onClick={() => exportToExcel(data, "leave-request")}
-          >
-            <Download />
-            Export to Excel
-          </Button>
+        <div className="flex items-center gap-5">
+          {user.role === "HR" && (
+            <Button
+              className="flex cursor-pointer gap-2"
+              onClick={() => exportToExcel(data, "leave-request")}
+            >
+              <Download />
+              Export to Excel
+            </Button>
+          )}
+          {user.role !== "HR" && (
+            <Button
+              className="flex cursor-pointer gap-2"
+              onClick={() => setOpen(true)}
+            >
+              <Plus /> Create new request
+            </Button>
+          )}
         </div>
       </div>
-      <div className="rounded-md border bg-white min-h-20">
+      <div className="rounded-md border bg-white min-h-20 flex-1">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -251,6 +262,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+
       <DataTablePagination table={table} />
     </div>
   );

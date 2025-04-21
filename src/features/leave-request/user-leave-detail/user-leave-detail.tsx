@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, LoadingSpinner } from "@/components";
 import { getLeaveDetail, listenToLeaveDetailTable } from "./action";
 import { memo } from "react";
-import { useContext } from "react";
-import { CreateLeaveRequestContext } from "@/context";
+import { useAppSelector } from "@/hook/redux-hook";
 
 type UserLeaveDetail = {
   total_leaves: number;
@@ -12,12 +11,12 @@ type UserLeaveDetail = {
 };
 
 const UserLeaveDetail = () => {
-  const { setOpen } = useContext(CreateLeaveRequestContext);
+  const user = useAppSelector((state) => state.user.user);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<UserLeaveDetail>();
   const getUserLeaveDetail = async () => {
     setLoading(true);
-    const data = await getLeaveDetail();
+    const data = await getLeaveDetail(user.user_id);
     if (!data.success) {
       setLoading(false);
     }
@@ -33,50 +32,35 @@ const UserLeaveDetail = () => {
   }, []);
 
   return (
-    <div className="inline-flex flex-col gap-5 bg-white p-5">
-      <div className="font-bold text-2xl"> Annual leaves</div>
-      <div className="flex gap-5">
-        <div className="flex gap-5 bg-[#D1FAE5] p-5 text-[#064E3B] font-bold">
-          Available leaves:{" "}
+    <div className="flex justify-start gap-10 items-center">
+      <div className="flex justify-start w-1/6 gap-3 items-center bg-white py-6 rounded-lg px-8">
+        <div className="w-5 text-3xl h-5 flex justify-center items-center text-[#566cdb] p-8 bg-[#eff1ff] rounded-lg">
           {loading ? (
             <LoadingSpinner className="" />
           ) : (
             data?.total_leaves! - data?.total_used_leaves!
           )}
         </div>
-
-        <div className="flex gap-5 bg-[#FFE3E3] text-[#B91C1C] p-5 font-bold">
-          <div>
-            Used leaves:{" "}
-            {loading ? (
-              <LoadingSpinner className="" />
-            ) : (
-              data?.total_used_leaves!
-            )}
-          </div>
-        </div>
-
-        <div className="flex gap-5 bg-[#87a6f5]  p-5 font-bold text-[#113caa]">
-          <div>
-            Waiting leaves:{" "}
-            {loading ? (
-              <LoadingSpinner className="" />
-            ) : (
-              data?.total_waiting_leaves!
-            )}
-          </div>
-        </div>
+        <div className="text-lg">Available leaves</div>
       </div>
-      {data?.total_used_leaves === data?.total_leaves && (
-        <div className="text-red-600">You are out of leaves request</div>
-      )}
-      <Button
-        disabled={data?.total_used_leaves === data?.total_leaves}
-        className="bg-[#3A5FBE] text-white p-2 cursor-pointer"
-        onClick={() => setOpen(true)}
-      >
-        Create new request
-      </Button>
+
+      <div className="flex justify-start w-1/6 gap-3 items-center bg-white py-6 rounded-lg px-8">
+        <div className="w-5 text-3xl h-5 flex justify-center items-center text-[#B91C1C] p-8 bg-[#FFE3E3] rounded-lg">
+          {loading ? <LoadingSpinner className="" /> : data?.total_used_leaves!}
+        </div>
+        <div className="text-lg"> Used leaves</div>
+      </div>
+
+      <div className="flex justify-start w-1/6 gap-3 items-center bg-white py-6 rounded-lg px-8">
+        <div className="w-5 text-3xl h-5 flex justify-center items-center text-[#fba323] p-8 bg-[#fff4e6] rounded-lg">
+          {loading ? (
+            <LoadingSpinner className="" />
+          ) : (
+            data?.total_waiting_leaves!
+          )}
+        </div>
+        <div className="text-lg"> Waiting leaves</div>
+      </div>
     </div>
   );
 };

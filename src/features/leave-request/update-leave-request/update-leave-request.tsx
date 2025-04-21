@@ -42,7 +42,7 @@ const UpdateLeaveRequest = () => {
 
   return (
     <Sheet open={openUpdate} onOpenChange={setOpenUpdate}>
-      <SheetContent className="min-w-[50vw]">
+      <SheetContent className="min-w-[30vw]">
         <SheetHeader>
           <SheetTitle>Leave request</SheetTitle>
         </SheetHeader>

@@ -34,6 +34,7 @@ const ListLeaveRequestHR = () => {
     setManager(manager.data!);
     const res = await getListLeaveRequest();
     if (!res.success) return;
+    console.log(res.data);
     setData(res.data);
     setLoading(false);
     dispatch(saveListLeaveRequest(res.data));
@@ -54,11 +55,10 @@ const ListLeaveRequestHR = () => {
     setDataManager(requestData.data);
     setChangeTabLoading(false);
   };
-
   return (
-    <div className="py-5">
+    <div className="w-full h-full flex justify-center items-center">
       {!loading && data ? (
-        <Tabs defaultValue="all">
+        <Tabs defaultValue="all" className="w-full h-full">
           <div className="flex justify-center items-center gap-5">
             <TabsList className="">
               <TabsTrigger value="all">All</TabsTrigger>
@@ -86,7 +86,10 @@ const ListLeaveRequestHR = () => {
               return (
                 <TabsContent key={m.user_id} value={m.user_id}>
                   {!dataManager ? (
-                    <LoadingSpinner className="" />
+                    <div className="w-full h-full flex justify-center items-center">
+                      {" "}
+                      <LoadingSpinner className="" />
+                    </div>
                   ) : (
                     <div>
                       <DataTable columns={columnsHR} data={dataManager} />

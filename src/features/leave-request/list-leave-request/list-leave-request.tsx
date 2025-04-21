@@ -42,11 +42,13 @@ const ListLeaveRequest = () => {
   const role = user?.role as keyof typeof columnsByRole;
   const columns = columnsByRole[role];
   return (
-    <div className="py-5">
+    <div className="py-5 h-1/2 items-center w-full">
       {!loading && data ? (
         <DataTable columns={columns} data={data} />
       ) : (
-        <LoadingSpinner className="" />
+        <div className="w-full h-full flex justify-center items-center">
+          <LoadingSpinner className="" />
+        </div>
       )}
     </div>
   );

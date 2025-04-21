@@ -84,7 +84,7 @@ const ListNotification = () => {
                 {res.records.map((change) => {
                   return (
                     <div
-                      className="flex items-center justify-between bg-gray-100 p-2"
+                      className="flex items-center justify-between cursor-pointer p-2"
                       onClick={() =>
                         openLeaveRequest(change.requestId, change.historyId)
                       }

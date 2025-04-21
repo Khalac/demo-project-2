@@ -11,14 +11,18 @@ const Dashboard = () => {
   const user = useAppSelector((state) => state.user.user);
   useNotification();
   return (
-    <div>
-      {user.role !== "HR" && (
+    <div className="flex flex-col w-full h-full">
+      {user.role === "EMPLOYEE" && (
         <>
           <UserLeaveDetail />
-          <ListLeaveRequest />
         </>
       )}
-      <CreateLeaveRequest />
+      {user.role !== "HR" && (
+        <>
+          <ListLeaveRequest /> <CreateLeaveRequest />
+        </>
+      )}
+
       <UpdateLeaveRequest />
       {user.role === "HR" && <ListLeaveRequestHR />}
     </div>

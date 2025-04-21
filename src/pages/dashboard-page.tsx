@@ -2,7 +2,7 @@ import { Dashboard } from "@/components";
 
 const DashboardPage = () => {
   return (
-    <div className="">
+    <div className="w-full h-full">
       <Dashboard />
     </div>
   );

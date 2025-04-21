@@ -43,9 +43,7 @@ const ResetPasswordForm = () => {
   }
   return (
     <div className="flex flex-col justify-center items-center gap-10 px-20 py-20 shadow-2xl rounded-2xl inset-shadow-sm">
-      <div className="text-3xl font-bold text-[#3A5FBE]">
-        Reset your password
-      </div>
+      <div className="text-3xl font-bold ]">Reset your password</div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -85,7 +83,7 @@ const ResetPasswordForm = () => {
             {loading ? (
               <LoadingSpinner className="" />
             ) : (
-              <Button type="submit" className="bg-[#3A5FBE] hover:bg-[#374363]">
+              <Button type="submit" className="">
                 Submit
               </Button>
             )}

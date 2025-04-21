@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, LoadingSpinner } from "@/components";
 import { getLeaveDetail, listenToLeaveDetailTable } from "./action";
 import { memo } from "react";
+import { useAppSelector } from "@/hook/redux-hook";
 
 type UserLeaveDetail = {
   total_leaves: number;
@@ -10,11 +11,12 @@ type UserLeaveDetail = {
 };
 
 const UserLeaveDetail = () => {
+  const user = useAppSelector((state) => state.user.user);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<UserLeaveDetail>();
   const getUserLeaveDetail = async () => {
     setLoading(true);
-    const data = await getLeaveDetail();
+    const data = await getLeaveDetail(user.user_id);
     if (!data.success) {
       setLoading(false);
     }
@@ -30,7 +32,7 @@ const UserLeaveDetail = () => {
   }, []);
 
   return (
-    <div className="flex justify-start gap-10 items-center p-5">
+    <div className="flex justify-start gap-10 items-center">
       <div className="flex justify-start w-1/6 gap-3 items-center bg-white py-6 rounded-lg px-8">
         <div className="w-5 text-3xl h-5 flex justify-center items-center text-[#566cdb] p-8 bg-[#eff1ff] rounded-lg">
           {loading ? (

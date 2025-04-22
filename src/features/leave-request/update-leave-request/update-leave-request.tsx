@@ -11,7 +11,6 @@ import {
 import type { ListleaveRequest } from "../list-leave-request";
 import { EmployeeForm, HRForm, ManagerForm } from "./form-for-role";
 import { useAppSelector } from "@/hook/redux-hook";
-import { memo } from "react";
 import LeaveRequestHistory from "../view-request-history/leave-request-history";
 import { useContext } from "react";
 import { UpdateLeaveRequestContext } from "@/context";
@@ -67,4 +66,4 @@ const UpdateLeaveRequest = () => {
   );
 };
 
-export default memo(UpdateLeaveRequest);
+export default UpdateLeaveRequest;

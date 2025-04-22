@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Button, LoadingSpinner } from "@/components";
+import { LoadingSpinner } from "@/components";
 import { getLeaveDetail, listenToLeaveDetailTable } from "./action";
-import { memo } from "react";
 import { useAppSelector } from "@/hook/redux-hook";
 
 type UserLeaveDetail = {
@@ -65,4 +64,4 @@ const UserLeaveDetail = () => {
   );
 };
 
-export default memo(UserLeaveDetail);
+export default UserLeaveDetail;

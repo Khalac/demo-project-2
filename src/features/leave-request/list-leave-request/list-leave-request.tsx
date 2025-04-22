@@ -5,7 +5,6 @@ import type { ListleaveRequest } from "./list-leave-request-data-type";
 import { columnsEmployee, columnsManager } from "./list-for-role";
 import { useAppDispatch } from "@/hook/redux-hook";
 import { saveListLeaveRequest } from "./slice";
-import { memo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAppSelector } from "@/hook/redux-hook";
 
@@ -54,4 +53,4 @@ const ListLeaveRequest = () => {
   );
 };
 
-export default memo(ListLeaveRequest);
+export default ListLeaveRequest;

@@ -1,5 +1,4 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui";
-import { memo } from "react";
 import { useContext } from "react";
 import { CreateLeaveRequestContext } from "@/context";
 import { EmployeeForm, ManagerForm } from "./form-for-role";
@@ -35,4 +34,4 @@ const CreateLeaveRequest = () => {
     </Sheet>
   );
 };
-export default memo(CreateLeaveRequest);
+export default CreateLeaveRequest;

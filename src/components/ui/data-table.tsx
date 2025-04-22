@@ -129,7 +129,6 @@ export function DataTable<TData, TValue>({
     XLSX.writeFile(workbook, `${fileName}.xlsx`);
   };
   const selectedRows = Object.keys(rowSelection);
-  console.log(table.getRowModel().rowsById);
   const [loadingApprove, setLoadingApprove] = useState(false);
   const [loadingReject, setLoadingReject] = useState(false);
   const manageLeaveRequest = async (type: status) => {

@@ -15,3 +15,5 @@ export * from "./alert-dialog";
 export * from "./tabs";
 export * from "./select";
 export * from "./separator";
+export * from "./card";
+export * from "./chart";

@@ -7,6 +7,7 @@ import { useAppDispatch } from "@/hook/redux-hook";
 import { saveListLeaveRequest } from "./slice";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAppSelector } from "@/hook/redux-hook";
+import { Statistic } from "../statistic";
 
 const roles = ["EMPLOYEE", "MANAGER"] as const;
 type Role = (typeof roles)[number];
@@ -15,7 +16,6 @@ type ColumnMap = Record<Role, ColumnDef<ListleaveRequest, any>[]>;
 
 export const columnsByRole: ColumnMap = {
   EMPLOYEE: columnsEmployee,
-
   MANAGER: columnsManager,
 };
 
@@ -43,7 +43,10 @@ const ListLeaveRequest = () => {
   return (
     <div className="py-5 h-1/2 items-center w-full">
       {!loading && data ? (
-        <DataTable columns={columns} data={data} />
+        <div className="flex flex-col gap-5">
+          <DataTable columns={columns} data={data} />
+          {role === "MANAGER" && <Statistic data={data} />}
+        </div>
       ) : (
         <div className="w-full h-full flex justify-center items-center">
           <LoadingSpinner className="" />

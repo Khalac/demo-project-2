@@ -56,6 +56,8 @@ export const logOut = createAsyncThunk("user/logOut", async (_, thunkAPI) => {
   try {
     const { error } = await supabase.auth.signOut();
     if (error) return thunkAPI.rejectWithValue(error.message);
+
+    localStorage.removeItem("userId");
     return {
       success: true,
       data: {

@@ -14,6 +14,7 @@ import { columnsHR } from "./list-for-role";
 import { useAppDispatch } from "@/hook/redux-hook";
 import { saveListLeaveRequest } from "./slice";
 import { getListLeaveRequestEachManager } from "./action/get-list-request-each-manager";
+import { Statistic } from "../statistic";
 
 type manager = {
   user_id: string;
@@ -26,6 +27,7 @@ const ListLeaveRequestHR = () => {
   const [manager, setManager] = useState<manager[]>();
   const [data, setData] = useState<ListleaveRequest[]>();
   const [dataManager, setDataManager] = useState<ListleaveRequest[]>();
+  const [managerLoading, setManagerLoading] = useState(false);
 
   const userListLeaveRequest = async () => {
     setLoading(true);
@@ -34,7 +36,6 @@ const ListLeaveRequestHR = () => {
     setManager(manager.data!);
     const res = await getListLeaveRequest();
     if (!res.success) return;
-    console.log(res.data);
     setData(res.data);
     setLoading(false);
     dispatch(saveListLeaveRequest(res.data));
@@ -48,20 +49,22 @@ const ListLeaveRequestHR = () => {
   }, []);
 
   const getRequestForManager = async (id: string) => {
+    setManagerLoading(true);
     const requestData = await getListLeaveRequestEachManager(id);
     if (!requestData.success) return;
 
     setDataManager(requestData.data);
+    setManagerLoading(false);
   };
   return (
     <div className="w-full h-full flex justify-center items-center">
       {!loading && data ? (
         <Tabs defaultValue="all" className="w-full h-full">
           <div className="flex justify-center items-center gap-5">
-            <TabsList className="">
+            <TabsList className="cursor-pointer">
               <TabsTrigger value="all">All</TabsTrigger>
             </TabsList>
-            <TabsList className="gap-2">
+            <TabsList className="gap-2 cursor-pointer">
               {manager &&
                 manager.map((m) => {
                   return (
@@ -77,21 +80,31 @@ const ListLeaveRequestHR = () => {
             </TabsList>
           </div>
           <TabsContent value="all">
-            <DataTable columns={columnsHR} data={data} />
+            {loading ? (
+              <LoadingSpinner className="" />
+            ) : (
+              <div className="flex flex-col gap-5">
+                <DataTable columns={columnsHR} data={data} />
+                <Statistic data={data} />
+              </div>
+            )}
           </TabsContent>
           {manager &&
             manager.map((m) => {
               return (
                 <TabsContent key={m.user_id} value={m.user_id}>
-                  {!dataManager ? (
+                  {managerLoading ? (
                     <div className="w-full h-full flex justify-center items-center">
                       {" "}
                       <LoadingSpinner className="" />
                     </div>
                   ) : (
-                    <div>
-                      <DataTable columns={columnsHR} data={dataManager} />
-                    </div>
+                    dataManager && (
+                      <div className="flex flex-col gap-5">
+                        <DataTable columns={columnsHR} data={dataManager} />
+                        <Statistic data={dataManager} />
+                      </div>
+                    )
                   )}
                 </TabsContent>
               );

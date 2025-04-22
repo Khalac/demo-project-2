@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
   Input,
+  LoadingSpinner,
 } from "@/components/ui";
 import { CalendarIcon, Download, Plus } from "lucide-react";
 import { cn } from "@/lib";
@@ -38,6 +39,11 @@ import { useState } from "react";
 import { useAppSelector } from "@/hook/redux-hook";
 import * as XLSX from "xlsx";
 import { CreateLeaveRequestContext } from "@/context";
+import { convertLocalDateToUTC } from "@/utils";
+import type { ListleaveRequest } from "@/features/leave-request";
+import { updateLeaveRequest } from "@/features/leave-request/update-leave-request";
+import { status } from "@/features/leave-request";
+import { toast } from "sonner";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -53,6 +59,8 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const { setOpenUpdate, setRowValue } = useContext(UpdateLeaveRequestContext);
   const [globalFilter, setGlobalFilter] = useState<Date>();
+  const [rowSelection, setRowSelection] = useState({});
+
   const customFilterFn = (
     rows: Row<TData>,
     columnId: any,
@@ -80,9 +88,11 @@ export function DataTable<TData, TValue>({
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     globalFilterFn: customFilterFn,
+    onRowSelectionChange: setRowSelection,
     state: {
       columnFilters,
       globalFilter,
+      rowSelection,
     },
     initialState: {
       pagination: {
@@ -118,7 +128,46 @@ export function DataTable<TData, TValue>({
 
     XLSX.writeFile(workbook, `${fileName}.xlsx`);
   };
+  const selectedRows = Object.keys(rowSelection);
+  console.log(table.getRowModel().rowsById);
+  const [loadingApprove, setLoadingApprove] = useState(false);
+  const [loadingReject, setLoadingReject] = useState(false);
+  const manageLeaveRequest = async (type: status) => {
+    if (type === "APPROVED") setLoadingApprove(true);
+    else setLoadingReject(true);
+    for (const index of selectedRows) {
+      const row = table.getRowModel().rowsById[parseInt(index)]
+        ?.original as ListleaveRequest;
+      if (row.status !== status.pending) {
+        toast.error(`The request has been ${row.status}`);
+        continue;
+      }
+      const utcStartDate = convertLocalDateToUTC(row.start_date);
+      const utcEndDate = convertLocalDateToUTC(row.end_date);
+      const updated_at = new Date();
 
+      const data = await updateLeaveRequest(
+        {
+          ...row,
+          start_date: utcStartDate,
+          end_date: utcEndDate,
+          rejected_reason: row.rejected_reason,
+          status: type,
+        },
+        row.request_id!,
+        updated_at
+      );
+      if (!data.success) {
+        setLoadingApprove(false);
+        setLoadingReject(false);
+        toast.error("Error");
+        break;
+      }
+    }
+    toast.success("Success");
+    setLoadingApprove(false);
+    setLoadingReject(false);
+  };
   return (
     <div className="flex flex-col gap-5 rounded-md border bg-white p-5 h-fit">
       <div className="flex justify-between items-center top-0">
@@ -201,6 +250,30 @@ export function DataTable<TData, TValue>({
               Export to Excel
             </Button>
           )}
+          {user.role === "MANAGER" && selectedRows.length !== 0 && (
+            <div className="flex gap-5">
+              {loadingApprove ? (
+                <LoadingSpinner className="" />
+              ) : (
+                <Button
+                  variant="outline"
+                  onClick={() => manageLeaveRequest(status.approved)}
+                >
+                  Approve
+                </Button>
+              )}
+              {loadingReject ? (
+                <LoadingSpinner className="" />
+              ) : (
+                <Button
+                  variant="destructive"
+                  onClick={() => manageLeaveRequest(status.rejected)}
+                >
+                  Reject
+                </Button>
+              )}
+            </div>
+          )}
           {user.role !== "HR" && (
             <Button
               className="flex cursor-pointer gap-2"
@@ -237,7 +310,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() => getValueData(row.original)}
+                  onDoubleClick={() => getValueData(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

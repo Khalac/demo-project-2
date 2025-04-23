@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LoadingSpinner } from "@/components";
+import { LoadingSpinner, Skeleton } from "@/components";
 import { getLeaveDetail, listenToLeaveDetailTable } from "./action";
 import { useAppSelector } from "@/hook/redux-hook";
 
@@ -35,7 +35,7 @@ const UserLeaveDetail = () => {
       <div className="flex justify-start w-1/6 gap-3 items-center bg-white py-6 rounded-lg px-8">
         <div className="w-5 text-3xl h-5 flex justify-center items-center text-[#566cdb] p-8 bg-[#eff1ff] rounded-lg">
           {loading ? (
-            <LoadingSpinner className="" />
+            <Skeleton className="h-4 w-full" />
           ) : (
             data?.total_leaves! - data?.total_used_leaves!
           )}
@@ -45,7 +45,11 @@ const UserLeaveDetail = () => {
 
       <div className="flex justify-start w-1/6 gap-3 items-center bg-white py-6 rounded-lg px-8">
         <div className="w-5 text-3xl h-5 flex justify-center items-center text-[#B91C1C] p-8 bg-[#FFE3E3] rounded-lg">
-          {loading ? <LoadingSpinner className="" /> : data?.total_used_leaves!}
+          {loading ? (
+            <Skeleton className="h-4 w-full" />
+          ) : (
+            data?.total_used_leaves!
+          )}
         </div>
         <div className="text-lg"> Used leaves</div>
       </div>
@@ -53,7 +57,7 @@ const UserLeaveDetail = () => {
       <div className="flex justify-start w-1/6 gap-3 items-center bg-white py-6 rounded-lg px-8">
         <div className="w-5 text-3xl h-5 flex justify-center items-center text-[#fba323] p-8 bg-[#fff4e6] rounded-lg">
           {loading ? (
-            <LoadingSpinner className="" />
+            <Skeleton className="h-4 w-full" />
           ) : (
             data?.total_waiting_leaves!
           )}

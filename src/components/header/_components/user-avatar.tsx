@@ -46,11 +46,8 @@ const UserAvatar = () => {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem>
-          <button
-            className="cursor-pointer text-red-500 font-bold rounded-xl p-1"
-            onClick={handleLogout}
-          >
+        <DropdownMenuItem onClick={handleLogout}>
+          <button className="cursor-pointer text-red-500 font-bold rounded-xl p-1">
             {loading ? <LoadingSpinner className="" /> : <div>Log Out</div>}
           </button>
         </DropdownMenuItem>

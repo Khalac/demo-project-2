@@ -35,13 +35,13 @@ import { format } from "date-fns";
 import { useContext } from "react";
 import { UpdateLeaveRequestContext } from "@/context";
 import { DataTablePagination } from "./pagination";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAppSelector } from "@/hook/redux-hook";
 import * as XLSX from "xlsx";
 import { CreateLeaveRequestContext } from "@/context";
 import { convertLocalDateToUTC } from "@/utils";
 import type { ListleaveRequest } from "@/features/leave-request";
-import { updateLeaveRequest } from "@/features/leave-request/update-leave-request";
+import { bulkUpdateLeaveRequest } from "@/features/leave-request/update-leave-request/form-for-role/action/bulk-update-leave-request";
 import { status } from "@/features/leave-request";
 import { toast } from "sonner";
 
@@ -60,6 +60,7 @@ export function DataTable<TData, TValue>({
   const { setOpenUpdate, setRowValue } = useContext(UpdateLeaveRequestContext);
   const [globalFilter, setGlobalFilter] = useState<Date>();
   const [rowSelection, setRowSelection] = useState({});
+  const [checkStatus, setCheckStatus] = useState(true);
 
   const customFilterFn = (
     rows: Row<TData>,
@@ -134,39 +135,48 @@ export function DataTable<TData, TValue>({
   const manageLeaveRequest = async (type: status) => {
     if (type === "APPROVED") setLoadingApprove(true);
     else setLoadingReject(true);
+
+    const dataLeaveRequest: ListleaveRequest[] = [];
     for (const index of selectedRows) {
       const row = table.getRowModel().rowsById[parseInt(index)]
         ?.original as ListleaveRequest;
-      if (row.status !== status.pending) {
-        toast.error(`The request has been ${row.status}`);
-        continue;
-      }
       const utcStartDate = convertLocalDateToUTC(row.start_date);
       const utcEndDate = convertLocalDateToUTC(row.end_date);
       const updated_at = new Date();
 
-      const data = await updateLeaveRequest(
-        {
-          ...row,
-          start_date: utcStartDate,
-          end_date: utcEndDate,
-          rejected_reason: row.rejected_reason,
-          status: type,
-        },
-        row.request_id!,
-        updated_at
-      );
-      if (!data.success) {
-        setLoadingApprove(false);
-        setLoadingReject(false);
-        toast.error("Error");
-        break;
-      }
+      dataLeaveRequest.push({
+        total_leave_days: row.total_leave_days,
+        total_leave_hours: row.total_leave_hours,
+        start_date: utcStartDate,
+        end_date: utcEndDate,
+        rejected_reason: row.rejected_reason,
+        status: type,
+        request_id: row.request_id!,
+        updated_at: updated_at,
+        reason: row.reason,
+      });
     }
+
+    const data = await bulkUpdateLeaveRequest(dataLeaveRequest);
+    if (!data.success) {
+      setLoadingApprove(false);
+      setLoadingReject(false);
+      toast.error("Error");
+    }
+    setRowSelection({});
     toast.success("Success");
     setLoadingApprove(false);
     setLoadingReject(false);
   };
+  useEffect(() => {
+    const allSelectedArePending = selectedRows.every((rowIndex) => {
+      const row = table.getRowModel().rowsById[parseInt(rowIndex)]
+        ?.original as ListleaveRequest;
+      return row.status === status.pending;
+    });
+
+    setCheckStatus(allSelectedArePending);
+  }, [rowSelection, table]);
   return (
     <div className="flex flex-col gap-5 rounded-md border bg-white p-5 h-fit">
       <div className="flex justify-between items-center top-0">
@@ -251,26 +261,28 @@ export function DataTable<TData, TValue>({
           )}
           {user.role === "MANAGER" && selectedRows.length !== 0 && (
             <div className="flex gap-5">
-              {loadingApprove ? (
-                <LoadingSpinner className="" />
-              ) : (
-                <Button
-                  variant="outline"
-                  onClick={() => manageLeaveRequest(status.approved)}
-                >
-                  Approve
-                </Button>
-              )}
-              {loadingReject ? (
-                <LoadingSpinner className="" />
-              ) : (
-                <Button
-                  variant="destructive"
-                  onClick={() => manageLeaveRequest(status.rejected)}
-                >
-                  Reject
-                </Button>
-              )}
+              <Button
+                disabled={!checkStatus}
+                variant="outline"
+                onClick={() => manageLeaveRequest(status.approved)}
+              >
+                {loadingApprove ? (
+                  <LoadingSpinner className="" />
+                ) : (
+                  <>Approve all</>
+                )}
+              </Button>
+              <Button
+                disabled={!checkStatus}
+                variant="destructive"
+                onClick={() => manageLeaveRequest(status.rejected)}
+              >
+                {loadingReject ? (
+                  <LoadingSpinner className="" />
+                ) : (
+                  <>Reject all</>
+                )}
+              </Button>
             </div>
           )}
           {user.role !== "HR" && (

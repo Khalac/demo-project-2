@@ -25,10 +25,13 @@ import { DataTablePagination } from "../pagination";
 import { useState } from "react";
 import { useAppSelector } from "@/hook/redux-hook";
 import { CreateLeaveRequestContext } from "@/context";
-import { FilterSelectDate, FilterStatus } from "./_components";
-import FilterNameEmployee from "./_components/filter-name-employee";
-import DownloadData from "./_components/download-data";
-import ApproveRejectRequest from "./_components/approve-reject-request";
+import {
+  FilterSelectDate,
+  FilterStatus,
+  FilterNameEmployee,
+  DownloadData,
+  ApproveRejectRequest,
+} from "./_components";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

@@ -1,5 +1,5 @@
 import { Button, LoadingSpinner } from "@/components/ui";
-import { bulkUpdateLeaveRequest } from "@/features/leave-request/update-leave-request/form-for-role/action/bulk-update-leave-request";
+import { bulkUpdateLeaveRequest } from "@/features/leave-request/update-leave-request";
 import { convertLocalDateToUTC } from "@/utils";
 import { useState, useTransition } from "react";
 import { status } from "@/features/leave-request";

@@ -17,3 +17,6 @@ export * from "./select";
 export * from "./separator";
 export * from "./card";
 export * from "./chart";
+export * from "./skeleton";
+export * from "./dropdown-menu";
+export * from "./avatar";

@@ -10,7 +10,6 @@ import type { ListEmployeeType } from "./list-employee-type";
 import { useState, useEffect } from "react";
 import { getListEmployee } from "./action";
 import { columnsHR } from "./column-table-for-role/column-for-hr";
-import { useAppSelector } from "@/hook/redux-hook";
 import { getManager } from "@/features/leave-request/list-leave-request/action";
 import { getListEmployeeOfManager } from "./action/get-list-employee-of-manager";
 

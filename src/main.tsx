@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { Toaster } from "sonner";
 import {
   CreateLeaveRequestProvider,
+  EmployeeDetailProvider,
   UpdateLeaveRequestProvider,
 } from "./context";
 
@@ -16,8 +17,10 @@ createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <CreateLeaveRequestProvider>
         <UpdateLeaveRequestProvider>
-          <RouterProvider router={router} />
-          <Toaster />
+          <EmployeeDetailProvider>
+            <RouterProvider router={router} />
+            <Toaster />
+          </EmployeeDetailProvider>
         </UpdateLeaveRequestProvider>
       </CreateLeaveRequestProvider>
     </Provider>

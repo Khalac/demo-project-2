@@ -1,15 +1,19 @@
 import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui";
 
-const FilterNameEmployee = <TData,>({ table }: { table: Table<TData> }) => {
+const FilterNameEmployee = <TData,>({
+  table,
+  column,
+}: {
+  table: Table<TData>;
+  column: string;
+}) => {
   return (
     <Input
       placeholder="Filter employee name..."
-      value={
-        (table.getColumn("users_full_name")?.getFilterValue() as string) ?? ""
-      }
+      value={(table.getColumn(column)?.getFilterValue() as string) ?? ""}
       onChange={(event) =>
-        table.getColumn("users_full_name")?.setFilterValue(event.target.value)
+        table.getColumn(column)?.setFilterValue(event.target.value)
       }
       className="w-fit bg-white"
     />

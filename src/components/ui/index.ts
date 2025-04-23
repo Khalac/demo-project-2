@@ -8,7 +8,7 @@ export * from "./sheet";
 export * from "./popover";
 export * from "./calendar";
 export * from "./table";
-export * from "./data-table/data-table";
+export * from "./data-table/data-table-leave-request";
 export * from "./sonner";
 export * from "./checkbox";
 export * from "./alert-dialog";

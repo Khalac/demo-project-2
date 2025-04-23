@@ -19,7 +19,8 @@ const Dashboard = () => {
       )}
       {user.role !== "HR" && (
         <>
-          <ListLeaveRequest /> <CreateLeaveRequest />
+          <ListLeaveRequest />
+          <CreateLeaveRequest />
         </>
       )}
 

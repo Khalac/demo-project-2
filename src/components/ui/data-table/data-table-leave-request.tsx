@@ -1,6 +1,5 @@
 import {
   ColumnDef,
-  flexRender,
   getCoreRowModel,
   useReactTable,
   getPaginationRowModel,
@@ -9,15 +8,7 @@ import {
   Row,
 } from "@tanstack/react-table";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-  Button,
-} from "@/components/ui";
+import { Button } from "@/components/ui";
 import { Plus } from "lucide-react";
 import { useContext } from "react";
 import { UpdateLeaveRequestContext } from "@/context";
@@ -31,6 +22,7 @@ import {
   FilterNameEmployee,
   DownloadData,
   ApproveRejectRequest,
+  DataTable,
 } from "./_components";
 
 interface DataTableProps<TData, TValue> {
@@ -38,7 +30,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export function DataTableLeaveRequest<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -104,7 +96,7 @@ export function DataTable<TData, TValue>({
           <FilterStatus table={table} />
           {user.role !== "EMPLOYEE" && (
             <div className="flex items-center gap-5">
-              <FilterNameEmployee table={table} />
+              <FilterNameEmployee table={table} column="users_full_name" />
             </div>
           )}
         </div>
@@ -128,57 +120,7 @@ export function DataTable<TData, TValue>({
           )}
         </div>
       </div>
-      <div className="rounded-md border bg-white min-h-20 flex-1">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  onDoubleClick={() => getValueData(row.original)}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+      <DataTable table={table} columns={columns} getValueData={getValueData} />
 
       <DataTablePagination table={table} />
     </div>

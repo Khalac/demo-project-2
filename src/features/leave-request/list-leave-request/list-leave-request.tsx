@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getListLeaveRequest, listenToLeaveRequestTable } from "./action";
-import { DataTable, Skeleton } from "@/components";
+import { DataTableLeaveRequest, Skeleton } from "@/components";
 import type { ListleaveRequest } from "./list-leave-request-data-type";
 import { columnsEmployee, columnsManager } from "./list-for-role";
 import { useAppDispatch } from "@/hook/redux-hook";
@@ -44,7 +44,7 @@ const ListLeaveRequest = () => {
     <div className="py-5 h-1/2 items-center w-full">
       {!loading && data ? (
         <div className="flex flex-col gap-5">
-          <DataTable columns={columns} data={data} />
+          <DataTableLeaveRequest columns={columns} data={data} />
           {role === "MANAGER" && <Statistic data={data} />}
         </div>
       ) : (

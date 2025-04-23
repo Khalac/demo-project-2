@@ -5,7 +5,7 @@ import {
   listenRequestHistoryTable,
   groupHistoryByDate,
 } from "./action";
-import { LoadingSpinner } from "@/components";
+import { Skeleton } from "@/components";
 import type { HistoryGroup } from "./action/group-history-by-date";
 import { useAppSelector } from "@/hook/redux-hook";
 
@@ -45,7 +45,11 @@ const LeaveRequestHistory = ({ rowValue }: { rowValue: ListleaveRequest }) => {
   return (
     <div>
       {loading ? (
-        <LoadingSpinner className="m-auto" />
+        <div className="space-y-2 flex flex-col justify-center items-center">
+          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[150px]" />
+          <Skeleton className="h-4 w-[200px]" />
+        </div>
       ) : data.length === 0 ? (
         <div>No data found</div>
       ) : (

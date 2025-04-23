@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { groupHistoryByDate } from "../view-request-history/action";
-import { LoadingSpinner } from "@/components";
 import type { HistoryGroup } from "../view-request-history/action";
 import { useAppSelector } from "@/hook/redux-hook";
 import { getAllHistory } from "./action";
@@ -10,6 +9,7 @@ import { UpdateLeaveRequestContext } from "@/context";
 import { setUpdateRead, getLeaveRequestInformation } from "./action";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { Skeleton } from "@/components";
 enum field {
   start_date = "Start Date",
   end_date = "End Date",
@@ -23,7 +23,7 @@ const ListNotification = () => {
   const navigate = useNavigate();
   const { setOpenUpdate, setRowValue } = useContext(UpdateLeaveRequestContext);
   const user = useAppSelector((state) => state.user.user);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any>();
   const [data, setData] = useState<HistoryGroup[]>([]);
 
@@ -66,8 +66,12 @@ const ListNotification = () => {
   return (
     <div className="flex justify-start items-center flex-col h-full w-full gap-10 scroll-auto">
       {loading ? (
-        <LoadingSpinner className="m-auto" />
-      ) : data.length === 0 ? (
+        <div className="space-y-4">
+          <Skeleton className="h-5 w-[350px]" />
+          <Skeleton className="h-5 w-[250px]" />
+          <Skeleton className="h-5 w-[300px]" />
+        </div>
+      ) : !loading && data.length === 0 ? (
         <div>No data found</div>
       ) : (
         data.map((res) => {

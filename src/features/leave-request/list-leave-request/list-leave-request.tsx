@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getListLeaveRequest, listenToLeaveRequestTable } from "./action";
-import { DataTable, LoadingSpinner } from "@/components";
+import { DataTable, Skeleton } from "@/components";
 import type { ListleaveRequest } from "./list-leave-request-data-type";
 import { columnsEmployee, columnsManager } from "./list-for-role";
 import { useAppDispatch } from "@/hook/redux-hook";
@@ -48,8 +48,8 @@ const ListLeaveRequest = () => {
           {role === "MANAGER" && <Statistic data={data} />}
         </div>
       ) : (
-        <div className="w-full h-full flex justify-center items-center">
-          <LoadingSpinner className="" />
+        <div className="flex justify-center items-center w-full">
+          <Skeleton className="h-[300px] w-full rounded-xl" />
         </div>
       )}
     </div>

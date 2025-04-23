@@ -8,6 +8,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
+  Skeleton,
 } from "@/components";
 import type { ListleaveRequest } from "./list-leave-request-data-type";
 import { columnsHR } from "./list-for-role";
@@ -81,7 +82,9 @@ const ListLeaveRequestHR = () => {
           </div>
           <TabsContent value="all">
             {loading ? (
-              <LoadingSpinner className="" />
+              <div className="flex justify-center items-center w-full">
+                <Skeleton className="h-[300px] w-full rounded-xl" />
+              </div>
             ) : (
               <div className="flex flex-col gap-5">
                 <DataTable columns={columnsHR} data={data} />
@@ -94,9 +97,8 @@ const ListLeaveRequestHR = () => {
               return (
                 <TabsContent key={m.user_id} value={m.user_id}>
                   {managerLoading ? (
-                    <div className="w-full h-full flex justify-center items-center">
-                      {" "}
-                      <LoadingSpinner className="" />
+                    <div className="flex justify-center items-center w-full">
+                      <Skeleton className="h-[300px] w-full rounded-xl" />
                     </div>
                   ) : (
                     dataManager && (
@@ -111,7 +113,9 @@ const ListLeaveRequestHR = () => {
             })}
         </Tabs>
       ) : (
-        <LoadingSpinner className="" />
+        <div className=" w-full h-full">
+          <Skeleton className="h-[300px] w-full rounded-xl" />
+        </div>
       )}
     </div>
   );

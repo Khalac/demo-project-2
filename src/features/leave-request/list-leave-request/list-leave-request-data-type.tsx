@@ -14,6 +14,7 @@ export type ListleaveRequest = {
   reason: string;
   status?: status;
   rejected_reason?: string;
+  updated_at?: Date;
   users?: {
     full_name: string;
     email: string;

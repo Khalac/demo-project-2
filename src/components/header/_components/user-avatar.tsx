@@ -42,7 +42,9 @@ const UserAvatar = () => {
     <DropdownMenu>
       <DropdownMenuTrigger className="outline-none">
         <Avatar>
-          <AvatarFallback>{getInitials(user.full_name)}</AvatarFallback>
+          <AvatarFallback className="font-bold">
+            {getInitials(user.full_name)}
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

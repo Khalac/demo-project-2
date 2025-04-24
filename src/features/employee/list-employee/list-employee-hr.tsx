@@ -1,56 +1,47 @@
-import { useState, useEffect } from "react";
-import { getListLeaveRequest, listenToLeaveRequestTable } from "./action";
-import { getManager } from "./action";
+import { DataTableEmployee } from "@/components/ui/data-table/data-table-employee";
 import {
-  DataTableLeaveRequest,
+  Skeleton,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-  Skeleton,
 } from "@/components";
-import type { ListleaveRequest } from "./list-leave-request-data-type";
-import { columnsHR } from "./list-for-role";
-import { useAppDispatch } from "@/hook/redux-hook";
-import { saveListLeaveRequest } from "./slice";
-import { getListLeaveRequestEachManager } from "./action/get-list-request-each-manager";
-import { Statistic } from "../statistic";
+import type { ListEmployeeType } from "./list-employee-type";
+import { useState, useEffect } from "react";
+import { getListEmployee } from "./action";
+import { columnsHR } from "./column-table-for-role/column-for-hr";
+import { getManager } from "@/features/leave-request/list-leave-request/action";
+import { getListEmployeeOfManager } from "./action/get-list-employee-of-manager";
 
 type manager = {
   user_id: string;
   full_name: string;
 };
 
-const ListLeaveRequestHR = () => {
-  const dispatch = useAppDispatch();
+const ListEmployeeHR = () => {
   const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<ListEmployeeType[]>();
   const [manager, setManager] = useState<manager[]>();
-  const [data, setData] = useState<ListleaveRequest[]>();
-  const [dataManager, setDataManager] = useState<ListleaveRequest[]>();
+  const [dataManager, setDataManager] = useState<ListEmployeeType[]>();
   const [managerLoading, setManagerLoading] = useState(false);
 
-  const userListLeaveRequest = async () => {
+  const getEmployees = async () => {
     setLoading(true);
     const manager = await getManager();
     if (!manager.success) return;
     setManager(manager.data!);
-    const res = await getListLeaveRequest();
+    const res = await getListEmployee();
     if (!res.success) return;
-    setData(res.data);
+    setData(res.data?.filter((item) => item.role === "EMPLOYEE"));
     setLoading(false);
-    dispatch(saveListLeaveRequest(res.data));
   };
-  useEffect(() => {
-    userListLeaveRequest();
-    const unsubscribe = listenToLeaveRequestTable(userListLeaveRequest);
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
-  const getRequestForManager = async (id: string) => {
+  useEffect(() => {
+    getEmployees();
+  }, []);
+  const getEmployeeOfManager = async (id: string) => {
     setManagerLoading(true);
-    const requestData = await getListLeaveRequestEachManager(id);
+    const requestData = await getListEmployeeOfManager(id);
     if (!requestData.success) return;
 
     setDataManager(requestData.data);
@@ -71,7 +62,7 @@ const ListLeaveRequestHR = () => {
                     <TabsTrigger
                       key={m.user_id}
                       value={m.user_id}
-                      onClick={() => getRequestForManager(m.user_id)}
+                      onClick={() => getEmployeeOfManager(m.user_id)}
                     >
                       {m.full_name}
                     </TabsTrigger>
@@ -86,8 +77,7 @@ const ListLeaveRequestHR = () => {
               </div>
             ) : (
               <div className="flex flex-col gap-5">
-                <DataTableLeaveRequest columns={columnsHR} data={data} />
-                <Statistic data={data} />
+                <DataTableEmployee columns={columnsHR} data={data} />
               </div>
             )}
           </TabsContent>
@@ -102,11 +92,10 @@ const ListLeaveRequestHR = () => {
                   ) : (
                     dataManager && (
                       <div className="flex flex-col gap-5">
-                        <DataTableLeaveRequest
+                        <DataTableEmployee
                           columns={columnsHR}
                           data={dataManager}
                         />
-                        <Statistic data={dataManager} />
                       </div>
                     )
                   )}
@@ -123,4 +112,4 @@ const ListLeaveRequestHR = () => {
   );
 };
 
-export default ListLeaveRequestHR;
+export default ListEmployeeHR;

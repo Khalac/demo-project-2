@@ -7,6 +7,7 @@ import {
 } from "@/pages";
 import { ProtectedRoute, AuthRoute } from "./auth-guard";
 import Layout from "@/layout/Layout";
+import ListEmployeePage from "@/pages/list-employee-page";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
           {
             path: "notification",
             element: <NotificationPage />,
+          },
+          {
+            path: "employees",
+            element: <ListEmployeePage />,
           },
         ],
       },

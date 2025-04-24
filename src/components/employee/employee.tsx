@@ -4,6 +4,7 @@ import {
 } from "@/features/employee/list-employee";
 import { EmployeeDetail } from "@/features/employee/employee-detail";
 import { useAppSelector } from "@/hook/redux-hook";
+import { UserDetail } from "@/features/user/user-information";
 
 const Employee = () => {
   const user = useAppSelector((state) => state.user.user);
@@ -11,6 +12,7 @@ const Employee = () => {
     <div>
       {user.role === "MANAGER" ? <ListEmployeeManager /> : <ListEmployeeHR />}
       <EmployeeDetail />
+      <UserDetail />
     </div>
   );
 };

@@ -67,6 +67,7 @@ export const logOut = createAsyncThunk("user/logOut", async (_, thunkAPI) => {
         full_name: "",
         onboard_date: "",
         role: "",
+        avatar_url: "",
       },
     };
   } catch (error) {

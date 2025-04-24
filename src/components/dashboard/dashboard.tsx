@@ -6,6 +6,7 @@ import {
 import UpdateLeaveRequest from "@/features/leave-request/update-leave-request/update-leave-request";
 import { useAppSelector } from "@/hook/redux-hook";
 import { useNotification } from "@/features/leave-request/notification";
+import { UserDetail } from "@/features/user/user-information";
 
 const Dashboard = () => {
   const user = useAppSelector((state) => state.user.user);
@@ -26,6 +27,7 @@ const Dashboard = () => {
 
       <UpdateLeaveRequest />
       {user.role === "HR" && <ListLeaveRequestHR />}
+      <UserDetail />
     </div>
   );
 };

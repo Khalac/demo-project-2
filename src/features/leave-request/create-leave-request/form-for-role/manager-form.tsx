@@ -127,7 +127,7 @@ const ManagerForm = ({
     leaveDetail?.total_leaves ===
       leaveDetail?.total_used_leaves + leaveDetail?.total_waiting_leaves;
   return (
-    <div className="sm:p-5 px-5 flex flex-col overflow-auto">
+    <div className="sm:p-5 px-5 flex flex-col overflow-auto ">
       {getEmployeesLoading ? (
         <LoadingSpinner className="" />
       ) : (

@@ -73,27 +73,9 @@ const Statistic = ({ data }: { data: ListleaveRequest[] }) => {
                   data={pieChartData}
                   dataKey="totalRequest"
                   labelLine={false}
-                  innerRadius={60}
+                  innerRadius={50}
                   strokeWidth={5}
                   nameKey="name"
-                  label={({ payload, ...props }) => {
-                    return (
-                      <text
-                        cx={props.cx}
-                        cy={props.cy}
-                        x={props.x}
-                        y={props.y}
-                        textAnchor={props.textAnchor}
-                        dominantBaseline={props.dominantBaseline}
-                        fill="hsla(var(--foreground))"
-                      >
-                        {((payload.totalRequest / totalRequest) * 100).toFixed(
-                          2
-                        )}
-                        %
-                      </text>
-                    );
-                  }}
                 >
                   <Label
                     content={({ viewBox }) => {

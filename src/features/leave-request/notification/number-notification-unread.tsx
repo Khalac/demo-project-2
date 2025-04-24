@@ -36,11 +36,11 @@ const NumberNotificationUnread = () => {
   };
   return (
     <div
-      className="relative cursor-pointer"
+      className="relative cursor-pointer flex justify-center items-center"
       onClick={() => goToNotificationPage()}
     >
       <Bell />
-      <div className="absolute bg-red-600 text-white w-4 h-4 text-xs font-bold top-[-5px] right-[-2px] rounded-[50%] flex justify-center items-center">
+      <div className="absolute bg-red-600 text-white w-4 h-4 text-xs font-bold top-[-2px] right-[-2px] rounded-[50%] flex justify-center items-center">
         {numberOfNotificationUnread}
       </div>
     </div>

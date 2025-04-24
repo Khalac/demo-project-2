@@ -49,7 +49,7 @@ const ListLeaveRequest = () => {
         </div>
       ) : (
         <div className="flex justify-center items-center w-full">
-          <Skeleton className="h-[300px] w-full rounded-xl" />
+          <Skeleton className="h-[200px] sm:h-[300px] w-full rounded-xl" />
         </div>
       )}
     </div>

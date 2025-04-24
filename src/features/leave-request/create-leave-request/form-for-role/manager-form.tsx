@@ -22,7 +22,7 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { leaveRequestFormSchema } from "../schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createNewLeaveRequest } from "../action";
@@ -30,11 +30,17 @@ import type { LeaveRequestData } from "../leave-request-data-type";
 import { toast } from "sonner";
 import { useAppSelector } from "@/hook/redux-hook";
 import { convertLocalDateToUTC } from "@/utils";
-
 import {
   getManagedEmployee,
   ListEmployee,
 } from "../action/get-managed-employee";
+import { getLeaveDetail } from "../../user-leave-detail/action";
+
+type UserLeaveDetail = {
+  total_leaves: number;
+  total_used_leaves: number;
+  total_waiting_leaves: number;
+};
 
 const ManagerForm = ({
   setOpen,
@@ -50,6 +56,16 @@ const ManagerForm = ({
   const [getEmployeesLoading, setGetEmployeesLoading] = useState(false);
   const [listEmployees, setListEmployees] = useState<ListEmployee[]>();
   const [userIdSelect, setUserIdSelect] = useState("");
+  const [leaveDetail, setLeaveDetail] = useState<UserLeaveDetail>();
+  const [isPending, startTransition] = useTransition();
+
+  const getUserLeaveDetail = async (id: string) => {
+    startTransition(async () => {
+      const data = await getLeaveDetail(id);
+      if (!data.success) return;
+      setLeaveDetail(data.data);
+    });
+  };
 
   const form = useForm({
     resolver: zodResolver(leaveRequestFormSchema(leaveRequest, userIdSelect)),
@@ -96,9 +112,22 @@ const ManagerForm = ({
   useEffect(() => {
     getAllManagedEmployee();
   }, []);
+  const handleStartDateChange = (field: any, value: any) => {
+    field.onChange(value);
+    const endDate = form.getValues("end_date");
 
+    if (endDate) {
+      form.trigger("end_date");
+    } else {
+      form.clearErrors("end_date");
+    }
+  };
+  const isOutOfLeave =
+    leaveDetail &&
+    leaveDetail?.total_leaves ===
+      leaveDetail?.total_used_leaves + leaveDetail?.total_waiting_leaves;
   return (
-    <div className="p-5 flex flex-col gap-5">
+    <div className="sm:p-5 px-5 flex flex-col overflow-auto">
       {getEmployeesLoading ? (
         <LoadingSpinner className="" />
       ) : (
@@ -114,11 +143,12 @@ const ManagerForm = ({
                     onValueChange={(value) => {
                       field.onChange(value);
                       setUserIdSelect(value);
+                      getUserLeaveDetail(value);
                     }}
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-[200px]">
                         <SelectValue placeholder="Select an employee" />
                       </SelectTrigger>
                     </FormControl>
@@ -139,87 +169,87 @@ const ManagerForm = ({
                   <FormMessage />
                 </FormItem>
               )}
-            />
-            <div className="flex justify justify-between">
-              {" "}
-              <FormField
-                control={form.control}
-                name="start_date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Start date</FormLabel>
-                    <Popover modal={true}>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "P")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          autoFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="end_date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>End date</FormLabel>
-                    <Popover modal={true}>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "P")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          autoFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            />{" "}
             <FormField
+              control={form.control}
+              name="start_date"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Start date</FormLabel>
+                  <Popover modal={true}>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          disabled={isPending || isOutOfLeave}
+                          variant={"outline"}
+                          className={cn(
+                            "w-[250px] pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "P")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={(date) => handleStartDateChange(field, date)}
+                        autoFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="end_date"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>End date</FormLabel>
+                  <Popover modal={true}>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          disabled={isPending || isOutOfLeave}
+                          variant={"outline"}
+                          className={cn(
+                            "w-[250px] pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "P")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        autoFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              disabled={isPending || isOutOfLeave}
               control={form.control}
               name="total_leave_days"
               render={({ field }) => (
@@ -237,6 +267,7 @@ const ManagerForm = ({
               )}
             />
             <FormField
+              disabled={isPending || isOutOfLeave}
               control={form.control}
               name="total_leave_hours"
               render={({ field }) => (
@@ -254,6 +285,7 @@ const ManagerForm = ({
               )}
             />
             <FormField
+              disabled={isPending || isOutOfLeave}
               control={form.control}
               name="reason"
               render={({ field }) => (
@@ -267,9 +299,18 @@ const ManagerForm = ({
               )}
             />
             {error && <div className="text-red-600">{error}</div>}
-
+            {isOutOfLeave && (
+              <div className="text-red-600">
+                This employee is out of leave request
+              </div>
+            )}
             <Button
-              disabled={!form.formState.isDirty || !form.formState.isValid}
+              disabled={
+                !form.formState.isDirty ||
+                !form.formState.isValid ||
+                isPending ||
+                isOutOfLeave
+              }
               type="submit"
               className=""
             >

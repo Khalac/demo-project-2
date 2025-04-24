@@ -58,67 +58,56 @@ const ListLeaveRequestHR = () => {
   };
   return (
     <div className="w-full h-full flex justify-center items-center">
-      {!loading && data ? (
-        <Tabs defaultValue="all" className="w-full h-full">
-          <div className="flex justify-center items-center gap-5">
-            <TabsList className="cursor-pointer">
-              <TabsTrigger value="all">All</TabsTrigger>
-            </TabsList>
-            <TabsList className="gap-2 cursor-pointer">
-              {manager &&
-                manager.map((m) => {
-                  return (
-                    <TabsTrigger
-                      key={m.user_id}
-                      value={m.user_id}
-                      onClick={() => getRequestForManager(m.user_id)}
-                    >
-                      {m.full_name}
-                    </TabsTrigger>
-                  );
-                })}
-            </TabsList>
-          </div>
-          <TabsContent value="all">
-            {loading ? (
-              <div className="flex justify-center items-center w-full">
-                <Skeleton className="h-[300px] w-full rounded-xl" />
-              </div>
-            ) : (
-              <div className="flex flex-col gap-5">
-                <DataTableLeaveRequest columns={columnsHR} data={data} />
-                <Statistic data={data} />
-              </div>
-            )}
-          </TabsContent>
-          {manager &&
-            manager.map((m) => {
-              return (
-                <TabsContent key={m.user_id} value={m.user_id}>
-                  {managerLoading ? (
-                    <div className="flex justify-center items-center w-full">
-                      <Skeleton className="h-[300px] w-full rounded-xl" />
-                    </div>
-                  ) : (
-                    dataManager && (
-                      <div className="flex flex-col gap-5">
-                        <DataTableLeaveRequest
-                          columns={columnsHR}
-                          data={dataManager}
-                        />
-                        <Statistic data={dataManager} />
-                      </div>
-                    )
-                  )}
-                </TabsContent>
-              );
-            })}
-        </Tabs>
-      ) : (
-        <div className=" w-full h-full">
-          <Skeleton className="h-[300px] w-full rounded-xl" />
+      <Tabs defaultValue="all" className="w-full h-full">
+        <div className="flex justify-center items-center gap-5">
+          <TabsList className="cursor-pointer">
+            <TabsTrigger value="all">All</TabsTrigger>
+          </TabsList>
+          <TabsList className="gap-2 cursor-pointer">
+            {manager &&
+              manager.map((m) => {
+                return (
+                  <TabsTrigger
+                    key={m.user_id}
+                    value={m.user_id}
+                    onClick={() => getRequestForManager(m.user_id)}
+                  >
+                    {m.full_name}
+                  </TabsTrigger>
+                );
+              })}
+          </TabsList>
         </div>
-      )}
+        <TabsContent value="all">
+          {data && (
+            <div className="flex flex-col gap-5">
+              <DataTableLeaveRequest
+                columns={columnsHR}
+                data={data}
+                loading={loading}
+              />
+              <Statistic data={data} />
+            </div>
+          )}
+        </TabsContent>
+        {manager &&
+          manager.map((m) => {
+            return (
+              <TabsContent key={m.user_id} value={m.user_id}>
+                {dataManager && (
+                  <div className="flex flex-col gap-5">
+                    <DataTableLeaveRequest
+                      columns={columnsHR}
+                      data={dataManager}
+                      loading={managerLoading}
+                    />
+                    <Statistic data={dataManager} />
+                  </div>
+                )}
+              </TabsContent>
+            );
+          })}
+      </Tabs>
     </div>
   );
 };

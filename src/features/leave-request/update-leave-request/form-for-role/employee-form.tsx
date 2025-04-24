@@ -104,7 +104,16 @@ const EmployeeForm: React.FC<{
       });
     }
   }, [rowValue, leaveRequestList]);
+  const handleStartDateChange = (field: any, value: any) => {
+    field.onChange(value);
+    const endDate = form.getValues("end_date");
 
+    if (endDate) {
+      form.trigger("end_date");
+    } else {
+      form.clearErrors("end_date");
+    }
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -140,7 +149,7 @@ const EmployeeForm: React.FC<{
                     <Calendar
                       mode="single"
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(date) => handleStartDateChange(field, date)}
                       autoFocus
                     />
                   </PopoverContent>

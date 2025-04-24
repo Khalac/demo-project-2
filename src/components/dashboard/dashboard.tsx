@@ -11,8 +11,9 @@ import { UserDetail } from "@/features/user/user-information";
 const Dashboard = () => {
   const user = useAppSelector((state) => state.user.user);
   useNotification();
+
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full p-5">
       {user.role === "EMPLOYEE" && (
         <>
           <UserLeaveDetail />

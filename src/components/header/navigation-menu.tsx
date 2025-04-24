@@ -22,7 +22,7 @@ const NavigationMenu = () => {
     return nav.roles.includes(user.role);
   });
   return (
-    <div className="flex gap-10">
+    <div className="flex sm:gap-10 gap-5">
       {filterNavigate.map((e) => {
         return (
           <NavLink

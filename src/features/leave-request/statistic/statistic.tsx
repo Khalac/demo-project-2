@@ -55,57 +55,13 @@ const Statistic = ({ data }: { data: ListleaveRequest[] }) => {
   }, [data]);
 
   return (
-    <div className="w-full flex gap-5">
-      <Card className="w-1/5">
-        <CardHeader>
-          <CardTitle>Top 3 employees with the most absences</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer
-            config={chartConfig}
-            className="mx-auto aspect-4/3 min-h-[200px]"
-          >
-            {barChartData.length === 0 ? (
-              <div className="h-full w-full flex justify-center items-center">
-                No data found
-              </div>
-            ) : (
-              <BarChart
-                accessibilityLayer
-                data={barChartData}
-                margin={{
-                  top: 30,
-                }}
-              >
-                <CartesianGrid vertical={false} />
-                <XAxis
-                  dataKey="name"
-                  tickLine={false}
-                  tickMargin={10}
-                  axisLine={false}
-                />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <ChartLegend content={<ChartLegendContent />} />
-                <Bar
-                  barSize={30}
-                  dataKey="totalRequest"
-                  fill="var(--color-totalRequest)"
-                  radius={4}
-                />
-              </BarChart>
-            )}
-          </ChartContainer>
-        </CardContent>
-      </Card>
-      <Card className="flex flex-col w-1/5">
+    <div className="w-full flex sm:justify-around sm:items-center sm:flex-row flex-col gap-5">
+      <Card className="sm:w-1/3 w-full">
         <CardHeader className="items-center pb-0">
           <CardTitle>Employee absence percentage</CardTitle>
         </CardHeader>
-        <CardContent className="flex-1 pb-0">
-          <ChartContainer
-            config={chartConfig}
-            className="mx-auto aspect-4/3 min-h-[200px]"
-          >
+        <CardContent className="w-full">
+          <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
             {pieChartData.length === 0 ? (
               <div className="h-full w-full flex justify-center items-center">
                 No data found
@@ -170,6 +126,44 @@ const Statistic = ({ data }: { data: ListleaveRequest[] }) => {
                   />
                 </Pie>
               </PieChart>
+            )}
+          </ChartContainer>
+        </CardContent>
+      </Card>
+      <Card className="sm:w-1/3 w-full">
+        <CardHeader>
+          <CardTitle>Top 3 employees with the most absences</CardTitle>
+        </CardHeader>
+        <CardContent className="w-full">
+          <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+            {barChartData.length === 0 ? (
+              <div className="h-full w-full flex justify-center items-center">
+                No data found
+              </div>
+            ) : (
+              <BarChart
+                accessibilityLayer
+                data={barChartData}
+                margin={{
+                  top: 30,
+                }}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="name"
+                  tickLine={false}
+                  tickMargin={10}
+                  axisLine={false}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Bar
+                  barSize={30}
+                  dataKey="totalRequest"
+                  fill="var(--color-totalRequest)"
+                  radius={4}
+                />
+              </BarChart>
             )}
           </ChartContainer>
         </CardContent>

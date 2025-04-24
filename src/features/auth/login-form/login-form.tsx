@@ -49,7 +49,7 @@ const LoginForm = () => {
     toast.success("Login successfully");
   }
   return (
-    <div className="flex flex-col justify-center items-center gap-10 px-20 py-20 shadow-2xl rounded-2xl inset-shadow-sm">
+    <div className="flex flex-col justify-center items-center gap-10 sm:p-20 sm:shadow-2xl sm:rounded-2xl sm:inset-shadow-sm">
       <ForgotPasswordForm open={open} setOpen={setOpen} />
       <div className="text-3xl font-bold">Log in</div>
       <Form {...form}>

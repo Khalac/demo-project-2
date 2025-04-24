@@ -21,6 +21,7 @@ const ApproveRejectRequest = <TData,>({
   const [loadingApprove, setLoadingApprove] = useState(false);
   const [loadingReject, setLoadingReject] = useState(false);
   const [isPending, startTransition] = useTransition();
+
   const manageLeaveRequest = async (type: status) => {
     startTransition(async () => {
       if (type === "APPROVED") setLoadingApprove(true);
@@ -57,8 +58,9 @@ const ApproveRejectRequest = <TData,>({
       setLoadingReject(false);
     });
   };
+
   return (
-    <div className="flex gap-5">
+    <div className="flex flex-row gap-4 sm:gap-5">
       <Button
         disabled={
           !Object.keys(rowSelection).every((rowIndex) => {
@@ -69,6 +71,7 @@ const ApproveRejectRequest = <TData,>({
         }
         variant="outline"
         onClick={() => manageLeaveRequest(status.approved)}
+        className="w-fit sm:w-auto"
       >
         {loadingApprove ? <LoadingSpinner className="" /> : <>Approve all</>}
       </Button>
@@ -82,6 +85,7 @@ const ApproveRejectRequest = <TData,>({
         }
         variant="destructive"
         onClick={() => manageLeaveRequest(status.rejected)}
+        className="w-fit sm:w-auto"
       >
         {loadingReject ? <LoadingSpinner className="" /> : <>Reject all</>}
       </Button>

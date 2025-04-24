@@ -48,6 +48,7 @@ export function DataTableEmployee<TData, TValue>({
       },
     },
   });
+
   const getValueData = (data: any) => {
     setRowValueDetail(data);
     setOpenDetail(true);
@@ -55,15 +56,16 @@ export function DataTableEmployee<TData, TValue>({
 
   return (
     <div className="flex flex-col gap-5 rounded-md border bg-white p-5 h-fit">
-      <div className="flex justify-between items-center top-0">
-        <div className="flex items-center gap-5">
+      <div className="flex flex-col w-full sm:flex-row sm:justify-between items-start sm:items-center gap-5 sm:gap-0">
+        <div className="flex w-full items-center gap-5 flex-wrap sm:flex-nowrap">
           <FilterNameEmployee table={table} column="full_name" />
         </div>
 
-        <div className="flex items-center gap-5">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-5 w-full sm:w-auto">
           {user.role === "HR" && <DownloadData data={data} />}
         </div>
       </div>
+
       <DataTable table={table} columns={columns} getValueData={getValueData} />
 
       <DataTablePagination table={table} />

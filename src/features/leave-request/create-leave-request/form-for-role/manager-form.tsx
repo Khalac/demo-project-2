@@ -172,6 +172,7 @@ const ManagerForm = ({
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
+                          autoFocus
                         />
                       </PopoverContent>
                     </Popover>
@@ -209,6 +210,7 @@ const ManagerForm = ({
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
+                          autoFocus
                         />
                       </PopoverContent>
                     </Popover>

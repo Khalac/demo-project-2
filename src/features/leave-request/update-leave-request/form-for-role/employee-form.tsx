@@ -141,6 +141,7 @@ const EmployeeForm: React.FC<{
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
+                      autoFocus
                     />
                   </PopoverContent>
                 </Popover>
@@ -179,6 +180,7 @@ const EmployeeForm: React.FC<{
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
+                      autoFocus
                     />
                   </PopoverContent>
                 </Popover>

@@ -106,7 +106,7 @@ const EmployeeForm = ({
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-               
+                        autoFocus
                       />
                     </PopoverContent>
                   </Popover>
@@ -144,7 +144,7 @@ const EmployeeForm = ({
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                     
+                        autoFocus
                       />
                     </PopoverContent>
                   </Popover>

@@ -92,6 +92,7 @@ const HRForm = ({
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
+                      autoFocus
                     />
                   </PopoverContent>
                 </Popover>
@@ -130,6 +131,7 @@ const HRForm = ({
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
+                      autoFocus
                     />
                   </PopoverContent>
                 </Popover>

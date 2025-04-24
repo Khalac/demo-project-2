@@ -30,7 +30,7 @@ const NumberNotificationUnread = () => {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [user.user_id]);
   const goToNotificationPage = () => {
     navigate("/notification");
   };

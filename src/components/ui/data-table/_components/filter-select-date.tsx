@@ -39,7 +39,7 @@ const FilterSelectDate = ({
           mode="single"
           selected={globalFilter}
           onSelect={setGlobalFilter}
-          initialFocus
+          autoFocus
         />
       </PopoverContent>
     </Popover>

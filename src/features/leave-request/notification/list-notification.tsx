@@ -24,13 +24,12 @@ const ListNotification = () => {
   const { setOpenUpdate, setRowValue } = useContext(UpdateLeaveRequestContext);
   const user = useAppSelector((state) => state.user.user);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<any>();
   const [data, setData] = useState<HistoryGroup[]>([]);
 
   const getUpdateToTrigger = async () => {
     const res = await getAllHistory(user.user_id);
     if (!res.success) {
-      setError(res.error);
+      toast.error(res.error?.message);
       setLoading(false);
     }
     setLoading(false);

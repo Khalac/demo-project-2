@@ -10,7 +10,7 @@ export const listenToLeaveRequestTable = (userListLeaveRequest: () => void) => {
         schema: "public",
         table: "leave_request",
       },
-      (payload) => userListLeaveRequest()
+      () => userListLeaveRequest()
     )
     .subscribe();
 

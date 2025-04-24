@@ -20,6 +20,7 @@ import { tryCatch } from "@/utils";
 import { useContext } from "react";
 import { UserDetailContext } from "@/context";
 import { downloadAvatar } from "@/features/user/user-information/action/download-avatar";
+import { toast } from "sonner";
 
 const UserAvatar = () => {
   const { setOpenUserDetail, avatar, setAvatar } =
@@ -32,7 +33,7 @@ const UserAvatar = () => {
       .join("")
       .toUpperCase();
   };
-  const [error, setError] = useState("");
+
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const UserAvatar = () => {
     const { data, error } = await tryCatch(dispatch(logOut()).unwrap());
     if (error) {
       setLoading(false);
-      setError(error.message);
+      toast.error(error.message);
     }
     if (data?.success) {
       setLoading(false);

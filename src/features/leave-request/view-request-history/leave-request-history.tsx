@@ -8,6 +8,7 @@ import {
 import { Skeleton } from "@/components";
 import type { HistoryGroup } from "./action/group-history-by-date";
 import { useAppSelector } from "@/hook/redux-hook";
+import { toast } from "sonner";
 
 enum field {
   start_date = "Start Date",
@@ -21,14 +22,13 @@ enum field {
 const LeaveRequestHistory = ({ rowValue }: { rowValue: ListleaveRequest }) => {
   const user = useAppSelector((state) => state.user.user);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<any>();
   const [data, setData] = useState<HistoryGroup[]>([]);
   const leaveRequestHistory = async () => {
     setLoading(true);
     const res = await getRequestHistory(rowValue.request_id!);
 
     if (!res.success) {
-      setError(res.error);
+      toast.error(res.error?.message);
       setLoading(false);
     }
     setLoading(false);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LoadingSpinner, Skeleton } from "@/components";
+import { Skeleton } from "@/components";
 import { getLeaveDetail, listenToLeaveDetailTable } from "./action";
 import { useAppSelector } from "@/hook/redux-hook";
 

@@ -10,7 +10,7 @@ export const listenToLeaveDetailTable = (getUserLeaveDetail: () => void) => {
         schema: "public",
         table: "leave_details",
       },
-      (payload) => getUserLeaveDetail()
+      () => getUserLeaveDetail()
     )
     .subscribe();
 

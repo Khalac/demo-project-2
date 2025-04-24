@@ -41,11 +41,7 @@ export function DataTableLeaveRequest<TData, TValue>({
   const [globalFilter, setGlobalFilter] = useState<Date>();
   const [rowSelection, setRowSelection] = useState({});
 
-  const customFilterFn = (
-    rows: Row<TData>,
-    columnId: any,
-    filterValue: any
-  ) => {
+  const customFilterFn = (rows: Row<TData>, _: any, filterValue: any) => {
     if (!filterValue) return true;
 
     const inputDate = new Date(filterValue.getTime() + 7 * 60 * 60 * 1000);

@@ -5,10 +5,7 @@ import { useState, useEffect } from "react";
 import { getListEmployee } from "./action";
 import { columnsManager } from "./column-table-for-role/column-for-manager";
 
-import { useAppSelector } from "@/hook/redux-hook";
-
 const ListEmployeeManager = () => {
-  const user = useAppSelector((state) => state.user.user);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<ListEmployeeType[]>();
   const userListLeaveRequest = async () => {

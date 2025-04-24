@@ -37,7 +37,7 @@ const LoginForm = () => {
   async function onSubmit(values: DataLogin) {
     setLoading(true);
 
-    const { data, error } = await tryCatch(dispatch(logIn(values)).unwrap());
+    const { error } = await tryCatch(dispatch(logIn(values)).unwrap());
     if (error) {
       setLoading(false);
       setError(error);

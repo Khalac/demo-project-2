@@ -7,7 +7,6 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-  Skeleton,
 } from "@/components";
 import type { ListleaveRequest } from "./list-leave-request-data-type";
 import { columnsHR } from "./list-for-role";

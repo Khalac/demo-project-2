@@ -10,6 +10,7 @@ import {
   CreateLeaveRequestProvider,
   EmployeeDetailProvider,
   UpdateLeaveRequestProvider,
+  UserDetailProvider,
 } from "./context";
 
 createRoot(document.getElementById("root")!).render(
@@ -18,8 +19,10 @@ createRoot(document.getElementById("root")!).render(
       <CreateLeaveRequestProvider>
         <UpdateLeaveRequestProvider>
           <EmployeeDetailProvider>
-            <RouterProvider router={router} />
-            <Toaster />
+            <UserDetailProvider>
+              <RouterProvider router={router} />
+              <Toaster />
+            </UserDetailProvider>
           </EmployeeDetailProvider>
         </UpdateLeaveRequestProvider>
       </CreateLeaveRequestProvider>

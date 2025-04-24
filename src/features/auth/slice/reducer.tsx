@@ -9,6 +9,7 @@ const initialState = {
     full_name: "",
     onboard_date: "",
     role: "",
+    avatar_url: "",
   },
   loading: false,
   error: {},

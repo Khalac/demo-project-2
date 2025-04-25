@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/hook/redux-hook";
 import { tryCatch } from "@/utils";
 import { useContext } from "react";
-import { UserDetailContext } from "@/context";
+import { UserDetailContext } from "@/features/user/user-information/model";
 import { downloadAvatar } from "@/features/user/user-information/action/download-avatar";
 import { toast } from "sonner";
 

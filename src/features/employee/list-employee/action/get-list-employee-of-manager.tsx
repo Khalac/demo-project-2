@@ -1,5 +1,5 @@
 import { supabase } from "@/utils";
-import type { ListEmployeeType } from "../list-employee-type";
+import type { ListEmployeeType } from "../model/list-employee-type";
 export const getListEmployeeOfManager = async (id: string) => {
   const { data, error } = await supabase
     .from("users")

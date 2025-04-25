@@ -12,17 +12,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  LoadingSpinner,
 } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { LoadingSpinner } from "@/components";
-
 import { useNavigate } from "react-router-dom";
-import resetPassword from "./reset-password";
-
-import type { ForgotPasswordType } from "./forgot-password-form-type";
-import { ForgotPasswordFormSchema } from "./forgot-password-form-type";
+import { resetPassword } from "./action";
+import { type ForgotPasswordType, ForgotPasswordFormSchema } from "./model";
 import { toast } from "sonner";
 
 const ForgotPasswordForm = ({

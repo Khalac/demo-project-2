@@ -1,17 +1,11 @@
-import { DataTableEmployee } from "@/components/ui/data-table/data-table-employee";
-import {
-  Skeleton,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components";
-import type { ListEmployeeType } from "./list-employee-type";
+import { DataTableEmployee } from "./_components";
+import type { ListEmployeeType } from "./model";
 import { useState, useEffect } from "react";
 import { getListEmployee } from "./action";
-import { columnsHR } from "./column-table-for-role/column-for-hr";
+import { columnsHR } from "./column-table-for-role";
 import { getManager } from "@/features/leave-request/list-leave-request/action";
-import { getListEmployeeOfManager } from "./action/get-list-employee-of-manager";
+import { getListEmployeeOfManager } from "./action";
+import { ManagerTab } from "@/components";
 
 type manager = {
   user_id: string;
@@ -49,65 +43,24 @@ const ListEmployeeHR = () => {
   };
   return (
     <div className="w-full h-full flex justify-center items-center">
-      {!loading && data ? (
-        <Tabs defaultValue="all" className="w-full h-full">
-          <div className="flex justify-center items-center gap-5">
-            <TabsList className="cursor-pointer">
-              <TabsTrigger value="all">All</TabsTrigger>
-            </TabsList>
-            <TabsList className="gap-2 cursor-pointer">
-              {manager &&
-                manager.map((m) => {
-                  return (
-                    <TabsTrigger
-                      key={m.user_id}
-                      value={m.user_id}
-                      onClick={() => getEmployeeOfManager(m.user_id)}
-                    >
-                      {m.full_name}
-                    </TabsTrigger>
-                  );
-                })}
-            </TabsList>
-          </div>
-          <TabsContent value="all">
-            {loading ? (
-              <div className="flex justify-center items-center w-full">
-                <Skeleton className="h-[300px] w-full rounded-xl" />
-              </div>
-            ) : (
-              <div className="flex flex-col gap-5">
-                <DataTableEmployee columns={columnsHR} data={data} />
-              </div>
-            )}
-          </TabsContent>
-          {manager &&
-            manager.map((m) => {
-              return (
-                <TabsContent key={m.user_id} value={m.user_id}>
-                  {managerLoading ? (
-                    <div className="flex justify-center items-center w-full">
-                      <Skeleton className="h-[300px] w-full rounded-xl" />
-                    </div>
-                  ) : (
-                    dataManager && (
-                      <div className="flex flex-col gap-5">
-                        <DataTableEmployee
-                          columns={columnsHR}
-                          data={dataManager}
-                        />
-                      </div>
-                    )
-                  )}
-                </TabsContent>
-              );
-            })}
-        </Tabs>
-      ) : (
-        <div className=" w-full h-full">
-          <Skeleton className="h-[300px] w-full rounded-xl" />
-        </div>
-      )}
+      <ManagerTab
+        manager={manager}
+        fn={getEmployeeOfManager}
+        data={data}
+        dataManager={dataManager}
+        loading={loading}
+        loadingGetManager={managerLoading}
+      >
+        {(currentData, isLoading) => (
+          <>
+            <DataTableEmployee
+              columns={columnsHR}
+              data={currentData}
+              loading={isLoading}
+            />
+          </>
+        )}
+      </ManagerTab>
     </div>
   );
 };

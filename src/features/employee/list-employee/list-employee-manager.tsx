@@ -1,6 +1,5 @@
-import { DataTableEmployee } from "@/components/ui/data-table/data-table-employee";
-import { Skeleton } from "@/components";
-import type { ListEmployeeType } from "./list-employee-type";
+import { DataTableEmployee } from "./_components";
+import type { ListEmployeeType } from "./model/list-employee-type";
 import { useState, useEffect } from "react";
 import { getListEmployee } from "./action";
 import { columnsManager } from "./column-table-for-role/column-for-manager";
@@ -20,13 +19,13 @@ const ListEmployeeManager = () => {
 
   return (
     <div className="py-5 h-1/2 items-center w-full">
-      {!loading && data ? (
+      {data && (
         <div className="flex flex-col gap-5">
-          <DataTableEmployee columns={columnsManager} data={data} />
-        </div>
-      ) : (
-        <div className="flex justify-center items-center w-full">
-          <Skeleton className="h-[300px] w-full rounded-xl" />
+          <DataTableEmployee
+            columns={columnsManager}
+            data={data}
+            loading={loading}
+          />
         </div>
       )}
     </div>

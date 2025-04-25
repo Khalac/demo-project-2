@@ -6,7 +6,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui";
-import { EmployeeDetailContext } from "@/context";
+import { EmployeeDetailContext } from "./model";
 import { useAppSelector } from "@/hook/redux-hook";
 import { useContext } from "react";
 const EmployeeDetail = () => {

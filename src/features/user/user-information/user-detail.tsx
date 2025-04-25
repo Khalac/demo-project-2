@@ -8,7 +8,7 @@ import {
   Button,
 } from "@/components/ui";
 import Avatar from "./_components/avatar";
-import { UserDetailContext } from "@/context";
+import { UserDetailContext } from "./model";
 import { useAppSelector } from "@/hook/redux-hook";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";

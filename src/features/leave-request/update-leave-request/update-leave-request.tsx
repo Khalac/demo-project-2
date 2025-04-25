@@ -13,7 +13,7 @@ import { EmployeeForm, HRForm, ManagerForm } from "./form-for-role";
 import { useAppSelector } from "@/hook/redux-hook";
 import LeaveRequestHistory from "../view-request-history/leave-request-history";
 import { useContext } from "react";
-import { UpdateLeaveRequestContext } from "@/context";
+import { UpdateLeaveRequestContext } from "./model";
 
 const roles = ["EMPLOYEE", "HR", "MANAGER"] as const;
 

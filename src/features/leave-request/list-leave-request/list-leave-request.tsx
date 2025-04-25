@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { getListLeaveRequest, listenToLeaveRequestTable } from "./action";
-import { DataTableLeaveRequest, Skeleton } from "@/components";
-import type { ListleaveRequest } from "./list-leave-request-data-type";
+import { DataTableLeaveRequest } from "./data-table";
+import type { ListleaveRequest } from "./model";
 import { columnsEmployee, columnsManager } from "./list-for-role";
 import { useAppDispatch } from "@/hook/redux-hook";
-import { saveListLeaveRequest } from "./slice";
+import { saveListLeaveRequest } from "./model/slice";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAppSelector } from "@/hook/redux-hook";
 import { Statistic } from "../statistic";
@@ -42,14 +42,14 @@ const ListLeaveRequest = () => {
   const columns = columnsByRole[role];
   return (
     <div className="py-5 h-1/2 items-center w-full">
-      {!loading && data ? (
+      {data && (
         <div className="flex flex-col gap-5">
-          <DataTableLeaveRequest columns={columns} data={data} />
+          <DataTableLeaveRequest
+            columns={columns}
+            data={data}
+            loading={loading}
+          />
           {role === "MANAGER" && <Statistic data={data} />}
-        </div>
-      ) : (
-        <div className="flex justify-center items-center w-full">
-          <Skeleton className="h-[200px] sm:h-[300px] w-full rounded-xl" />
         </div>
       )}
     </div>

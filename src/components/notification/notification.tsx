@@ -1,4 +1,4 @@
-import ListNotification from "@/features/leave-request/notification/list-notification";
+import ListNotification from "@/features/leave-request/notification/list-notification/list-notification";
 
 const Notification = () => {
   return <ListNotification />;

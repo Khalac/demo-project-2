@@ -13,9 +13,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { LoadingSpinner } from "@/components";
 import { useNavigate } from "react-router-dom";
-import { resetPasswordFormSchema } from "./schema";
-import updatePassword from "./update-password";
-import type { ResetPassword } from "./reset-password-form-type";
+import { resetPasswordFormSchema } from "./model/schema";
+import { updatePassword } from "./action";
+import type { ResetPassword } from "./model";
 import { toast } from "sonner";
 
 const ResetPasswordForm = () => {
@@ -84,13 +84,9 @@ const ResetPasswordForm = () => {
           />
           {error && <div className="text-red-600">{error}</div>}
           <div className="w-full flex justify-center">
-            {loading ? (
-              <LoadingSpinner className="" />
-            ) : (
-              <Button type="submit" className="">
-                Submit
-              </Button>
-            )}
+            <Button type="submit" className="">
+              {loading ? <LoadingSpinner className="" /> : <>Submit</>}
+            </Button>
           </div>
         </form>
       </Form>

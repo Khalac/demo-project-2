@@ -22,7 +22,6 @@ import { DataLogin } from "./login-form-type";
 
 const LoginForm = () => {
   const [open, setOpen] = useState(false);
-  const [error, setError] = useState<any>();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -40,7 +39,7 @@ const LoginForm = () => {
     const { error } = await tryCatch(dispatch(logIn(values)).unwrap());
     if (error) {
       setLoading(false);
-      setError(error);
+      toast.error(String(error));
       return;
     }
 
@@ -49,7 +48,7 @@ const LoginForm = () => {
     toast.success("Login successfully");
   }
   return (
-    <div className="flex flex-col justify-center items-center gap-10 px-20 py-20 shadow-2xl rounded-2xl inset-shadow-sm">
+    <div className="flex flex-col justify-center items-center gap-10 sm:p-20 sm:shadow-2xl sm:rounded-2xl sm:inset-shadow-sm">
       <ForgotPasswordForm open={open} setOpen={setOpen} />
       <div className="text-3xl font-bold">Log in</div>
       <Form {...form}>
@@ -78,15 +77,11 @@ const LoginForm = () => {
               </FormItem>
             )}
           />
-          {error && <div className="text-red-600">{error}</div>}
+
           <div className="w-full flex justify-center">
-            {loading ? (
-              <LoadingSpinner className="" />
-            ) : (
-              <Button className="" type="submit">
-                Submit
-              </Button>
-            )}
+            <Button className="" type="submit">
+              {loading ? <LoadingSpinner className="" /> : <>Submit</>}
+            </Button>
           </div>
         </form>
       </Form>

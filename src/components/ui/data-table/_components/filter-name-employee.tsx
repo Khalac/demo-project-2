@@ -15,7 +15,7 @@ const FilterNameEmployee = <TData,>({
       onChange={(event) =>
         table.getColumn(column)?.setFilterValue(event.target.value)
       }
-      className="w-fit bg-white"
+      className="w-full sm:w-fit bg-white text-sm"
     />
   );
 };

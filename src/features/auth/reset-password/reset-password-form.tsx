@@ -6,6 +6,7 @@ import {
   FormField,
   FormItem,
   FormMessage,
+  FormDescription,
 } from "@/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -42,10 +43,13 @@ const ResetPasswordForm = () => {
     }
   }
   return (
-    <div className="flex flex-col justify-center items-center gap-10 px-20 py-20 shadow-2xl rounded-2xl inset-shadow-sm">
+    <div className="flex flex-col justify-center items-center gap-10 sm:p-20 sm:shadow-2xl sm:rounded-2xl sm:inset-shadow-sm">
       <div className="text-3xl font-bold ]">Reset your password</div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormDescription className="text-center">
+            Inpur your new password
+          </FormDescription>
           <FormField
             control={form.control}
             name="password"

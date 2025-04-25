@@ -9,8 +9,6 @@ export const ProtectedRoute = () => {
 };
 
 export const AuthRoute = () => {
-  const { loading } = useGetSession();
-  if (loading) return;
   const userId = localStorage.getItem("userId");
   return userId ? <Navigate to={"/"} /> : <Outlet />;
 };

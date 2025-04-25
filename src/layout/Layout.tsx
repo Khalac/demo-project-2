@@ -3,9 +3,9 @@ import { Header } from "@/components";
 
 const Layout = () => {
   return (
-    <div className="bg-[#edf2f7] h-[100vh] flex flex-col">
+    <div className="bg-[#edf2f7] w-full flex flex-col h-[100dvh]">
       <Header />
-      <main className="p-5 flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-scroll overflow-x-hidden">
         <Outlet />
       </main>
     </div>

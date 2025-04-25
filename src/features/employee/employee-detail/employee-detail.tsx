@@ -17,7 +17,7 @@ const EmployeeDetail = () => {
 
   return (
     <Sheet open={openDetail} onOpenChange={setOpenDetail}>
-      <SheetContent className="min-w-[20vw]">
+      <SheetContent className="min-w-[100vw] sm:min-w-[20vw]">
         <SheetHeader>
           <SheetTitle>Employee detail</SheetTitle>
         </SheetHeader>

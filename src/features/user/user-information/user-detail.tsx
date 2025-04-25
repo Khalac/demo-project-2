@@ -41,7 +41,7 @@ const UserDetail = () => {
 
   return (
     <Sheet open={openUserDetail} onOpenChange={setOpenUserDetail}>
-      <SheetContent className="min-w-[30vw]">
+      <SheetContent className="min-w-[100vw] sm:min-w-[30vw] overflow-y-auto sm:overflow-hidden">
         <SheetHeader>
           <SheetTitle>User detail</SheetTitle>
         </SheetHeader>

@@ -19,7 +19,7 @@ const FilterStatus = <TData,>({ table }: { table: Table<TData> }) => {
       }}
       value={(table.getColumn("status")?.getFilterValue() as string) ?? ""}
     >
-      <SelectTrigger className="w-fit bg-white">
+      <SelectTrigger className="w-full sm:w-fit bg-white">
         <SelectValue placeholder="Filter status" />
       </SelectTrigger>
       <SelectContent>

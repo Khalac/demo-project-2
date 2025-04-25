@@ -9,6 +9,7 @@ import { Skeleton } from "@/components";
 import type { HistoryGroup } from "./action/group-history-by-date";
 import { useAppSelector } from "@/hook/redux-hook";
 import { toast } from "sonner";
+import { Separator } from "@/components";
 
 enum field {
   start_date = "Start Date",
@@ -63,32 +64,39 @@ const LeaveRequestHistory = ({ rowValue }: { rowValue: ListleaveRequest }) => {
                 </div>
                 <div className="flex-grow border-t border-gray-300"></div>
               </div>
-              {res.records.map((change) => {
-                return (
-                  <div className="flex items-center justify-between my-4">
-                    <div>
-                      <span className="font-bold">
-                        {user.user_id === change.userChange.user_id ? (
-                          <>You</>
-                        ) : (
-                          change.userChange.full_name
-                        )}{" "}
-                      </span>
-                      {change.key === "create" ? (
-                        <span className="text-gray-600">
-                          have create a new leave request
-                        </span>
-                      ) : (
-                        <span className="text-gray-600">
-                          changed {field[change.key as keyof typeof field]} from{" "}
-                          {change.oldValue} to {change.newValue}
-                        </span>
-                      )}
-                    </div>
-                    <div className="text-gray-600">{change.atTime}</div>
-                  </div>
-                );
-              })}
+              <div className="flex flex-col gap-4 pt-1">
+                {res.records.map((change, index) => {
+                  return (
+                    <>
+                      <div className="flex flex-col cursor-pointer text-sm sm:text-xs py-2">
+                        <div>
+                          <span className="font-bold">
+                            {user.user_id === change.userChange.user_id ? (
+                              <>You</>
+                            ) : (
+                              change.userChange.full_name
+                            )}{" "}
+                          </span>
+                          {change.key === "create" ? (
+                            <span className="text-gray-600">
+                              have create a new leave request
+                            </span>
+                          ) : (
+                            <span className="text-gray-600">
+                              changed {field[change.key as keyof typeof field]}{" "}
+                              from {change.oldValue} to {change.newValue}
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-gray-600 text-xs">
+                          {change.atTime}
+                        </div>
+                      </div>
+                      {index !== res.records.length - 1 && <Separator />}
+                    </>
+                  );
+                })}
+              </div>
             </div>
           );
         })

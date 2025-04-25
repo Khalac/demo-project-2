@@ -2,7 +2,7 @@ import { Notification } from "@/components";
 
 const NotificationPage = () => {
   return (
-    <div className="">
+    <div className="py-5">
       <Notification />
     </div>
   );

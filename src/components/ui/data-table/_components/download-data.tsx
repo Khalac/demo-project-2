@@ -28,7 +28,7 @@ const DownloadData = <TData,>({ data }: { data: TData[] }) => {
   };
   return (
     <Button
-      className="flex cursor-pointer gap-2"
+      className="flex cursor-pointer gap-2 w-full sm:w-fit"
       onClick={() => exportToExcel(data, "leave-request")}
     >
       <Download />

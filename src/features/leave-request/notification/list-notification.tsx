@@ -9,7 +9,7 @@ import { UpdateLeaveRequestContext } from "@/context";
 import { setUpdateRead, getLeaveRequestInformation } from "./action";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Skeleton } from "@/components";
+import { Separator, Skeleton } from "@/components";
 enum field {
   start_date = "Start Date",
   end_date = "End Date",
@@ -75,7 +75,7 @@ const ListNotification = () => {
       ) : (
         data.map((res) => {
           return (
-            <div className="bg-white p-10 rounded-2xl w-1/2">
+            <div className="bg-white sm:p-10 p-5 rounded-2xl sm:w-1/2 w-full">
               <div className="flex items-center w-full">
                 <div className="flex-grow border-t border-gray-300"></div>
                 <div className="px-4 text-gray-600 text-sm font-light">
@@ -83,36 +83,41 @@ const ListNotification = () => {
                 </div>
                 <div className="flex-grow border-t border-gray-300"></div>
               </div>
-              <div className="flex flex-col gap-4">
-                {res.records.map((change) => {
+              <div className="flex flex-col gap-4 pt-2">
+                {res.records.map((change, index) => {
                   return (
-                    <div
-                      className="flex items-center justify-between cursor-pointer p-2"
-                      onClick={() =>
-                        openLeaveRequest(change.requestId, change.historyId)
-                      }
-                    >
-                      <div>
-                        <span className="font-bold">
-                          {user.user_id === change.userChange.user_id ? (
-                            <>You</>
+                    <>
+                      <div
+                        className="flex flex-col sm:flex-row sm:justify-between cursor-pointer text-sm py-2 sm:text-sm"
+                        onClick={() =>
+                          openLeaveRequest(change.requestId, change.historyId)
+                        }
+                      >
+                        <div className="">
+                          <span className="font-bold">
+                            {user.user_id === change.userChange.user_id ? (
+                              <>You</>
+                            ) : (
+                              change.userChange.full_name
+                            )}{" "}
+                          </span>
+                          {change.key === "create" ? (
+                            <span className="text-gray-600">
+                              have create a new leave request
+                            </span>
                           ) : (
-                            change.userChange.full_name
-                          )}{" "}
-                        </span>
-                        {change.key === "create" ? (
-                          <span className="text-gray-600">
-                            have create a new leave request
-                          </span>
-                        ) : (
-                          <span className="text-gray-600">
-                            changed {field[change.key as keyof typeof field]}{" "}
-                            from {change.oldValue} to {change.newValue}
-                          </span>
-                        )}
+                            <span className="text-gray-600">
+                              changed {field[change.key as keyof typeof field]}{" "}
+                              from {change.oldValue} to {change.newValue}
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-gray-400 text-xs">
+                          {change.atTime}
+                        </div>
                       </div>
-                      <div className="text-gray-600">{change.atTime}</div>
-                    </div>
+                      {index !== res.records.length - 1 && <Separator />}
+                    </>
                   );
                 })}
               </div>

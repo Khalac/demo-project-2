@@ -38,6 +38,7 @@ const UserAvatar = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const handleLogout = async () => {
+    localStorage.removeItem("userId");
     setLoading(true);
     const { data, error } = await tryCatch(dispatch(logOut()).unwrap());
     if (error) {

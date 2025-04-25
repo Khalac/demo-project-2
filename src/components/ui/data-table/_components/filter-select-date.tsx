@@ -22,7 +22,7 @@ const FilterSelectDate = ({
         <Button
           variant={"outline"}
           className={cn(
-            "w-fit pl-3 text-left font-normal",
+            "w-full sm:w-fit pl-3 text-left font-normal",
             !globalFilter && "text-muted-foreground"
           )}
         >
@@ -39,7 +39,7 @@ const FilterSelectDate = ({
           mode="single"
           selected={globalFilter}
           onSelect={setGlobalFilter}
-          initialFocus
+          autoFocus
         />
       </PopoverContent>
     </Popover>

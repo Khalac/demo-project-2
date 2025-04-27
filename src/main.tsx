@@ -6,10 +6,10 @@ import { router } from "@/router";
 import { store } from "./redux-store";
 import { Provider } from "react-redux";
 import { Toaster } from "sonner";
-import { UpdateLeaveRequestProvider } from "./features/leave-request/update-leave-request/model";
-import { UserDetailProvider } from "./features/user/user-information/model";
+import { UpdateLeaveRequestProvider } from "./features/leave-request";
+import { UserDetailProvider } from "./features/user";
 import { CreateLeaveRequestProvider } from "./features/leave-request";
-import { EmployeeDetailProvider } from "./features/employee/employee-detail/model";
+import { EmployeeDetailProvider } from "./features/employee";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

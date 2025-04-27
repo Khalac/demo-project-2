@@ -4,10 +4,10 @@ import {
   LoginPage,
   NotificationPage,
   ResetPasswordPage,
+  ListEmployeePage,
 } from "@/pages";
 import { ProtectedRoute, AuthRoute } from "./auth-guard";
 import Layout from "@/layout/Layout";
-import ListEmployeePage from "@/pages/list-employee-page";
 
 export const router = createBrowserRouter([
   {

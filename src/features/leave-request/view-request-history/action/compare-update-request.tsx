@@ -1,4 +1,4 @@
-import type { LeaveRequestHistory } from "../leave-request-history-data-type";
+import type { LeaveRequestHistory } from "../model/leave-request-history-data-type";
 import { format } from "date-fns";
 
 const compareUpdateRequest = (data: LeaveRequestHistory) => {

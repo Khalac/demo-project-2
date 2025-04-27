@@ -1,5 +1,5 @@
 import { supabase } from "@/utils";
-import type { LeaveRequestHistory } from "../../view-request-history";
+import type { LeaveRequestHistory } from "@/features/leave-request/view-request-history";
 
 export const getAllHistory = async (user_id: string) => {
   const { data, error } = await supabase

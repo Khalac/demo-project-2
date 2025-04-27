@@ -11,15 +11,14 @@ import {
   LoadingSpinner,
   Button,
 } from "@/components/ui";
-import { logOut } from "@/features/auth/slice";
+import { logOut } from "@/features/auth";
 import { useAppSelector } from "@/hook/redux-hook";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/hook/redux-hook";
 import { tryCatch } from "@/utils";
 import { useContext } from "react";
-import { UserDetailContext } from "@/features/user/user-information/model";
-import { downloadAvatar } from "@/features/user/user-information/action/download-avatar";
+import { UserDetailContext, downloadAvatar } from "@/features/user";
 import { toast } from "sonner";
 
 const UserAvatar = () => {

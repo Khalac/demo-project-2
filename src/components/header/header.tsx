@@ -1,5 +1,5 @@
 import NavigationMenu from "./navigation-menu";
-import NumberNotificationUnread from "@/features/leave-request/notification/number-notification-unread/number-notification-unread";
+import { NumberNotificationUnread } from "@/features/leave-request";
 import UserAvatar from "./_components/user-avatar";
 
 const Header = () => {

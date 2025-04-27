@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { userReducer } from "@/features/auth/login-form";
+import { userReducer } from "@/features/auth";
 import { listLeaveRequestReducer } from "@/features/leave-request";
 export const store = configureStore({
   reducer: { user: userReducer, listLeaveRequest: listLeaveRequestReducer },

@@ -7,11 +7,13 @@ import {
 } from "@/features/leave-request";
 import { useAppSelector } from "@/hook/redux-hook";
 import { UserDetail } from "@/features/user";
+import { CheckIfUserEnableMFA } from "@/features/user";
 
 const Dashboard = () => {
   const user = useAppSelector((state) => state.user.user);
   return (
     <div className="flex flex-col w-full p-5">
+      <CheckIfUserEnableMFA />
       {user.role === "EMPLOYEE" && (
         <>
           <UserLeaveDetail />

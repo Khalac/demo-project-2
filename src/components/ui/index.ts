@@ -23,3 +23,5 @@ export * from "./avatar";
 export * from "./manager-tab";
 export * from "./pagination";
 export * from "./select-date";
+export * from "./switch";
+export * from "./input-otp";

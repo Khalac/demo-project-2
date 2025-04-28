@@ -71,7 +71,7 @@ const UserAvatar = () => {
       <DropdownMenuContent className="mr-5">
         <DropdownMenuLabel>Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="focus:bg-white">
+        <DropdownMenuItem className="focus:bg-white flex flex-col">
           <div className="flex gap-5 p-2">
             <Avatar className="flex justify-center items-center">
               <AvatarImage src={avatar} alt="avatar" />

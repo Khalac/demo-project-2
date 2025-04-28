@@ -16,7 +16,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { getListFactors, challengeAndVerifyFactor } from "../enrol-mfa";
-import { useNavigate } from "react-router-dom";
 
 const InputAuthenticationCode = ({
   open,
@@ -25,7 +24,6 @@ const InputAuthenticationCode = ({
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const navigate = useNavigate();
   const [verifyCode, setVerifyCode] = useState("");
   const [loading, setLoading] = useState(false);
 

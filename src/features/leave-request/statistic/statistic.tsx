@@ -58,7 +58,7 @@ const Statistic = ({ data }: { data: ListleaveRequest[] }) => {
     <div className="w-full flex sm:justify-around sm:items-center sm:flex-row flex-col gap-5">
       <Card className="sm:w-1/3 w-full">
         <CardHeader className="items-center pb-0">
-          <CardTitle>Employee absence percentage</CardTitle>
+          <CardTitle>Employee absence total</CardTitle>
         </CardHeader>
         <CardContent className="w-full">
           <ChartContainer config={chartConfig} className="min-h-[200px] w-full">

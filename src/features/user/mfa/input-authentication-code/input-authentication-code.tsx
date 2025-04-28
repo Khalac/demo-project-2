@@ -77,11 +77,10 @@ const InputAuthenticationCode = ({
             </InputOTPGroup>
           </InputOTP>
           <DialogFooter>
-            {loading ? (
-              <LoadingSpinner className="" />
-            ) : (
-              <Button onClick={onSubmitClicked}>Submit</Button>
-            )}
+            <Button onClick={onSubmitClicked}>
+              {" "}
+              {loading ? <LoadingSpinner className="" /> : <>Submit</>}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </DialogOverlay>

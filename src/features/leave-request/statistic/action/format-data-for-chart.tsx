@@ -16,7 +16,7 @@ export function formatDataForChart(data: any[]) {
       const date = new Date(request.start_date);
       const month = format(date, "MM-yyyy");
 
-      const key = `${userId}-${month}`;
+      const key = `${userId}`;
 
       if (!counter[key]) {
         counter[key] = {

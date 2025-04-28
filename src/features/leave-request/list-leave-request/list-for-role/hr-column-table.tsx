@@ -35,10 +35,6 @@ export const columnsHR: ColumnDef<ListleaveRequest>[] = [
   {
     accessorKey: "status",
     header: "Status",
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
 

@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { loginSchema } from "./schema";
+import { loginSchema } from "./model/schema";
 import { useNavigate } from "react-router-dom";
 import {
   Button,
@@ -18,7 +18,7 @@ import { useState } from "react";
 import { LoadingSpinner } from "@/components";
 import { tryCatch } from "@/utils";
 import { ForgotPasswordForm } from "../forgot-password";
-import { DataLogin } from "./login-form-type";
+import { DataLogin } from "./model";
 
 const LoginForm = () => {
   const [open, setOpen] = useState(false);
@@ -86,12 +86,13 @@ const LoginForm = () => {
         </form>
       </Form>
 
-      <div
+      <Button
+        variant="ghost"
         className=" hover:text-[#313f68] cursor-pointer"
         onClick={() => setOpen(true)}
       >
         Forgotten password?
-      </div>
+      </Button>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import type { ListleaveRequest } from "../list-leave-request-data-type";
+import type { ListleaveRequest } from "../model/list-leave-request-data-type";
 import { Checkbox } from "@/components";
 
 export const columnsManager: ColumnDef<ListleaveRequest>[] = [

@@ -1,10 +1,10 @@
 import {
   ListEmployeeManager,
   ListEmployeeHR,
-} from "@/features/employee/list-employee";
-import { EmployeeDetail } from "@/features/employee/employee-detail";
+  EmployeeDetail,
+} from "@/features/employee";
 import { useAppSelector } from "@/hook/redux-hook";
-import { UserDetail } from "@/features/user/user-information";
+import { UserDetail } from "@/features/user";
 
 const Employee = () => {
   const user = useAppSelector((state) => state.user.user);

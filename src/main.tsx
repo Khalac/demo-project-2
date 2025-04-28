@@ -6,12 +6,10 @@ import { router } from "@/router";
 import { store } from "./redux-store";
 import { Provider } from "react-redux";
 import { Toaster } from "sonner";
-import {
-  CreateLeaveRequestProvider,
-  EmployeeDetailProvider,
-  UpdateLeaveRequestProvider,
-  UserDetailProvider,
-} from "./context";
+import { UpdateLeaveRequestProvider } from "./features/leave-request";
+import { UserDetailProvider } from "./features/user";
+import { CreateLeaveRequestProvider } from "./features/leave-request";
+import { EmployeeDetailProvider } from "./features/employee";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

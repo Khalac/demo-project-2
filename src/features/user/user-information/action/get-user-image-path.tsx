@@ -1,5 +1,5 @@
 import { supabase } from "@/utils";
-const getUserImagePath = async (id: string) => {
+export const getUserImagePath = async (id: string) => {
   const { data, error } = await supabase
     .from("users")
     .select("avatar_url")
@@ -9,5 +9,3 @@ const getUserImagePath = async (id: string) => {
   if (error) return { success: false, error: error };
   return { success: true, data: data };
 };
-
-export default getUserImagePath;

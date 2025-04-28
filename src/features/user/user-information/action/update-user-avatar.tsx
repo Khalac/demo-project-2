@@ -1,6 +1,6 @@
 import { supabase } from "@/utils";
 
-const updateUserAvatar = async (avatarUrl: string, id: string) => {
+export const updateUserAvatar = async (avatarUrl: string, id: string) => {
   const { error } = await supabase
     .from("users")
     .update({ avatar_url: avatarUrl })
@@ -9,5 +9,3 @@ const updateUserAvatar = async (avatarUrl: string, id: string) => {
   if (error) return { success: false, error: error };
   return { success: true, data: null };
 };
-
-export default updateUserAvatar;

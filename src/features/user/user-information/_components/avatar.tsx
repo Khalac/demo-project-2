@@ -3,7 +3,7 @@ import { uploadAvatar } from "../action/upload-avatar";
 import { toast } from "sonner";
 import { downloadAvatar } from "../action/download-avatar";
 import { Input } from "@/components";
-import { UserDetailContext } from "@/context";
+import { UserDetailContext } from "../model";
 import { useContext } from "react";
 import { useTransition } from "react";
 import { LoadingSpinner } from "@/components";

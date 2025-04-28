@@ -32,7 +32,7 @@ import type { LeaveRequestData } from "../../create-leave-request";
 import { toast } from "sonner";
 import { useAppSelector } from "@/hook/redux-hook";
 import type { ListleaveRequest } from "../../list-leave-request";
-import { updateLeaveRequest } from "./action/update-leave-request";
+import { updateLeaveRequest } from "../action";
 import { convertLocalDateToUTC } from "@/utils";
 import { status } from "../../list-leave-request";
 

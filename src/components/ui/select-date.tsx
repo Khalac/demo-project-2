@@ -20,18 +20,16 @@ export const SelectDate = ({
     <Popover modal={true}>
       <PopoverTrigger asChild>
         <Button
-          variant={"outline"}
+          variant="outline"
           className={cn(
-            "w-full sm:w-fit pl-3 text-left font-normal",
+            "flex items-center gap-2 w-full md:w-[180px] justify-start font-normal truncate",
             !globalFilter && "text-muted-foreground"
           )}
         >
-          {globalFilter ? (
-            format(globalFilter, "P")
-          ) : (
-            <span>Filter leave date</span>
-          )}
-          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+          <CalendarIcon className="h-4 w-4 opacity-50" />
+          <span className="truncate">
+            {globalFilter ? format(globalFilter, "P") : "Filter leave date"}
+          </span>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">

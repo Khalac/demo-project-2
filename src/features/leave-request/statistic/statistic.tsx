@@ -73,37 +73,31 @@ const Statistic = ({ data }: { data: ListleaveRequest[] }) => {
     <div className="w-full flex sm:justify-around sm:items-stretch sm:flex-row flex-col gap-5">
       <Card className="sm:w-fit w-full flex-grow">
         <CardHeader className="flex justify-center items-center pb-0 w-full">
-          <CardTitle className="flex justify-evenly gap-5 items-center w-fit sm:w-full flex-col">
-            <div className="flex gap-2">
-              <UILabel>Month</UILabel>
+          <CardTitle className="flex flex-col gap-3 w-fit sm:w-full justify-center items-center">
+            <div className="flex items-center gap-2">
+              <UILabel className="min-w-[60px]">Month</UILabel>
               <Input
                 value={month}
                 className="w-20 text-center"
                 onChange={(e) => {
-                  let value = e.target.value.replace(/\D/g, ""); // only input number
+                  let value = e.target.value.replace(/\D/g, "");
 
-                  if (value.length > 2) {
-                    value = value.slice(0, 2);
-                  }
-                  if (parseInt(value.charAt(0)) > 1 && value.length > 1) {
+                  if (value.length > 2) value = value.slice(0, 2);
+                  if (parseInt(value.charAt(0)) > 1 && value.length > 1)
                     value = value.slice(0, 1);
-                  }
+
                   setMonth(value);
                 }}
               />
             </div>
-            <div className="flex gap-2">
-              <UILabel>Year</UILabel>
+            <div className="flex items-center gap-2">
+              <UILabel className="min-w-[60px]">Year</UILabel>
               <Input
                 value={year}
                 className="w-20 text-center"
                 onChange={(e) => {
-                  let value = e.target.value.replace(/\D/g, ""); // only input number
-
-                  if (value.length > 4) {
-                    value = value.slice(0, 4);
-                  }
-
+                  let value = e.target.value.replace(/\D/g, "");
+                  if (value.length > 4) value = value.slice(0, 4);
                   setYear(value);
                 }}
               />

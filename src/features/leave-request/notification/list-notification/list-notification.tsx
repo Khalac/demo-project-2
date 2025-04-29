@@ -9,7 +9,6 @@ import {
 import { useContext } from "react";
 import { UpdateLeaveRequestContext } from "../../update-leave-request/model";
 import { setUpdateRead, getLeaveRequestInformation } from "../action";
-import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Separator, Skeleton } from "@/components";
 

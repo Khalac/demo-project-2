@@ -68,7 +68,7 @@ const Statistic = ({ data }: { data: ListleaveRequest[] }) => {
   const statisticData = formatDataForStatistc(data).filter(
     (data) => data.month === month && data.year === year
   );
-  console.log(pieChartData, totalRequest);
+ 
   return (
     <div className="w-full flex sm:justify-around sm:items-stretch sm:flex-row flex-col gap-5">
       <Card className="sm:w-fit w-full flex-grow">

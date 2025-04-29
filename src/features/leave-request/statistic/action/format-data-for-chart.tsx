@@ -32,6 +32,5 @@ export function formatDataForChart(data: any[]) {
       }
     }
   }
-  console.log("ha", Object.values(counter));
   return Object.values(counter);
 }

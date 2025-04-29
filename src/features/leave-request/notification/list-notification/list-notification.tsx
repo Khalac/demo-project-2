@@ -23,7 +23,6 @@ enum field {
   status = "Status",
 }
 const ListNotification = () => {
-  const navigate = useNavigate();
   const { setOpenUpdate, setRowValue } = useContext(UpdateLeaveRequestContext);
   const user = useAppSelector((state) => state.user.user);
   const [loading, setLoading] = useState(true);
@@ -39,7 +38,6 @@ const ListNotification = () => {
     setData(groupHistoryByDate(res.data!));
   };
   const openLeaveRequest = async (request_id: string, history_id: string) => {
-    setLoading(true);
     const res = await setUpdateRead(history_id);
     if (!res.success) {
       toast.error("Please try again later");
@@ -51,8 +49,6 @@ const ListNotification = () => {
       return;
     }
 
-    setLoading(false);
-    navigate("/");
     setRowValue(data.data!);
     setOpenUpdate(true);
   };

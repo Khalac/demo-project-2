@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components";
 import { ReactNode } from "react";
+import { Button } from "@/components";
 
 type Manager = {
   user_id: string;
@@ -25,24 +26,30 @@ export const ManagerTab = <M extends Manager, L>({
 }) => {
   return (
     <Tabs defaultValue="all" className="w-full h-full">
-      <div className="flex justify-center items-center gap-5">
+      <div className="flex justify-center items-center gap-2">
         <TabsList className="cursor-pointer">
-          <TabsTrigger value="all">All</TabsTrigger>
+          <TabsTrigger
+            value="all"
+            className="data-[state=active]:bg-black data-[state=active]:text-white px-3 py-4"
+          >
+            All
+          </TabsTrigger>
         </TabsList>
-        <TabsList className="gap-2 cursor-pointer">
-          {manager &&
-            manager.map((m) => {
-              return (
+        {manager &&
+          manager.map((m) => {
+            return (
+              <TabsList className="cursor-pointer">
                 <TabsTrigger
                   key={m.user_id}
                   value={m.user_id}
                   onClick={() => fn(m.user_id)}
+                  className="text-xs px-3 py-4 rounded-md data-[state=active]:bg-black data-[state=active]:text-white"
                 >
                   {m.full_name}
                 </TabsTrigger>
-              );
-            })}
-        </TabsList>
+              </TabsList>
+            );
+          })}
       </div>
       <TabsContent value="all">
         {data && (

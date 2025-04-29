@@ -10,11 +10,11 @@ const DownloadData = <TData,>({
 }) => {
   return (
     <Button
-      className="flex cursor-pointer gap-2 w-full sm:w-fit"
+      className="flex justify-center items-center gap-2 w-full md:w-[180px] truncate"
       onClick={() => exportToExcel(data, "leave-request")}
     >
-      <Download />
-      Export to Excel
+      <Download className="h-4 w-4 opacity-50" />
+      <span className="truncate">Export to Excel</span>
     </Button>
   );
 };

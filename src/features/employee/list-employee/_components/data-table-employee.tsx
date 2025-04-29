@@ -9,11 +9,12 @@ import {
 import * as XLSX from "xlsx";
 import { useContext } from "react";
 import { EmployeeDetailContext } from "../../employee-detail/model";
-import { DataTablePagination } from "@/components";
+import { DataTablePagination, Separator } from "@/components";
 import { useState } from "react";
 import { useAppSelector } from "@/hook/redux-hook";
 import { FilterNameEmployee, DownloadData, DataTable } from "@/components";
 import { Skeleton } from "@/components";
+import { format } from "date-fns";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -75,17 +76,28 @@ export function DataTableEmployee<TData, TValue>({
 
   return (
     <div className="flex flex-col gap-5 rounded-md border bg-white p-5 h-fit">
-      <div className="flex flex-col w-full sm:flex-row sm:justify-between items-start sm:items-center gap-5 sm:gap-0">
-        <div className="flex w-full items-center gap-5 flex-wrap sm:flex-nowrap">
-          <FilterNameEmployee table={table} column="full_name" />
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
+        <div className="flex flex-col gap-2">
+          <div className="text-2xl sm:text-3xl font-bold">List employees</div>
+          <div className="text-sm">{format(new Date(), "PPPP")}</div>
         </div>
-
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-5 w-full sm:w-auto">
+        <div className="flex sm:justify-end">
           {user.role === "HR" && (
             <DownloadData data={data} exportToExcel={exportToExcel} />
           )}
         </div>
       </div>
+
+      <Separator className="w-full" />
+
+      <div className="flex flex-col sm:flex-row sm:justify-end gap-5">
+        {user.role !== "EMPLOYEE" && (
+          <div className="w-full sm:w-auto">
+            <FilterNameEmployee table={table} column="users_full_name" />
+          </div>
+        )}
+      </div>
+
       {loading ? (
         <div className="flex justify-center items-center w-full">
           <Skeleton className="h-[300px] w-full rounded-xl" />

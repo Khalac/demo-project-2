@@ -68,7 +68,7 @@ const Statistic = ({ data }: { data: ListleaveRequest[] }) => {
   const statisticData = formatDataForStatistc(data).filter(
     (data) => data.month === month && data.year === year
   );
- 
+
   return (
     <div className="w-full flex sm:justify-around sm:items-stretch sm:flex-row flex-col gap-5">
       <Card className="sm:w-fit w-full flex-grow">
@@ -110,7 +110,7 @@ const Statistic = ({ data }: { data: ListleaveRequest[] }) => {
             </div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="w-full flex-grow flex flex-col justify-center items-center gap-10">
+        <CardContent className="w-full flex-grow flex flex-col justify-center items-center gap-5">
           {statisticData.map((data, index) => {
             return (
               <div

@@ -106,7 +106,7 @@ export function DataTableLeaveRequest<TData, TValue>({
             <DownloadData data={data} exportToExcel={exportToExcel} />
           ) : (
             <Button
-              className="flex gap-2 w-full sm:w-auto"
+              className="flex gap-2 w-full md:w-[180px]"
               onClick={() => setOpen(true)}
             >
               <Plus /> Create new request

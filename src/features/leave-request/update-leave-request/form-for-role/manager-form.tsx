@@ -12,6 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Calendar,
+  Textarea,
 } from "@/components/ui";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
@@ -232,7 +233,7 @@ const ManagerForm = ({
             <FormItem>
               <FormLabel>Reason</FormLabel>
               <FormControl>
-                <Input placeholder="Reason" {...field} />
+                <Textarea placeholder="Reason" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -246,7 +247,7 @@ const ManagerForm = ({
             <FormItem>
               <FormLabel>Rejected reason</FormLabel>
               <FormControl>
-                <Input
+                <Textarea
                   placeholder="Rejected reason"
                   {...field}
                   value={field.value ?? ""}

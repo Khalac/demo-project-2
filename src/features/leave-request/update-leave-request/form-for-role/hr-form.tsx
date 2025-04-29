@@ -11,6 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Calendar,
+  Textarea,
 } from "@/components/ui";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
@@ -182,7 +183,7 @@ const HRForm = ({
             <FormItem>
               <FormLabel>Reason</FormLabel>
               <FormControl>
-                <Input placeholder="Reason" {...field} />
+                <Textarea placeholder="Reason" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -197,7 +198,7 @@ const HRForm = ({
               <FormItem>
                 <FormLabel>Rejected reason</FormLabel>
                 <FormControl>
-                  <Input disabled value={selectRow?.rejected_reason} />
+                  <Textarea disabled value={selectRow?.rejected_reason} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

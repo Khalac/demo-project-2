@@ -25,3 +25,4 @@ export * from "./pagination";
 export * from "./select-date";
 export * from "./switch";
 export * from "./input-otp";
+export * from "./textarea";

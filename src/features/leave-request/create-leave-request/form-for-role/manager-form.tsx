@@ -17,6 +17,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Textarea,
 } from "@/components/ui";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
@@ -292,7 +293,7 @@ const ManagerForm = ({
                 <FormItem>
                   <FormLabel>Reason</FormLabel>
                   <FormControl>
-                    <Input placeholder="Reason" {...field} />
+                    <Textarea placeholder="Reason" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

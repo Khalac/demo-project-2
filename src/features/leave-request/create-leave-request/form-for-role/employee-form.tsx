@@ -12,6 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Calendar,
+  Textarea,
 } from "@/components/ui";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
@@ -227,7 +228,7 @@ const EmployeeForm = ({
               <FormItem>
                 <FormLabel>Reason</FormLabel>
                 <FormControl>
-                  <Input placeholder="Reason" {...field} />
+                  <Textarea placeholder="Reason" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

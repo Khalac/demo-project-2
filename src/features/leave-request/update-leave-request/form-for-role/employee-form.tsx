@@ -20,6 +20,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  Textarea,
 } from "@/components/ui";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
@@ -239,7 +240,7 @@ const EmployeeForm: React.FC<{
             <FormItem>
               <FormLabel>Reason</FormLabel>
               <FormControl>
-                <Input placeholder="Reason" {...field} />
+                <Textarea placeholder="Reason" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -253,7 +254,7 @@ const EmployeeForm: React.FC<{
               <FormItem>
                 <FormLabel>Rejected reason</FormLabel>
                 <FormControl>
-                  <Input disabled value={selectRow?.rejected_reason} />
+                  <Textarea disabled value={selectRow?.rejected_reason} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

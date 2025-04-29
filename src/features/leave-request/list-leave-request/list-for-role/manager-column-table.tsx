@@ -47,6 +47,15 @@ export const columnsManager: ColumnDef<ListleaveRequest>[] = [
   {
     accessorKey: "reason",
     header: "Reason",
+    cell: ({ row }) => {
+      const reason = row.getValue("reason") as string;
+
+      return (
+        <div className="max-w-[100px] truncate" title={reason}>
+          {reason}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "status",

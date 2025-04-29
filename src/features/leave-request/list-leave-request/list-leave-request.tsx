@@ -40,7 +40,6 @@ const ListLeaveRequest = () => {
   }, []);
   const role = user?.role as keyof typeof columnsByRole;
   const columns = columnsByRole[role];
-  console.log(data);
   return (
     <div className="py-5 h-1/2 items-center w-full">
       {data && (

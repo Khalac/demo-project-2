@@ -10,7 +10,7 @@ import { useContext } from "react";
 import { UpdateLeaveRequestContext } from "../../update-leave-request/model";
 import { setUpdateRead, getLeaveRequestInformation } from "../action";
 import { toast } from "sonner";
-import { Separator, Skeleton } from "@/components";
+import { Skeleton } from "@/components";
 import { cn } from "@/lib";
 
 enum field {

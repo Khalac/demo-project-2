@@ -4,6 +4,7 @@ export type DataChart = {
   name: string;
   totalRequest: number;
   month: string;
+  year: string;
 };
 export function formatDataForChart(data: any[]) {
   const counter: Record<string, DataChart> = {};
@@ -14,9 +15,9 @@ export function formatDataForChart(data: any[]) {
       const name = request.users?.full_name;
 
       const date = new Date(request.start_date);
-      const month = format(date, "MM-yyyy");
-
-      const key = `${userId}`;
+      const month = format(date, "M");
+      const year = format(date, "yyyy");
+      const key = `${userId}-${month}-${year}`;
 
       if (!counter[key]) {
         counter[key] = {
@@ -24,12 +25,12 @@ export function formatDataForChart(data: any[]) {
           name,
           totalRequest: 1,
           month,
+          year,
         };
       } else {
         counter[key].totalRequest += 1;
       }
     }
   }
-
   return Object.values(counter);
 }

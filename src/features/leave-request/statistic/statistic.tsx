@@ -10,7 +10,7 @@ import {
   Pie,
   PieChart,
 } from "recharts";
-
+import { Label as UILabel } from "@/components/ui";
 import {
   ChartContainer,
   ChartLegend,
@@ -21,8 +21,12 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  Input,
+  Separator,
 } from "@/components/ui";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { format } from "date-fns";
+import { formatDataForStatistc } from "./action/format-data-for-statistic";
 
 const colors = [
   "#2563eb", // blue
@@ -43,24 +47,91 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const Statistic = ({ data }: { data: ListleaveRequest[] }) => {
+  const [month, setMonth] = useState(format(new Date(), "M"));
+  const [year, setYear] = useState(format(new Date(), "yyyy"));
   const barChartData = formatDataForChart(data)
     .sort((a, b) => b.totalRequest - a.totalRequest)
+    .filter((data) => data.month === month && data.year === year)
     .slice(0, 3);
-  const pieChartData = formatDataForChart(data).map((item, index) => ({
-    ...item,
-    fill: colors[index % colors.length],
-  }));
+
+  const pieChartData = formatDataForChart(data)
+    .map((item, index) => ({
+      ...item,
+      fill: colors[index % colors.length],
+    }))
+    .filter((data) => data.month === month && data.year === year);
   const totalRequest = useMemo(() => {
-    return pieChartData.reduce((acc, curr) => acc + curr.totalRequest, 0);
-  }, [data]);
+    return pieChartData
+      .filter((data) => data.month === month && data.year === year)
+      .reduce((acc, curr) => acc + curr.totalRequest, 0);
+  }, [data, month, year]);
+  const statisticData = formatDataForStatistc(data).filter(
+    (data) => data.month === month && data.year === year
+  );
 
   return (
-    <div className="w-full flex sm:justify-around sm:items-center sm:flex-row flex-col gap-5">
-      <Card className="sm:w-1/3 w-full">
-        <CardHeader className="items-center pb-0">
+    <div className="w-full flex sm:justify-around sm:items-stretch sm:flex-row flex-col gap-5">
+      <Card className="sm:w-fit w-full flex-grow">
+        <CardHeader className="flex justify-center items-center pb-0 w-full">
+          <CardTitle className="flex justify-evenly gap-5 items-center w-fit sm:w-full flex-col">
+            <div className="flex gap-2">
+              <UILabel>Month</UILabel>
+              <Input
+                value={month}
+                className="w-20 text-center"
+                onChange={(e) => {
+                  let value = e.target.value.replace(/\D/g, ""); // only input number
+
+                  if (value.length > 2) {
+                    value = value.slice(0, 2);
+                  }
+                  if (parseInt(value.charAt(0)) > 1 && value.length > 1) {
+                    value = value.slice(0, 1);
+                  }
+                  setMonth(value);
+                }}
+              />
+            </div>
+            <div className="flex gap-2">
+              <UILabel>Year</UILabel>
+              <Input
+                value={year}
+                className="w-20 text-center"
+                onChange={(e) => {
+                  let value = e.target.value.replace(/\D/g, ""); // only input number
+
+                  if (value.length > 4) {
+                    value = value.slice(0, 4);
+                  }
+
+                  setYear(value);
+                }}
+              />
+            </div>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="w-full flex-grow flex flex-col justify-center items-center gap-5">
+          {statisticData.map((data, index) => {
+            return (
+              <div
+                key={data.status}
+                className=" w-full flex flex-col items-center text-center gap-2 justify-center"
+              >
+                <UILabel>Total requests has status {data.status}</UILabel>
+                <div className="sm:text-xl text-lg"> {data.totalRequest}</div>
+                {index !== statisticData.length - 1 && (
+                  <Separator className="w-full" />
+                )}
+              </div>
+            );
+          })}
+        </CardContent>
+      </Card>
+      <Card className="sm:w-1/3 w-full flex-grow">
+        <CardHeader className="flex justify-between items-center pb-0">
           <CardTitle>Employee absence total</CardTitle>
         </CardHeader>
-        <CardContent className="w-full">
+        <CardContent className="w-full flex-grow">
           <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
             {pieChartData.length === 0 ? (
               <div className="h-full w-full flex justify-center items-center">
@@ -112,11 +183,11 @@ const Statistic = ({ data }: { data: ListleaveRequest[] }) => {
           </ChartContainer>
         </CardContent>
       </Card>
-      <Card className="sm:w-1/3 w-full">
+      <Card className="sm:w-1/3 w-full flex-grow">
         <CardHeader>
           <CardTitle>Top 3 employees with the most absences</CardTitle>
         </CardHeader>
-        <CardContent className="w-full">
+        <CardContent className="w-full flex-grow">
           <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
             {barChartData.length === 0 ? (
               <div className="h-full w-full flex justify-center items-center">

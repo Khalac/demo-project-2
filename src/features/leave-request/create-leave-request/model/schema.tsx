@@ -2,38 +2,7 @@ import { z } from "zod";
 import type { ListleaveRequest } from "../../list-leave-request";
 import { status } from "../../list-leave-request";
 import { format } from "date-fns";
-
-export const vietnamHolidays: { date: string; name: string }[] = [
-  { date: "2025-01-01", name: "Tết Dương lịch (New Year's Day)" },
-  { date: "2025-04-30", name: "Ngày Giải phóng miền Nam (Reunification Day)" },
-  {
-    date: "2025-05-01",
-    name: "Ngày Quốc tế Lao động (International Workers' Day)",
-  },
-  { date: "2025-09-02", name: "Quốc khánh (National Day)" },
-  {
-    date: "2025-04-08",
-    name: "Giỗ Tổ Hùng Vương (Hung Kings Commemoration Day)",
-  },
-  { date: "2025-01-28", name: "Tết - 29 tháng Chạp" },
-  { date: "2025-01-29", name: "Tết - 30 tháng Chạp" },
-  { date: "2025-01-30", name: "Mùng 1 Tết" },
-  { date: "2025-01-31", name: "Mùng 2 Tết" },
-  { date: "2025-02-01", name: "Mùng 3 Tết" },
-  { date: "2025-02-02", name: "Mùng 4 Tết" },
-  { date: "2025-02-03", name: "Mùng 5 Tết" },
-  {
-    date: "2025-03-08",
-    name: "Ngày Quốc tế Phụ nữ (International Women's Day)",
-  },
-  { date: "2025-06-01", name: "Ngày Quốc tế Thiếu nhi (Children's Day)" },
-  { date: "2025-10-20", name: "Ngày Phụ nữ Việt Nam (Vietnamese Women's Day)" },
-  { date: "2025-11-20", name: "Ngày Nhà giáo Việt Nam (Teachers' Day)" },
-  { date: "2025-12-25", name: "Lễ Giáng Sinh (Christmas Day)" },
-  { date: "2025-12-31", name: "New Year's Eve (Optional)" },
-  { date: "2025-02-04", name: "Tết - Mùng 6 (Optional)" },
-];
-
+import { vietnamHolidays } from "./vietnam-holiday-data";
 export const leaveRequestFormSchema = (
   listLeaveRequest: ListleaveRequest[],
   user_id: string

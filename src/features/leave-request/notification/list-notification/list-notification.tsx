@@ -11,6 +11,7 @@ import { UpdateLeaveRequestContext } from "../../update-leave-request/model";
 import { setUpdateRead, getLeaveRequestInformation } from "../action";
 import { toast } from "sonner";
 import { Separator, Skeleton } from "@/components";
+import { cn } from "@/lib";
 
 enum field {
   start_date = "Start Date",
@@ -59,9 +60,8 @@ const ListNotification = () => {
       unsubscribe();
     };
   }, []);
-
   return (
-    <div className="flex justify-start items-center flex-col h-full w-full gap-10 scroll-auto">
+    <div className="flex justify-start items-center flex-col h-full w-full gap-10 scroll-auto px-2 md:px-0">
       {loading ? (
         <div className="space-y-4">
           <Skeleton className="h-5 w-[350px]" />
@@ -82,11 +82,16 @@ const ListNotification = () => {
                 <div className="flex-grow border-t border-gray-300"></div>
               </div>
               <div className="flex flex-col gap-4 pt-2">
-                {res.records.map((change, index) => {
+                {res.records.map((change) => {
                   return (
                     <>
                       <div
-                        className="flex flex-col sm:flex-row sm:justify-between cursor-pointer text-sm py-2 sm:text-sm"
+                        className={cn(
+                          "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 cursor-pointer text-sm text-gray-800 shadow-sm p-4 rounded-lg",
+                          !change.isRead
+                            ? "bg-gray-200 hover:bg-gray-300"
+                            : "bg-white hover:bg-gray-50"
+                        )}
                         onClick={() =>
                           openLeaveRequest(change.requestId, change.historyId)
                         }
@@ -114,7 +119,6 @@ const ListNotification = () => {
                           {change.atTime}
                         </div>
                       </div>
-                      {index !== res.records.length - 1 && <Separator />}
                     </>
                   );
                 })}

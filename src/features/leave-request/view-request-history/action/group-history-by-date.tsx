@@ -15,6 +15,7 @@ export type HistoryGroup = {
     oldValue: any;
     newValue: any;
     atTime: string;
+    isRead: boolean;
   }[];
 };
 
@@ -39,11 +40,13 @@ export const groupHistoryByDate = (
           },
           oldValue: null,
           newValue: null,
+          isRead: item.is_read!,
           atTime: format(new Date(item.changed_at), "hh:mm a"),
         });
       } else {
         const historyDifferent = compareUpdateRequest(item).map((change) => ({
           ...change,
+          isRead: item.is_read!,
           historyId: item.history_id,
           requestId: item.request_id,
         }));

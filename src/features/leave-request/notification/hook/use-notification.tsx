@@ -87,5 +87,5 @@ export const useNotification = () => {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [user.user_id]);
 };

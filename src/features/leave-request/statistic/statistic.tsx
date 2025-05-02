@@ -71,7 +71,7 @@ const Statistic = ({ data }: { data: ListleaveRequest[] }) => {
 
   return (
     <div className="w-full flex sm:justify-around sm:items-stretch sm:flex-row flex-col gap-5">
-      <Card className="sm:w-fit w-full flex-grow">
+      <Card className="sm:w-1/5 w-full flex-grow">
         <CardHeader className="flex justify-center items-center pb-0 w-full">
           <CardTitle className="flex flex-col gap-3 w-fit sm:w-full justify-center items-center">
             <div className="flex items-center gap-2">

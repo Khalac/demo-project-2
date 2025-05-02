@@ -26,7 +26,7 @@ export function DataTablePagination<TData>({
     <div className="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0 sm:items-center sm:justify-end">
       <div className="flex items-center space-x-2 sm:hidden">
         <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">Rows per page</p>
+          <p className="text-sm font-semibold">Rows per page</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
@@ -54,7 +54,7 @@ export function DataTablePagination<TData>({
           <span className="sr-only">Previous</span>
           <ChevronLeft className="h-4 w-4" />
         </Button>
-        <span className="text-sm font-medium">
+        <span className="text-sm font-semibold">
           {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
         </span>
         <Button
@@ -70,7 +70,7 @@ export function DataTablePagination<TData>({
 
       <div className="hidden sm:flex sm:items-center space-x-4 lg:space-x-8">
         <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">Rows per page</p>
+          <p className="text-sm font-semibold">Rows per page</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
@@ -89,7 +89,7 @@ export function DataTablePagination<TData>({
             </SelectContent>
           </Select>
         </div>
-        <div className="text-sm font-medium flex items-center w-[100px] justify-center">
+        <div className="text-sm font-semibold flex items-center w-[100px] justify-center">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
         </div>

@@ -100,7 +100,7 @@ function Calendar({
     props.captionClassName
   );
   const _captionLabelClassName = cn(
-    "truncate text-sm font-medium",
+    "truncate text-sm font-semibold",
     props.captionLabelClassName
   );
   const buttonNavClassName = buttonVariants({
@@ -393,7 +393,7 @@ function CaptionLabel({
   if (!showYearSwitcher) return <span {...props}>{children}</span>;
   return (
     <Button
-      className="h-7 w-full truncate text-sm font-medium"
+      className="h-7 w-full truncate text-sm font-semibold"
       variant="ghost"
       size="sm"
       onClick={() => setNavView((prev) => (prev === "days" ? "years" : "days"))}
@@ -485,7 +485,7 @@ function YearGrid({
               className={cn(
                 "h-7 w-full text-sm font-normal text-foreground",
                 displayYears.from + i === new Date().getFullYear() &&
-                  "bg-accent font-medium text-accent-foreground"
+                  "bg-accent font-semibold text-accent-foreground"
               )}
               variant="ghost"
               onClick={() => {

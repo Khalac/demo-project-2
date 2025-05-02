@@ -56,7 +56,7 @@ const LeaveRequestHistory = ({ rowValue }: { rowValue: ListleaveRequest }) => {
       ) : (
         data.map((res) => {
           return (
-            <div>
+            <div className="mb-50">
               <div className="flex items-center w-full my-4">
                 <div className="flex-grow border-t border-gray-300"></div>
                 <div className="px-4 text-gray-600 text-sm font-light">

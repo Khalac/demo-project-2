@@ -93,6 +93,7 @@ const EmployeeForm: React.FC<{
     const selectedRow = leaveRequestList.find(
       (lr) => lr.request_id === rowValue.request_id
     );
+
     setSelectRow(selectedRow);
     if (selectedRow) {
       form.reset({
@@ -101,7 +102,7 @@ const EmployeeForm: React.FC<{
         total_leave_days: selectedRow.total_leave_days,
         total_leave_hours: selectedRow.total_leave_hours,
         reason: selectedRow.reason,
-        rejected_reason: "",
+        rejected_reason: selectRow?.rejected_reason || "",
       });
     }
   }, [rowValue, leaveRequestList]);
@@ -115,6 +116,7 @@ const EmployeeForm: React.FC<{
       form.clearErrors("end_date");
     }
   };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

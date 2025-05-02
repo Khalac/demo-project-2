@@ -49,7 +49,6 @@ export const useNotification = () => {
       toast.error("Please try again later");
       return;
     }
-
     setLoading(false);
     setRowValue(data.data!);
     setOpenUpdate(true);

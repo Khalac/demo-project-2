@@ -11,6 +11,7 @@ import { CheckIfUserEnableMFA } from "@/features/user";
 
 const Dashboard = () => {
   const user = useAppSelector((state) => state.user.user);
+
   return (
     <div className="flex flex-col w-full p-5">
       <CheckIfUserEnableMFA />

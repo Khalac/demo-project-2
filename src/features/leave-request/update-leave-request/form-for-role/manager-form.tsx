@@ -85,6 +85,7 @@ const ManagerForm = ({
     const selectedRow = leaveRequestList.find(
       (lr) => lr.request_id === rowValue.request_id
     );
+
     if (selectedRow) {
       form.reset({
         start_date: selectedRow.start_date,

@@ -31,8 +31,8 @@ const ListNotification = () => {
   const getUpdateToTrigger = async () => {
     const res = await getAllHistory(user.user_id);
     if (!res.success) {
-      toast.error(res.error?.message);
       setLoading(false);
+      return;
     }
     setLoading(false);
     setData(groupHistoryByDate(res.data!));
@@ -43,13 +43,15 @@ const ListNotification = () => {
       toast.error("Please try again later");
       return;
     }
-    const data = await getLeaveRequestInformation(request_id);
-    if (!data.success) {
+    const leaveRequestInformation = await getLeaveRequestInformation(
+      request_id
+    );
+    if (!leaveRequestInformation.success) {
       toast.error("Please try again later");
       return;
     }
-
-    setRowValue(data.data!);
+    console.log(leaveRequestInformation.data);
+    setRowValue(leaveRequestInformation.data!);
     setOpenUpdate(true);
   };
   useEffect(() => {
@@ -59,7 +61,8 @@ const ListNotification = () => {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [user.user_id, data]);
+
   return (
     <div className="flex justify-start items-center flex-col h-full w-full gap-10 scroll-auto px-2 md:px-0">
       {loading ? (

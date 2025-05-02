@@ -56,7 +56,7 @@ const UpdateLeaveRequest = () => {
             </div>
           </TabsContent>
           <TabsContent value="history">
-            <div className="p-5 flex flex-col gap-5">
+            <div className="px-5 h-[100dvh] overflow-y-auto overflow-x-hidden">
               <LeaveRequestHistory rowValue={rowValue} />
             </div>
           </TabsContent>

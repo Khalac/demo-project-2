@@ -1,7 +1,7 @@
 import { supabase } from "@/utils";
 
 export const listenHistoryTableToNoti = (leaveRequestHistory: () => void) => {
-  const channel = supabase.channel("notification");
+  const channel = supabase.channel("notification-popup");
 
   channel
     .on(

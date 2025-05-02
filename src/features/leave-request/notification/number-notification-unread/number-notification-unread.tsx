@@ -20,6 +20,7 @@ const NumberNotificationUnread = () => {
       (total, e) => total + e.records.length,
       0
     );
+
     setNumberOfNotificationUnread(total);
   };
   useEffect(() => {

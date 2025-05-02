@@ -61,7 +61,7 @@ const UserAvatar = () => {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger className="outline-none">
-        <Avatar>
+        <Avatar className="cursor-pointer">
           <AvatarImage src={avatar} alt="avatar" />
           <AvatarFallback className="font-bold">
             {getInitials(user.full_name)}

@@ -72,7 +72,7 @@ export function DataTableLeaveRequest<TData, TValue>({
     setOpenUpdate(true);
   };
 
-  const exportToExcel = (data: any, fileName: string) => {
+  const exportToExcel = (data: any) => {
     const exportData = data.map((d: any) => ({
       RequestID: d.request_id,
       EmployeeName: d.users?.full_name,
@@ -91,7 +91,7 @@ export function DataTableLeaveRequest<TData, TValue>({
     const worksheet = XLSX.utils.json_to_sheet(exportData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    XLSX.writeFile(workbook, `${fileName}.xlsx`);
+    XLSX.writeFile(workbook, `Leave-requests.xlsx`);
   };
 
   return (

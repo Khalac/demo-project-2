@@ -57,7 +57,7 @@ export function DataTableEmployee<TData, TValue>({
     setRowValueDetail(data);
     setOpenDetail(true);
   };
-  const exportToExcel = (data: any, fileName: string) => {
+  const exportToExcel = (data: any) => {
     const exportData = data.map((d: any) => ({
       EmployeeName: d.full_name,
       EmployeeEmail: d.email,
@@ -71,7 +71,7 @@ export function DataTableEmployee<TData, TValue>({
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
 
-    XLSX.writeFile(workbook, `${fileName}.xlsx`);
+    XLSX.writeFile(workbook, `Employees.xlsx`);
   };
 
   return (
@@ -93,7 +93,7 @@ export function DataTableEmployee<TData, TValue>({
       <div className="flex flex-col sm:flex-row sm:justify-end gap-5">
         {user.role !== "EMPLOYEE" && (
           <div className="w-full sm:w-auto">
-            <FilterNameEmployee table={table} column="users_full_name" />
+            <FilterNameEmployee table={table} column="full_name" />
           </div>
         )}
       </div>

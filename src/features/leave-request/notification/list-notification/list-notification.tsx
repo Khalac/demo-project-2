@@ -69,7 +69,7 @@ const ListNotification = () => {
           <Skeleton className="h-5 w-[300px]" />
         </div>
       ) : !loading && data.length === 0 ? (
-        <div>No data found</div>
+        <div>You don’t have any notifications.</div>
       ) : (
         data.map((res) => {
           return (

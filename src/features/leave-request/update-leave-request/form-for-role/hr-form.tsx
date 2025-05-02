@@ -12,37 +12,51 @@ import {
   PopoverTrigger,
   Calendar,
   Textarea,
+  Skeleton,
 } from "@/components/ui";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib";
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { leaveRequestFormSchema } from "../../create-leave-request";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAppSelector } from "@/hook/redux-hook";
 import type { ListleaveRequest } from "../../list-leave-request";
+import { UpdateLeaveRequestContext } from "../model";
+import { getListLeaveRequest } from "../../list-leave-request/action";
 
 const HRForm = ({
   setOpen,
-  rowValue,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  rowValue: ListleaveRequest;
 }) => {
-  const leaveRequestList = useAppSelector(
-    (state) => state.listLeaveRequest.listLeaveRequest
-  );
+  const { rowValue } = useContext(UpdateLeaveRequestContext);
+  const [loading, setLoading] = useState(false);
+  const [leaveRequestList, setLeaveRequestList] =
+    useState<ListleaveRequest[]>();
+  const getLeaveRequestList = async () => {
+    setLoading(true);
+    const data = await getListLeaveRequest();
+    if (!data.success) {
+      setLoading(false);
+      return;
+    }
+    setLeaveRequestList(data.data);
+    setLoading(false);
+  };
+  useEffect(() => {
+    getLeaveRequestList();
+  }, [rowValue]);
 
   const [selectRow, setSelectRow] = useState<ListleaveRequest>();
 
   const form = useForm({
     resolver: zodResolver(
-      leaveRequestFormSchema(leaveRequestList, rowValue.user_id!)
+      leaveRequestFormSchema(leaveRequestList!, rowValue.user_id!)
     ),
   });
   useEffect(() => {
-    const selectedRow = leaveRequestList.find(
+    const selectedRow = leaveRequestList?.find(
       (lr) => lr.request_id === rowValue.request_id
     );
     setSelectRow(selectedRow);
@@ -58,7 +72,9 @@ const HRForm = ({
     }
   }, [rowValue, leaveRequestList]);
 
-  return (
+  return loading ? (
+    <Skeleton className="w-[100px] h-[200px]" />
+  ) : (
     <Form {...form}>
       <form className="space-y-8">
         <FormField

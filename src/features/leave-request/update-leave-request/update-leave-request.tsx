@@ -21,15 +21,12 @@ type Role = (typeof roles)[number];
 
 type FormComponentProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  rowValue: ListleaveRequest;
 };
 
 type FormComponentMap = Record<Role, React.ComponentType<FormComponentProps>>;
 
 const UpdateLeaveRequest = () => {
-  const { openUpdate, setOpenUpdate, rowValue } = useContext(
-    UpdateLeaveRequestContext
-  );
+  const { openUpdate, setOpenUpdate } = useContext(UpdateLeaveRequestContext);
   const user = useAppSelector((state) => state.user.user);
 
   const formComponents: FormComponentMap = {
@@ -52,12 +49,12 @@ const UpdateLeaveRequest = () => {
           </TabsList>
           <TabsContent value="information">
             <div className="p-5 flex flex-col gap-5">
-              <FormComponent rowValue={rowValue} setOpen={setOpenUpdate} />
+              <FormComponent setOpen={setOpenUpdate} />
             </div>
           </TabsContent>
           <TabsContent value="history">
             <div className="px-5 h-[100dvh] overflow-y-auto overflow-x-hidden">
-              <LeaveRequestHistory rowValue={rowValue} />
+              <LeaveRequestHistory />
             </div>
           </TabsContent>
         </Tabs>

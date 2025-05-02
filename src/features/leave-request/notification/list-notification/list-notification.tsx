@@ -50,7 +50,7 @@ const ListNotification = () => {
       toast.error("Please try again later");
       return;
     }
-    console.log(leaveRequestInformation.data);
+
     setRowValue(leaveRequestInformation.data!);
     setOpenUpdate(true);
   };

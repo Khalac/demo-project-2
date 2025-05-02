@@ -13,33 +13,48 @@ import {
   PopoverTrigger,
   Calendar,
   Textarea,
+  Skeleton,
 } from "@/components/ui";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib";
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { leaveRequestFormSchema } from "../../create-leave-request/model";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { LeaveRequestData } from "../../create-leave-request";
 import { toast } from "sonner";
-import { useAppSelector } from "@/hook/redux-hook";
 import type { ListleaveRequest } from "../../list-leave-request";
 import { updateLeaveRequest } from "../action";
 import { convertLocalDateToUTC } from "@/utils";
 import { status } from "../../list-leave-request";
+import { UpdateLeaveRequestContext } from "../model";
+import { getListLeaveRequest } from "../../list-leave-request/action";
 
 const ManagerForm = ({
   setOpen,
-  rowValue,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  rowValue: ListleaveRequest;
 }) => {
-  const leaveRequestList = useAppSelector(
-    (state) => state.listLeaveRequest.listLeaveRequest
-  );
-  const filteredLeaveRequestList = leaveRequestList.filter(
+  const { rowValue } = useContext(UpdateLeaveRequestContext);
+  const [leaveRequestList, setLeaveRequestList] =
+    useState<ListleaveRequest[]>();
+  const [loading, setLoading] = useState(false);
+  const getLeaveRequestList = async () => {
+    setLoading(true);
+    const data = await getListLeaveRequest();
+    if (!data.success) {
+      setLoading(false);
+      return;
+    }
+    setLeaveRequestList(data.data);
+    setLoading(false);
+  };
+  useEffect(() => {
+    getLeaveRequestList();
+  }, [rowValue]);
+
+  const filteredLeaveRequestList = leaveRequestList?.filter(
     (req) => req.request_id !== rowValue?.request_id
   );
   const [error, setError] = useState<any>();
@@ -49,7 +64,7 @@ const ManagerForm = ({
 
   const form = useForm({
     resolver: zodResolver(
-      leaveRequestFormSchema(filteredLeaveRequestList, rowValue.user_id!)
+      leaveRequestFormSchema(filteredLeaveRequestList!, rowValue.user_id!)
     ),
     mode: "onChange",
   });
@@ -82,10 +97,9 @@ const ManagerForm = ({
     toast.success("Update request successfully");
   }
   useEffect(() => {
-    const selectedRow = leaveRequestList.find(
+    const selectedRow = leaveRequestList?.find(
       (lr) => lr.request_id === rowValue.request_id
     );
-
     if (selectedRow) {
       form.reset({
         start_date: selectedRow.start_date,
@@ -108,7 +122,9 @@ const ManagerForm = ({
       form.clearErrors("end_date");
     }
   };
-  return (
+  return loading ? (
+    <Skeleton className="w-[100px] h-[200px]" />
+  ) : (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         {" "}

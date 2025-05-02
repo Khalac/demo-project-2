@@ -1,5 +1,4 @@
-import type { ListleaveRequest } from "../list-leave-request";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   getRequestHistory,
   listenRequestHistoryTable,
@@ -10,6 +9,7 @@ import type { HistoryGroup } from "./action/group-history-by-date";
 import { useAppSelector } from "@/hook/redux-hook";
 import { toast } from "sonner";
 import { Separator } from "@/components";
+import { UpdateLeaveRequestContext } from "../update-leave-request";
 
 enum field {
   start_date = "Start Date",
@@ -20,7 +20,8 @@ enum field {
   rejected_reason = "Rejected Reason",
   status = "Status",
 }
-const LeaveRequestHistory = ({ rowValue }: { rowValue: ListleaveRequest }) => {
+const LeaveRequestHistory = () => {
+  const { rowValue } = useContext(UpdateLeaveRequestContext);
   const user = useAppSelector((state) => state.user.user);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<HistoryGroup[]>([]);

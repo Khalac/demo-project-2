@@ -21,6 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   Textarea,
+  Skeleton,
 } from "@/components/ui";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
@@ -31,20 +32,35 @@ import { leaveRequestFormSchema } from "../../create-leave-request";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { LeaveRequestData } from "../../create-leave-request";
 import { toast } from "sonner";
-import { useAppSelector } from "@/hook/redux-hook";
 import type { ListleaveRequest } from "../../list-leave-request";
 import { updateLeaveRequest } from "../action";
 import { convertLocalDateToUTC } from "@/utils";
 import { status } from "../../list-leave-request";
+import { UpdateLeaveRequestContext } from "../model";
+import { useContext } from "react";
+import { getListLeaveRequest } from "../../list-leave-request/action";
 
 const EmployeeForm: React.FC<{
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  rowValue: ListleaveRequest;
-}> = ({ setOpen, rowValue }) => {
-  const leaveRequestList = useAppSelector(
-    (state) => state.listLeaveRequest.listLeaveRequest
-  );
-  const filteredLeaveRequestList = leaveRequestList.filter(
+}> = ({ setOpen }) => {
+  const { rowValue } = useContext(UpdateLeaveRequestContext);
+  const [loading, setLoading] = useState(false);
+  const [leaveRequestList, setLeaveRequestList] =
+    useState<ListleaveRequest[]>();
+  const getLeaveRequestList = async () => {
+    setLoading(true);
+    const data = await getListLeaveRequest();
+    if (!data.success) {
+      setLoading(false);
+      return;
+    }
+    setLeaveRequestList(data.data);
+    setLoading(false);
+  };
+  useEffect(() => {
+    getLeaveRequestList();
+  }, [rowValue]);
+  const filteredLeaveRequestList = leaveRequestList?.filter(
     (req) => req.request_id !== rowValue?.request_id
   );
 
@@ -56,7 +72,7 @@ const EmployeeForm: React.FC<{
 
   const form = useForm({
     resolver: zodResolver(
-      leaveRequestFormSchema(filteredLeaveRequestList, rowValue.user_id!)
+      leaveRequestFormSchema(filteredLeaveRequestList!, rowValue.user_id!)
     ),
     mode: "onChange",
   });
@@ -90,7 +106,7 @@ const EmployeeForm: React.FC<{
     toast.success("Update request successfully");
   }
   useEffect(() => {
-    const selectedRow = leaveRequestList.find(
+    const selectedRow = leaveRequestList?.find(
       (lr) => lr.request_id === rowValue.request_id
     );
 
@@ -117,7 +133,9 @@ const EmployeeForm: React.FC<{
     }
   };
 
-  return (
+  return loading ? (
+    <Skeleton className="w-[100px] h-[200px]" />
+  ) : (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField

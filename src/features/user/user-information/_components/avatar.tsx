@@ -2,11 +2,18 @@ import { useEffect, useState } from "react";
 import { uploadAvatar } from "../action/upload-avatar";
 import { toast } from "sonner";
 import { downloadAvatar } from "../action/download-avatar";
-import { Input } from "@/components";
+import {
+  Input,
+  Avatar as AvatarUI,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components";
 import { UserDetailContext } from "../model";
 import { useContext } from "react";
 import { useTransition } from "react";
 import { LoadingSpinner } from "@/components";
+import { useAppSelector } from "@/hook/redux-hook";
+
 export default function Avatar({
   url,
   onUpload,
@@ -14,6 +21,7 @@ export default function Avatar({
   url: string;
   onUpload: (filePath: string) => void;
 }) {
+  const user = useAppSelector((state) => state.user.user);
   const { setAvatar } = useContext(UserDetailContext);
   const [avatarUrl, setAvatarUrl] = useState<string>("");
   const [uploading, setUploading] = useState(false);
@@ -55,7 +63,13 @@ export default function Avatar({
     onUpload(fileName);
     setUploading(false);
   };
-
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((word) => word.charAt(0))
+      .join("")
+      .toUpperCase();
+  };
   return (
     <div className="flex flex-col gap-5">
       <div className="w-full flex justify-center items-center px-5 h-fit">
@@ -63,12 +77,16 @@ export default function Avatar({
           isPending ? (
             <LoadingSpinner className="" />
           ) : (
-            <img src={avatarUrl} alt="Avatar" className="w-2/3 h-auto" />
+            <AvatarUI className="flex justify-center items-center size-20 sm:size-40">
+              <AvatarImage src={avatarUrl} alt="avatar" />
+            </AvatarUI>
           )
         ) : (
-          <div className="w-2/3 h-[100px] flex justify-center items-center">
-            No image found
-          </div>
+          <AvatarUI className="flex justify-center items-center w-1/2 size-20 sm:size-40">
+            <AvatarFallback className="font-bold text-xl sm:text-4xl">
+              {getInitials(user.full_name)}
+            </AvatarFallback>
+          </AvatarUI>
         )}
       </div>
       <div>

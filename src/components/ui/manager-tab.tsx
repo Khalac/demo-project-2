@@ -6,7 +6,7 @@ type Manager = {
   full_name: string;
 };
 
-export const ManagerTab = <M extends Manager, L>({
+export const ManagerTab = <M extends Manager, List>({
   children,
   manager,
   fn,
@@ -15,11 +15,11 @@ export const ManagerTab = <M extends Manager, L>({
   loading,
   loadingGetManager,
 }: {
-  children: (data: L[], loading: boolean) => ReactNode;
+  children: (data: List[], loading: boolean) => ReactNode;
   manager: M[] | undefined;
   fn: (e: string) => Promise<void>;
-  data: L[] | undefined;
-  dataManager: L[] | undefined;
+  data: List[] | undefined;
+  dataManager: List[] | undefined;
   loading: boolean;
   loadingGetManager: boolean;
 }) => {

@@ -105,20 +105,26 @@ const Statistic = ({ data }: { data: ListleaveRequest[] }) => {
           </CardTitle>
         </CardHeader>
         <CardContent className="w-full flex-grow flex flex-col justify-center items-center gap-5">
-          {statisticData.map((data, index) => {
-            return (
-              <div
-                key={data.status}
-                className=" w-full flex flex-col items-center text-center gap-2 justify-center"
-              >
-                <UILabel>Total requests has status {data.status}</UILabel>
-                <div className="sm:text-xl text-lg"> {data.totalRequest}</div>
-                {index !== statisticData.length - 1 && (
-                  <Separator className="w-full" />
-                )}
-              </div>
-            );
-          })}
+          {statisticData.length !== 0 ? (
+            statisticData.map((data, index) => {
+              return (
+                <div
+                  key={data.status}
+                  className=" w-full flex flex-col items-center text-center gap-2 justify-center"
+                >
+                  <UILabel>Total requests has status {data.status}</UILabel>
+                  <div className="sm:text-xl text-lg"> {data.totalRequest}</div>
+                  {index !== statisticData.length - 1 && (
+                    <Separator className="w-full" />
+                  )}
+                </div>
+              );
+            })
+          ) : (
+            <div className="h-full w-full flex justify-center items-center text-xs">
+              No data found
+            </div>
+          )}
         </CardContent>
       </Card>
       <Card className="sm:w-1/3 w-full flex-grow">

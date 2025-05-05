@@ -134,7 +134,11 @@ const EmployeeForm: React.FC<{
   };
 
   return loading ? (
-    <Skeleton className="w-[100px] h-[200px]" />
+    <div className="space-y-2 flex flex-col justify-center items-center">
+      <Skeleton className="h-4 w-[250px]" />
+      <Skeleton className="h-4 w-[150px]" />
+      <Skeleton className="h-4 w-[200px]" />
+    </div>
   ) : (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

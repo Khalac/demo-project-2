@@ -69,7 +69,7 @@ const LeaveRequestHistory = () => {
                 {res.records.map((change, index) => {
                   return (
                     <>
-                      <div className="flex flex-col cursor-pointer text-sm sm:text-xs py-2">
+                      <div className="flex flex-col text-sm sm:text-xs py-2">
                         <div>
                           <span className="font-bold">
                             {user.user_id === change.userChange.user_id ? (

@@ -1,0 +1,136 @@
+Tôi quyết định chọn cách 2. Bạn hãy viết hàm hoàn chỉnh để xử lý đầu vào là một danh sách các giao dịch, đầu ra là tổng chi tiêu của từng tuần dưới dạng từ điển. Kèm thêm ví dụ sử dụng giúp tôi.
+```swift
+import Foundation
+
+// Kiểu dữ liệu giao dịch
+struct Transaction {
+    let date: Date
+    let amount: Int
+    let category: String
+}
+
+// Trả về ngày Thứ Hai đầu tuần của một ngày bất kỳ
+func startOfISOWeek(for date: Date, using calendar: Calendar) -> Date? {
+    return calendar.dateInterval(of: .weekOfYear, for: date)?.start
+}
+
+// Tính tổng chi tiêu theo tuần (khóa là ngày Thứ Hai đầu tuần)
+func groupWeeklySpending(from transactions: [Transaction]) -> [Date: Int] {
+    var calendar = Calendar(identifier: .iso8601)
+    calendar.firstWeekday = 2 // Thứ Hai
+    calendar.locale = Locale(identifier: "vi_VN")
+
+    var result: [Date: Int] = [:]
+
+    for transaction in transactions {
+        guard let weekStart = startOfISOWeek(for: transaction.date, using: calendar) else { continue }
+        result[weekStart, default: 0] += transaction.amount
+    }
+
+    return result
+}
+```
+
+**Ví dụ sử dụng**
+
+```swift
+let formatter = DateFormatter()
+formatter.dateFormat = "dd/MM/yyyy"
+formatter.locale = Locale(identifier: "vi_VN")
+
+let transactions: [Transaction] = [
+    Transaction(date: formatter.date(from: "01/04/2024")!, amount: 100_000, category: "Ăn uống"),
+    Transaction(date: formatter.date(from: "02/04/2024")!, amount: 200_000, category: "Giải trí"),
+    Transaction(date: formatter.date(from: "08/04/2024")!, amount: 150_000, category: "Ăn uống"),
+    Transaction(date: formatter.date(from: "09/04/2024")!, amount: 50_000, category: "Xăng xe")
+]
+
+let weekly = groupWeeklySpending(from: transactions)
+
+// In kết quả
+for weekStart in weekly.keys.sorted() {
+    let label = formatter.string(from: weekStart)
+    let total = weekly[weekStart]!
+    print("Tuần bắt đầu từ \(label): \(total) VNĐ")
+}
+// Tuần bắt đầu từ 01/04/2024: 300000 VNĐ
+// Tuần bắt đầu từ 08/04/2024: 200000 VNĐ
+```
+
+### Giải thích
+
+* Hàm `startOfISOWeek(for:using:)` xác định ngày Thứ Hai đầu tuần.
+* Sử dụng chuẩn `Calendar(identifier: .iso8601)` giúp xác định tuần bắt đầu từ Thứ Hai theo đúng quy ước quốc tế.
+* Một đối tượng `calendar` duy nhất được sử dụng xuyên suốt để đảm bảo nhất quán về múi giờ và cấu hình.
+* Cách đặt tên hàm và biến tuân theo `Swift API Design Guidelines` của Apple: rõ ràng, mô tả đầy đủ và dễ bảo trì.
+
+
+Tôi muốn kiểm tra xem hàm có hoạt động đúng hay không. Bạn hãy cho tôi biết kết quả hàm trả về cho danh sách giao dịch dưới đây và giải thích chi tiết.
+
+```swift
+let transactions = [
+    Transaction(date: formatter.date(from: "01/04/2024")!, amount: 100_000, category: "Khác"),
+    Transaction(date: formatter.date(from: "02/04/2024")!, amount: 200_000, category: "Khác"),
+    Transaction(date: formatter.date(from: "08/04/2024")!, amount: 150_000, category: "Khác"),
+    Transaction(date: formatter.date(from: "09/04/2024")!, amount: 50_000, category: "Khác"),
+    Transaction(date: formatter.date(from: "15/04/2024")!, amount: 80_000, category: "Khác"),
+    Transaction(date: formatter.date(from: "16/04/2024")!, amount: 120_000, category: "Khác"),
+    Transaction(date: formatter.date(from: "22/04/2024")!, amount: 60_000, category: "Khác")
+]
+```
+
+# Phân tích kết quả hàm `groupWeeklySpending`
+
+## 1. Cách hàm phân nhóm theo tuần
+
+Hàm sử dụng `Calendar(identifier: .iso8601)` với `firstWeekday = 2`, nên các tuần được tính từ Thứ Hai đến Chủ Nhật. Mỗi giao dịch được ánh xạ về ngày Thứ Hai đầu tuần của nó.
+
+| Ngày giao dịch   | Thuộc tuần bắt đầu từ | Số tiền    |
+|------------------|------------------------|------------|
+| 01/04/2024       | 01/04/2024             | 100.000    |
+| 02/04/2024       | 01/04/2024             | 200.000    |
+| 08/04/2024       | 08/04/2024             | 150.000    |
+| 09/04/2024       | 08/04/2024             | 50.000     |
+| 15/04/2024       | 15/04/2024             | 80.000     |
+| 16/04/2024       | 15/04/2024             | 120.000    |
+| 22/04/2024       | 22/04/2024             | 60.000     |
+
+---
+
+## 2. Kết quả tổng chi tiêu theo tuần
+
+| Tuần bắt đầu từ  | Tổng chi tiêu (VNĐ) |
+|------------------|---------------------|
+| 01/04/2024       | 300.000             |
+| 08/04/2024       | 200.000             |
+| 15/04/2024       | 200.000             |
+| 22/04/2024       | 60.000              |
+
+---
+
+## 3. Giải thích theo từng nhóm tuần
+
+* Tuần 01/04 - 07/04  
+  * 01/04: 100.000  
+  * 02/04: 200.000  
+  => Tổng: 300.000
+
+* Tuần 08/04 - 14/04  
+  * 08/04: 150.000  
+  * 09/04: 50.000  
+  => Tổng: 200.000
+
+* Tuần 15/04 - 21/04  
+  * 15/04: 80.000  
+  * 16/04: 120.000  
+  => Tổng: 200.000
+
+* Tuần 22/04 - 28/04  
+  * 22/04: 60.000  
+  => Tổng: 60.000
+
+---
+
+## Kết luận
+
+Hàm đã phân nhóm chính xác theo từng tuần bắt đầu từ Thứ Hai và cộng dồn chi tiêu đúng theo từng nhóm. Kết quả phản ánh đúng logic xử lý và có thể sử dụng để hiển thị biểu đồ chi tiêu theo tuần một cách chính xác.

@@ -119,10 +119,21 @@ const ManagerForm = ({
 
     if (endDate) {
       form.trigger("end_date");
+      form.trigger("total_leave_days");
     } else {
       form.clearErrors("end_date");
+      form.clearErrors("total_leave_days");
     }
   };
+  const handleEndDateChange = (field: any, value: any) => {
+    field.onChange(value);
+    form.trigger("total_leave_days");
+  };
+  const handleTotalLeaveDaysChange = (field: any, value: any) => {
+    field.onChange(value);
+    form.trigger("total_leave_hours");
+  };
+
   const isOutOfLeave =
     leaveDetail &&
     leaveDetail?.total_leaves ===
@@ -240,7 +251,7 @@ const ManagerForm = ({
                       <Calendar
                         mode="single"
                         selected={field.value}
-                        onSelect={field.onChange}
+                        onSelect={(date) => handleEndDateChange(field, date)}
                         autoFocus
                       />
                     </PopoverContent>
@@ -250,7 +261,13 @@ const ManagerForm = ({
               )}
             />
             <FormField
-              disabled={isPending || isOutOfLeave}
+              disabled={
+                isPending ||
+                isOutOfLeave ||
+                isOutOfLeave ||
+                !form.formState.dirtyFields.end_date ||
+                !form.formState.dirtyFields.start_date
+              }
               control={form.control}
               name="total_leave_days"
               render={({ field }) => (
@@ -261,6 +278,9 @@ const ManagerForm = ({
                       type="number"
                       placeholder="Total leave days"
                       {...field}
+                      onChange={(e) =>
+                        handleTotalLeaveDaysChange(field, e.target.value)
+                      }
                     />
                   </FormControl>
                   <FormMessage />
@@ -268,7 +288,11 @@ const ManagerForm = ({
               )}
             />
             <FormField
-              disabled={isPending || isOutOfLeave}
+              disabled={
+                isPending ||
+                isOutOfLeave ||
+                !form.formState.dirtyFields.total_leave_days
+              }
               control={form.control}
               name="total_leave_hours"
               render={({ field }) => (

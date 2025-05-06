@@ -93,9 +93,19 @@ const EmployeeForm = ({
 
     if (endDate) {
       form.trigger("end_date");
+      form.trigger("total_leave_days");
     } else {
       form.clearErrors("end_date");
+      form.clearErrors("total_leave_days");
     }
+  };
+  const handleEndDateChange = (field: any, value: any) => {
+    field.onChange(value);
+    form.trigger("total_leave_days");
+  };
+  const handleTotalLeaveDaysChange = (field: any, value: any) => {
+    field.onChange(value);
+    form.trigger("total_leave_hours");
   };
   const isOutOfLeave =
     leaveDetail &&
@@ -174,7 +184,7 @@ const EmployeeForm = ({
                     <Calendar
                       mode="single"
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(date) => handleEndDateChange(field, date)}
                       autoFocus
                     />
                   </PopoverContent>
@@ -185,7 +195,11 @@ const EmployeeForm = ({
           />
 
           <FormField
-            disabled={isOutOfLeave}
+            disabled={
+              isOutOfLeave ||
+              !form.formState.dirtyFields.end_date ||
+              !form.formState.dirtyFields.start_date
+            }
             control={form.control}
             name="total_leave_days"
             render={({ field }) => (
@@ -196,6 +210,9 @@ const EmployeeForm = ({
                     type="number"
                     placeholder="Total leave days"
                     {...field}
+                    onChange={(e) =>
+                      handleTotalLeaveDaysChange(field, e.target.value)
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -203,7 +220,9 @@ const EmployeeForm = ({
             )}
           />
           <FormField
-            disabled={isOutOfLeave}
+            disabled={
+              isOutOfLeave || !form.formState.dirtyFields.total_leave_days
+            }
             control={form.control}
             name="total_leave_hours"
             render={({ field }) => (

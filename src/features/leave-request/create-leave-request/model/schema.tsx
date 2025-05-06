@@ -1,8 +1,12 @@
 import { z } from "zod";
+import {
+  checkLeaveHours,
+  checkLeaveDates,
+  checkHolidays,
+  checkOverlapWithExistingRequests,
+} from "./schema-validation-function";
 import type { ListleaveRequest } from "../../list-leave-request";
 import { status } from "../../list-leave-request";
-import { format } from "date-fns";
-import { vietnamHolidays } from "./vietnam-holiday-data";
 export const leaveRequestFormSchema = (
   listLeaveRequest: ListleaveRequest[],
   user_id: string
@@ -11,18 +15,18 @@ export const leaveRequestFormSchema = (
     .object({
       user_id: z.string().optional(),
       start_date: z.coerce.date({
-        required_error: "Start date is require",
+        required_error: "Start date is required",
       }),
       end_date: z.coerce.date({
-        required_error: "End date is require",
+        required_error: "End date is required",
       }),
       total_leave_days: z.coerce.number({
-        required_error: "Total leave days is require",
+        required_error: "Total leave days is required",
       }),
       total_leave_hours: z.coerce.number({
-        required_error: "Total leave hours is require",
+        required_error: "Total leave hours is required",
       }),
-      reason: z.string().min(1, { message: "Reason is require" }),
+      reason: z.string().min(1, { message: "Reason is required" }),
       status: z.nativeEnum(status).optional(),
       rejected_reason: z
         .string()
@@ -45,71 +49,15 @@ export const leaveRequestFormSchema = (
         },
         ctx
       ) => {
-        if (total_leave_days * 8 < total_leave_hours) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message:
-              "Total leave hours must not exceed total leave days multiplied by 8",
-            path: ["total_leave_hours"],
-          });
-        }
-
-        const start = start_date;
-        const end = end_date;
-
-        const getTotalDays = Math.ceil(
-          (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24) + 1
+        checkLeaveHours(total_leave_days, total_leave_hours, ctx);
+        checkLeaveDates(start_date, end_date, total_leave_days, ctx);
+        checkHolidays(start_date, end_date, ctx);
+        checkOverlapWithExistingRequests(
+          start_date,
+          end_date,
+          user_id,
+          listLeaveRequest,
+          ctx
         );
-
-        if (end < start) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "You are requesting days that are in the past",
-            path: ["end_date"],
-          });
-        } else if (getTotalDays < total_leave_days) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: `Total leave days must not exceed the actual number of days between start and end dates.`,
-            path: ["total_leave_days"],
-          });
-        }
-
-        const holidaysSet = new Map(
-          vietnamHolidays.map((holiday) => [holiday.date, holiday.name])
-        );
-
-        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-          const dateStr = format(d, "yyyy-MM-dd");
-          if (holidaysSet.has(dateStr)) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: `${dateStr} is holiday: "${holidaysSet.get(dateStr)}"`,
-              path: ["end_date"],
-            });
-          }
-        }
-
-        listLeaveRequest.forEach((lr) => {
-          if (user_id === lr.user_id) {
-            const existingStart = new Date(lr.start_date).getTime() - 25200000;
-            const existingEnd = new Date(lr.end_date).getTime() - 25200000;
-
-            const isOverlap =
-              start.getTime() <= existingEnd && end.getTime() >= existingStart;
-            if (
-              isOverlap &&
-              lr.status !== status.rejected &&
-              lr.status !== status.cancel
-            ) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message:
-                  "You are requesting days that overlap with another leave request",
-                path: ["end_date"],
-              });
-            }
-          }
-        });
       }
     );

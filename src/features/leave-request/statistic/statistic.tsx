@@ -1,6 +1,7 @@
 import type { ListleaveRequest } from "../list-leave-request";
 import { formatDataForChart } from "./action";
 import { type ChartConfig } from "@/components/ui/chart";
+import { cn } from "@/lib";
 import {
   Bar,
   BarChart,
@@ -68,30 +69,60 @@ const Statistic = ({ data }: { data: ListleaveRequest[] }) => {
   const statisticData = formatDataForStatistc(data).filter(
     (data) => data.month === month && data.year === year
   );
+  const getStatusStyles = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "approved":
+        return {
+          text: "text-green-600",
+          bg: "bg-green-100",
+          dot: "bg-green-600",
+        };
+      case "rejected":
+        return {
+          text: "text-red-600",
+          bg: "bg-red-100",
+          dot: "bg-red-600",
+        };
+      case "pending":
+        return {
+          text: "text-yellow-600",
+          bg: "bg-yellow-100",
+          dot: "bg-yellow-600",
+        };
+      default:
+        return {
+          text: "text-gray-600",
+          bg: "bg-gray-100",
+          dot: "bg-gray-600",
+        };
+    }
+  };
 
   return (
     <div className="w-full flex sm:justify-around sm:items-stretch sm:flex-row flex-col gap-5">
-      <Card className="sm:w-1/5 w-full flex-grow">
-        <CardHeader className="flex justify-center items-center pb-0 w-full">
-          <CardTitle className="flex flex-col gap-3 w-fit sm:w-full justify-center items-center">
+      <Card className="sm:w-1/5 w-full flex-grow shadow-md rounded-2xl">
+        <CardHeader className="pb-0 w-full text-center">
+          <CardTitle className="flex flex-col gap-4 items-center">
             <div className="flex items-center gap-2">
-              <UILabel className="min-w-[60px]">Month</UILabel>
+              <UILabel className="min-w-[60px] text-muted-foreground">
+                Month
+              </UILabel>
               <Input
                 value={month}
                 className="w-20 text-center"
                 onChange={(e) => {
                   let value = e.target.value.replace(/\D/g, "");
-
                   if (value.length > 2) value = value.slice(0, 2);
                   if (parseInt(value.charAt(0)) > 1 && value.length > 1)
                     value = value.slice(0, 1);
-
                   setMonth(value);
                 }}
               />
             </div>
             <div className="flex items-center gap-2">
-              <UILabel className="min-w-[60px]">Year</UILabel>
+              <UILabel className="min-w-[60px] text-muted-foreground">
+                Year
+              </UILabel>
               <Input
                 value={year}
                 className="w-20 text-center"
@@ -104,24 +135,41 @@ const Statistic = ({ data }: { data: ListleaveRequest[] }) => {
             </div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="w-full flex-grow flex flex-col justify-center items-center gap-5">
+        <CardContent className="flex flex-col items-center gap-4 pt-4 pb-6 px-4">
           {statisticData.length !== 0 ? (
-            statisticData.map((data, index) => {
-              return (
-                <div
-                  key={data.status}
-                  className=" w-full flex flex-col items-center text-center gap-2 justify-center"
-                >
-                  <UILabel>Total requests have status {data.status}</UILabel>
-                  <div className="sm:text-xl text-lg"> {data.totalRequest}</div>
-                  {index !== statisticData.length - 1 && (
-                    <Separator className="w-full" />
-                  )}
+            statisticData.map((data, index) => (
+              <div
+                key={data.status}
+                className="w-full flex flex-col items-center text-center gap-2"
+              >
+                <UILabel className="text-sm text-muted-foreground">
+                  Total requests with status
+                  <div
+                    className={cn(
+                      "flex justify-center items-center gap-1 w-fit rounded-xl py-1 px-2 text-xs font-semibold",
+                      getStatusStyles(data.status).text,
+                      getStatusStyles(data.status).bg
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "w-2 h-2 rounded-full",
+                        getStatusStyles(data.status).dot
+                      )}
+                    ></div>
+                    {data.status}
+                  </div>
+                </UILabel>
+                <div className="text-2xl font-bold text-primary">
+                  {data.totalRequest}
                 </div>
-              );
-            })
+                {index !== statisticData.length - 1 && (
+                  <Separator className="w-full" />
+                )}
+              </div>
+            ))
           ) : (
-            <div className="h-full w-full flex justify-center items-center text-xs">
+            <div className="h-full w-full flex justify-center items-center text-sm text-muted-foreground">
               No data found
             </div>
           )}

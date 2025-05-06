@@ -61,7 +61,7 @@ const ListNotification = () => {
     return () => {
       unsubscribe();
     };
-  }, [user.user_id, data]);
+  }, [user.user_id]);
 
   return (
     <div className="flex justify-start items-center flex-col h-full w-full gap-10 scroll-auto px-2 md:px-0">

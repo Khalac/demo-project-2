@@ -291,7 +291,8 @@ const ManagerForm = ({
               disabled={
                 isPending ||
                 isOutOfLeave ||
-                !form.formState.dirtyFields.total_leave_days
+                !form.formState.dirtyFields.end_date ||
+                !form.formState.dirtyFields.start_date
               }
               control={form.control}
               name="total_leave_hours"

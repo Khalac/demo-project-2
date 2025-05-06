@@ -112,7 +112,7 @@ const Statistic = ({ data }: { data: ListleaveRequest[] }) => {
                   key={data.status}
                   className=" w-full flex flex-col items-center text-center gap-2 justify-center"
                 >
-                  <UILabel>Total requests has status {data.status}</UILabel>
+                  <UILabel>Total requests have status {data.status}</UILabel>
                   <div className="sm:text-xl text-lg"> {data.totalRequest}</div>
                   {index !== statisticData.length - 1 && (
                     <Separator className="w-full" />

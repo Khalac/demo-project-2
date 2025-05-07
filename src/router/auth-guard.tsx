@@ -1,4 +1,4 @@
-import useGetSession from "@/hook/use-get-session";
+import { useGetSession } from "@/hook";
 import { Navigate, Outlet } from "react-router-dom";
 
 export const ProtectedRoute = () => {

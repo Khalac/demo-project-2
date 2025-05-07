@@ -15,6 +15,9 @@ import { useAppSelector } from "@/hook/redux-hook";
 import { FilterNameEmployee, DownloadData, DataTable } from "@/components";
 import { Skeleton } from "@/components";
 import { format } from "date-fns";
+import { useSearchParams } from "react-router-dom";
+import { useDebounce } from "@/hook";
+import { useEffect } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -33,6 +36,23 @@ export function DataTableEmployee<TData, TValue>({
   const user = useAppSelector((state) => state.user.user);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
+  const [searchNameParam, setSearchNameParam] = useSearchParams();
+  const [searchName, setSearchName] = useState<string>(
+    searchNameParam.get("name") || ""
+  );
+
+  const debouncedName = useDebounce(searchName, 500);
+
+  useEffect(() => {
+    if (searchName) {
+      searchNameParam.set("name", debouncedName);
+      table.getColumn("full_name")?.setFilterValue(debouncedName);
+    } else {
+      searchNameParam.delete("name");
+      table.getColumn("full_name")?.setFilterValue(debouncedName);
+    }
+    setSearchNameParam(searchNameParam);
+  }, [debouncedName]);
 
   const table = useReactTable({
     data,
@@ -93,7 +113,10 @@ export function DataTableEmployee<TData, TValue>({
       <div className="flex flex-col sm:flex-row sm:justify-end gap-5">
         {user.role !== "EMPLOYEE" && (
           <div className="w-full sm:w-auto">
-            <FilterNameEmployee table={table} column="full_name" />
+            <FilterNameEmployee
+              setSearchName={setSearchName}
+              searchName={searchName}
+            />
           </div>
         )}
       </div>

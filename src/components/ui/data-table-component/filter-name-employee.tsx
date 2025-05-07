@@ -1,13 +1,12 @@
-import { Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui";
 import { Search } from "lucide-react";
 
 const FilterNameEmployee = <TData,>({
-  table,
-  column,
+  setSearchName,
+  searchName,
 }: {
-  table: Table<TData>;
-  column: string;
+  setSearchName: (name: string) => void;
+  searchName: string;
 }) => {
   return (
     <div className="relative w-full md:w-[180px]">
@@ -16,10 +15,8 @@ const FilterNameEmployee = <TData,>({
       </span>
       <Input
         placeholder="Employee name"
-        value={(table.getColumn(column)?.getFilterValue() as string) ?? ""}
-        onChange={(event) =>
-          table.getColumn(column)?.setFilterValue(event.target.value)
-        }
+        value={searchName}
+        onChange={(event) => setSearchName(event.target.value)}
         className="pl-10 bg-white text-sm"
       />
     </div>

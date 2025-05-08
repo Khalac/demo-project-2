@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui";
 import { Search } from "lucide-react";
 
-const FilterNameEmployee = <TData,>({
+const FilterNameEmployee = ({
   setSearchName,
   searchName,
 }: {

@@ -14,7 +14,7 @@ export const SelectDate = ({
   setGlobalFilter,
 }: {
   globalFilter: Date | undefined;
-  setGlobalFilter: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  setGlobalFilter: (date: Date | undefined) => void;
 }) => {
   return (
     <Popover modal={true}>
@@ -36,7 +36,7 @@ export const SelectDate = ({
         <Calendar
           mode="single"
           selected={globalFilter}
-          onSelect={setGlobalFilter}
+          onSelect={(date) => setGlobalFilter(date)}
           autoFocus
         />
       </PopoverContent>

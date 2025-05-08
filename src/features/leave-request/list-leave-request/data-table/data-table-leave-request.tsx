@@ -10,13 +10,14 @@ import {
 
 import { Button, Separator } from "@/components/ui";
 import { Plus } from "lucide-react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UpdateLeaveRequestContext } from "../../update-leave-request/model";
 import { DataTablePagination } from "@/components/ui";
 import { useState } from "react";
 import { useAppSelector } from "@/hook/redux-hook";
 import { CreateLeaveRequestContext } from "../../create-leave-request";
 import { Skeleton } from "@/components/ui";
+import { useDebounce } from "@/hook";
 import {
   SelectDate,
   FilterNameEmployee,
@@ -26,6 +27,7 @@ import {
 import { FilterStatus, RequestBulkAction } from "./_components";
 import * as XLSX from "xlsx";
 import { format } from "date-fns";
+import { useSearchParams } from "react-router-dom";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -44,6 +46,36 @@ export function DataTableLeaveRequest<TData, TValue>({
   const { setOpenUpdate, setRowValue } = useContext(UpdateLeaveRequestContext);
   const [globalFilter, setGlobalFilter] = useState<Date>();
   const [rowSelection, setRowSelection] = useState({});
+  const [searchDateParam, setSearchDateParam] = useSearchParams();
+  const [searchNameParam, setSearchNameParam] = useSearchParams();
+
+  useEffect(() => {
+    const date = searchDateParam.get("date");
+    const checkAlreadyFilter = date ? new Date(date) : undefined;
+    setGlobalFilter(checkAlreadyFilter);
+  }, [searchDateParam]);
+
+  const selectDateToFilter = (date: Date | undefined) => {
+    if (date === undefined) searchDateParam.delete("date");
+    else searchDateParam.set("date", date.toDateString());
+    setSearchDateParam(searchDateParam);
+  };
+  const [searchName, setSearchName] = useState<string>(
+    searchNameParam.get("name") || ""
+  );
+
+  const debouncedName = useDebounce(searchName, 500);
+
+  useEffect(() => {
+    if (searchName) {
+      searchNameParam.set("name", debouncedName);
+      table.getColumn("users_full_name")?.setFilterValue(debouncedName);
+    } else {
+      searchNameParam.delete("name");
+      table.getColumn("users_full_name")?.setFilterValue(debouncedName);
+    }
+    setSearchNameParam(searchNameParam);
+  }, [debouncedName]);
 
   const customFilterFn = (rows: Row<TData>, _: any, filterValue: any) => {
     if (!filterValue) return true;
@@ -133,11 +165,14 @@ export function DataTableLeaveRequest<TData, TValue>({
             )}
           {user.role !== "EMPLOYEE" && (
             <div className="w-full sm:w-auto">
-              <FilterNameEmployee table={table} column="users_full_name" />
+              <FilterNameEmployee
+                searchName={searchName}
+                setSearchName={setSearchName}
+              />
             </div>
           )}
           <SelectDate
-            setGlobalFilter={setGlobalFilter}
+            setGlobalFilter={selectDateToFilter}
             globalFilter={globalFilter}
           />
         </div>

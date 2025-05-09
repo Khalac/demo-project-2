@@ -312,3 +312,14 @@ For support, please contact the development team or create an issue in the repos
 - Shadcn/UI for the beautiful components
 - Supabase team for the backend infrastructure
 - All contributors who have helped with the project
+
+## 🔄 Planned Enhancements
+
+### 1. Account
+
+- 🎯 Create Admin dashboard for create, delete, update employee, manager, hr account.
+
+### 2. User Experience Improvements
+
+- 🎨 Customizable themes and layouts
+- 👥 Manager can view leave requests using calendar
